@@ -2,6 +2,7 @@
   "name" : "pedro151/dao-generator",
   "description" : "DAO-Generator Creates 'Data Access Object' Frameworks as DbTable of ZF1.",
   "minimum-stability" : "stable",
+  "keywords": ["DAO","generate","DbTable","ZF"],
   "license" : "proprietary",
   "authors" : [
     {
