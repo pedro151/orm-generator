@@ -1,12 +1,12 @@
 {
-  "name" : "vendor_name/package_name",
-  "description" : "description_text",
+  "name" : "pedro151/dao-generator",
+  "description" : "DAO-Generator Creates 'Data Access Object' Frameworks as DbTable of ZF1.",
   "minimum-stability" : "stable",
   "license" : "proprietary",
   "authors" : [
     {
-      "name" : "author's name",
-      "email" : "email@example.com"
+      "name" : "Pedro Alarcao",
+      "email" : "phacl151@gmail.com"
     }
   ],
   "autoload" : {
