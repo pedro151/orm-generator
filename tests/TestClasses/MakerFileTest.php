@@ -36,9 +36,9 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
     public function testLocation ()
     {
         $maker = new MakerFile( new Config( array (
-            'database' => 'hom_siater' ,
+            'database' => 'postgres' ,
             'schema'   => array (
-                'sibrater','public'
+                'public'
             )
         ) ) );
 
