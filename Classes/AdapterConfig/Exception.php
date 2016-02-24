@@ -1,0 +1,24 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: pedro
+ * Date: 16/02/16
+ * Time: 11:11
+ */
+
+namespace Classes\AdapterConfig;
+
+/**
+ * @author Pedro Alarcao <phacl151@gmail.com>
+ * @link https://github.com/pedro151
+ */
+class Exception extends \Exception
+{
+    private $msg = "As configurações a seguir são obrigatorias: %value%";
+
+    public function __construct ( $array , $code = 0 )
+    {
+        $attribs = implode ( ', ' , array_keys ( $array ) );
+        parent::__construct ( str_replace ( "%value%" , $attribs , $this->msg ) , (int) $code );
+    }
+}
