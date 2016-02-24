@@ -11,11 +11,6 @@ class ZendFrameworkOne extends AbstractAdapter
 {
 
     /**
-     * @type array
-     */
-    private $config;
-
-    /**
      * @var string
      */
     protected $framework = "zend_framework";
@@ -26,21 +21,6 @@ class ZendFrameworkOne extends AbstractAdapter
     {
     }
 
-    protected function parseFrameworkConfig ()
-    {
-        if ( file_exists ( 'Zend/Config/Ini.php' ) )
-        {
-            require_once 'Zend/Config/Ini.php';
-            $this->config = new Zend_Config_Ini(
-                APPLICATION_PATH
-                . '/configs/application.ini' , APPLICATION_ENV
-            );
-
-            $this->config = $this->config->toArray ();
-        }
-
-    }
-
     /**
      * retorna os parametros da configuração do framework
      *
@@ -48,20 +28,14 @@ class ZendFrameworkOne extends AbstractAdapter
      */
     protected function getParams ()
     {
-        $arr1 = array (
-            'driver'    => $this->config[ 'resources' ][ 'db' ][ 'adapter' ] ,
-            'namespace' => $this->config[ 'appnamespace' ]
-        );
-        $this->config[ 'resources' ][ 'db' ][ 'params' ];
 
-        return $arr1 + $this->config[ 'resources' ][ 'db' ][ 'params' ];
     }
 
-    /**
-     * @param \Classes\Db\DbTable|\Classes\Db\Constrant $table
-     *
-     * @return string
-     */
+    protected function parseFrameworkConfig ()
+    {
+        // TODO: Implement parseFrameworkConfig() method.
+    }
+
     public function createClassNamespace ( $table )
     {
         $arrNames = array (
@@ -94,7 +68,7 @@ class ZendFrameworkOne extends AbstractAdapter
             }
             case 'Entity':
             {
-                $this->parseRelationEmtity ( $makerFile , $dbTable);
+                $this->parseRelationEmtity ( $makerFile , $dbTable );
                 break;
             }
             case 'Model':
@@ -115,21 +89,25 @@ class ZendFrameworkOne extends AbstractAdapter
      */
     private function parseRelationDbTable ( \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable )
     {
+        $referenceMap = '';
+        $references = array ();
+        $dependentTables = '';
+        $dependents = array ();
         foreach ( $dbTable->getForeingkeys () as $fk )
         {
             $constrant = $fk->getFks ();
-            $references[] = printf ( "
+            $references[] = sprintf ( "
        '%s' => array (
             'columns'       => '%s' ,
             'refTableClass' => '%s',
             'refColumns'    =>'%s'
        )" ,
-                $constrant->getNameConstrant () ,
-                $fk->getName () ,
-                $dbTable->getNamespace ()
-                . '_Dbtable_'
-                . $makerFile->getClassName ( $dbTable->getName () ) ,
-                $constrant->getColumn ()
+                                      $constrant->getNameConstrant () ,
+                                      $fk->getName () ,
+                                      $dbTable->getNamespace ()
+                                      . '_Dbtable_'
+                                      . $makerFile->getClassName ( $dbTable->getName () ) ,
+                                      $constrant->getColumn ()
 
             );
         }
@@ -137,23 +115,43 @@ class ZendFrameworkOne extends AbstractAdapter
         if ( sizeof ( $references ) > 0 )
         {
             $referenceMap = "protected \$_referenceMap = array(" .
-                            join ( ',' , $references ) . "\n    );";
+                join ( ',' , $references ) . "\n    );";
         }
 
         foreach ( $dbTable->getDependences () as $objColumn )
         {
-            var_dump ( $objColumn );
+            foreach ( $objColumn->getDependences () as $dependence )
+            {
+                $dependents[] = $this->createClassNamespace ( $dependence )
+                    . '_Dbtable_'
+                    . $makerFile->getClassName ( $dependence->getTable () );
+            }
         }
+
+        if ( sizeof ( $dependents ) > 0 )
+        {
+            $dependentTables = "protected \$_dependentTables = array(\n        '" .
+                join ( "',\n        '" , $dependents ) . "'\n    );";
+        }
+
+
+        $this->arrFunc = array (
+            'referenceMap' => $referenceMap , 'dependentTables' => $dependentTables
+        );
 
     }
 
     /**
+     * @param \Classes\MakerFile  $makerFile
      * @param \Classes\Db\DbTable $dbTable
      *
-     * @return mixed
+     * @return array
      */
     public function parseRelationEmtity ( \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable )
     {
+
+        $parents = array ();
+        $depends = array ();
 
         foreach ( $dbTable->getColumns () as $objColumn )
         {
@@ -162,16 +160,18 @@ class ZendFrameworkOne extends AbstractAdapter
                 foreach ( $objColumn->getFks () as $constrant )
                 {
                     $name = $constrant->getTable ()
-                            . self::SEPARETOR
-                            . 'By'
-                            . self::SEPARETOR
-                            . $makerFile->getClassName ( $objColumn->getName () );
+                        . self::SEPARETOR
+                        . 'By'
+                        . self::SEPARETOR
+                        .  $objColumn->getName ();
 
                     if ( ! in_array ( $name , $this->arrFunc ) )
                     {
-                        $this->arrFunc[ 'parents' ][] = array (
-                            'class'    => $this->createClassNamespace($constrant).'_'.$makerFile->getClassName ( $constrant->getTable() ),
-                            'function' => $name ,
+                        $parents[] = array (
+                            'class'    => $this->createClassNamespace ( $constrant ) . '_'
+                                . $makerFile->getClassName ( $constrant->getTable () ) ,
+                            'function' => $makerFile->getClassName ($name) ,
+                            'table'    => $constrant->getTable () ,
                             'column'   => $objColumn->getName ()
                         );
                     }
@@ -184,16 +184,18 @@ class ZendFrameworkOne extends AbstractAdapter
                 foreach ( $objColumn->getDependences () as $constrant )
                 {
                     $name = $constrant->getTable ()
-                            . self::SEPARETOR
-                            . 'By'
-                            . self::SEPARETOR
-                            . $makerFile->getClassName ( $objColumn->getName () );
+                        . self::SEPARETOR
+                        . 'By'
+                        . self::SEPARETOR
+                        .  $objColumn->getName () ;
 
                     if ( ! in_array ( $name , $this->arrFunc ) )
                     {
-                        $this->arrFunc[ 'depends' ][] = array (
-                            'class'    => $this->createClassNamespace($constrant).'_'.$makerFile->getClassName ( $constrant->getTable() ),
-                            'function' => $name ,
+                        $depends[] = array (
+                            'class'    => $this->createClassNamespace ( $constrant ) . '_'
+                                . $makerFile->getClassName ( $constrant->getTable () ) ,
+                            'function' => $makerFile->getClassName ($name) ,
+                            'table'    => $constrant->getTable () ,
                             'column'   => $objColumn->getName ()
                         );
                     }
@@ -202,7 +204,10 @@ class ZendFrameworkOne extends AbstractAdapter
             }
         }
 
-        return $this->arrFunc;
+        $this->arrFunc = array (
+            'parents' => $parents , 'depends' => $depends
+        );
+
     }
 
 }
