@@ -26,7 +26,8 @@ abstract class AbstractAdapter
     public static function getInstance ()
     {
         $class = get_called_class ();
-        $classEnd = end ( explode ( '\\' , $class ) );
+        $arr = explode ( '\\' , $class );
+        $classEnd = end ( $arr );
         if ( ! isset( self::$_instance[ $classEnd ] ) )
         {
             self::$_instance[ $classEnd ] = new $class();
