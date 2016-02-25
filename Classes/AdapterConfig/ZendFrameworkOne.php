@@ -5,7 +5,7 @@ namespace Classes\AdapterConfig;
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151
+ * @link   https://github.com/pedro151/DAO-Generator
  */
 class ZendFrameworkOne extends AbstractAdapter
 {
