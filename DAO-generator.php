@@ -5,11 +5,13 @@
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
  */
+
 function __autoload ( $class )
 {
     $parts = explode ( '\\', $class );
     require dirname ( __FILE__ ) .DIRECTORY_SEPARATOR. implode ( DIRECTORY_SEPARATOR, $parts ) . '.php';
 }
+
 
 if ( !ini_get ( 'short_open_tag' ) )
 {

@@ -33,7 +33,7 @@ class ZendFrameworkOneTest extends \PHPUnit_Framework_TestCase
         $config = array (
             'driver'   => 'pdo_pgsql',
             'host'     => 'localhost',
-            'dbname'   => 'database',
+            'database'   => 'database',
             'username' => 'postgres',
             'password' => '123'
         );
@@ -50,8 +50,7 @@ class ZendFrameworkOneTest extends \PHPUnit_Framework_TestCase
     public function testException ()
     {
         $this->setExpectedException (
-            'Classes\AdapterConfig\Exception',
-            'As configurações a seguir são obrigatorias: driver, dbname, username, password'
+            'Classes\AdapterConfig\Exception'
         );
 
         $obj = $this->getMockBuilder ( '\Classes\AdapterConfig\ZendFrameworkOne' )

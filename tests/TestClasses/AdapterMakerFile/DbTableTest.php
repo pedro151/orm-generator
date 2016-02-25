@@ -9,7 +9,6 @@
 namespace TestClasses\AdapterMakerFile;
 
 
-use Classes\AdapterMakerFile\DbTable;
 use Classes\AdaptersDriver\Pgsql;
 
 class DbTableTest extends \PHPUnit_Framework_TestCase
@@ -60,9 +59,6 @@ class DbTableTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRelationName ()
     {
-        $dbTable = new DbTable();
-        $table = $this->objDriver->getTables();
-        $dbTable->getRelationTables ( $table['bds.bds_pessoa'] );
-
+        $this->assertTrue( \Classes\AdapterMakerFile\DbTable::getInstance () instanceof \Classes\AdapterMakerFile\DbTable );
     }
 }

@@ -36,7 +36,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             'driver'   => 'pgsql'
         ) );
         $config = $config->getAdapterConfig();
-        $strAuthor = $config->getAttrib('author');
+        $strAuthor = $config->author;
         $this->assertTrue ( $strAuthor == 'Pedro' );
     }
 }
