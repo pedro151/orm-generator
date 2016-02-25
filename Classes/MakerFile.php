@@ -87,6 +87,8 @@ class MakerFile
      */
     public function run ()
     {
+        $max=$this->driver->getTotalTables()*count($this->factoryMakerFile());
+        $cur=0;
         foreach ( $this->location as $schema => $location )
         {
             foreach ( $this->factoryMakerFile () as $objMakeFile )
@@ -109,6 +111,8 @@ class MakerFile
                     $this->driver->getTables () as $key => $objTables
                 )
                 {
+                    printf("\r Creating: %6.2f%%",($cur/$max)*100);
+                    $cur++;
 
                     $file = $path
                             . DIRECTORY_SEPARATOR
