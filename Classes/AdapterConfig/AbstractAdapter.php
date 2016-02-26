@@ -114,14 +114,6 @@ abstract class AbstractAdapter
 
     protected abstract function init ();
 
-    public function __set ( $name , $value )
-    {
-        if ( array_key_exists ( $name , $this->arrConfig ) && ! empty( $value ) )
-        {
-            $this->arrConfig[ $name ] = $value;
-        }
-    }
-
     public function __construct ( $array )
     {
         $array += array (

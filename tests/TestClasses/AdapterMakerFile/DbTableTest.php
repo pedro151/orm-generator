@@ -8,61 +8,16 @@
 
 namespace TestClasses\AdapterMakerFile;
 
-
-use Classes\AdaptersDriver\Pgsql;
-
 class DbTableTest extends \PHPUnit_Framework_TestCase
 {
 
-    /**
-     * @type \Classes\AdapterConfig\ZendFrameworkOne
-     */
-    private $objAdapterConfig;
-    /**
-     * @type Pgsql
-     */
-    private $objDriver;
-
-    public function setUp ()
+    public function testGetInstace ()
     {
-
-
-
-
-        $this->objAdapterConfig = $this->getMockBuilder ( '\Classes\AdapterConfig\ZendFrameworkOne' )
-                                       ->disableOriginalConstructor ( 0 )
-                                       ->setMethods ( array ( 'getParams' ) )
-                                       ->getMock ();
-
-        $this->parseObj ();
-        $this->objDriver = new Pgsql( $this->objAdapterConfig );
-    }
-
-    protected function parseObj ()
-    {
-        $class = new \ReflectionClass( '\Classes\AdapterConfig\ZendFrameworkOne' );
-        $property = $class->getProperty ( 'arrConfig' );
-        $property->setAccessible ( true );
-        $property->setValue (
-            $this->objAdapterConfig , array (
-                'framework' => "zend_framework" ,
-                'driver'    => 'pdo_pgsql' ,
-                'host'      => 'localhost' ,
-                'port'      => 5432 ,
-                'schema'    => array ( 'teste_dao' ) ,
-                'database'  => 'dao_generator' ,
-                'username'  => 'postgres' ,
-                'socket'    => null ,
-                'password'  => '123' ,
-                'namespace' => ''
-            )
-        );
-
-        return $property;
-    }
-
-    public function testGetRelationName ()
-    {
-        $this->assertTrue( \Classes\AdapterMakerFile\DbTable::getInstance () instanceof \Classes\AdapterMakerFile\DbTable );
+        $instance = \Classes\AdapterMakerFile\DbTable::getInstance ();
+        $this->assertTrue ( $instance instanceof \Classes\AdapterMakerFile\DbTable );
+        $this->assertTrue ( $instance->getPastName () == "DbTable" );
+        $this->assertTrue ( $instance->getFileTpl () == "dbtable.tpl" );
+        $this->assertTrue ( $instance->getParentClass () == "TableAbstract" );
+        $this->assertTrue ( $instance->getParentFileTpl () == "dbtable_abstract.tpl" );
     }
 }

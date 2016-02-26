@@ -38,5 +38,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $config = $config->getAdapterConfig();
         $strAuthor = $config->author;
         $this->assertTrue ( $strAuthor == 'Pedro' );
+        $this->assertTrue( $config->lol ==  null);
     }
 }
