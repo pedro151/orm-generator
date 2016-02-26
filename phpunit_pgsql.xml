@@ -9,6 +9,7 @@
     <testsuites>
         <testsuite name="DAO-Generator Test Suite">
             <directory>./</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 
