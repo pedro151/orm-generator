@@ -25,6 +25,10 @@ class DbTableTest extends \PHPUnit_Framework_TestCase
 
     public function setUp ()
     {
+
+
+
+
         $this->objAdapterConfig = $this->getMockBuilder ( '\Classes\AdapterConfig\ZendFrameworkOne' )
                                        ->disableOriginalConstructor ( 0 )
                                        ->setMethods ( array ( 'getParams' ) )
@@ -45,8 +49,8 @@ class DbTableTest extends \PHPUnit_Framework_TestCase
                 'driver'    => 'pdo_pgsql' ,
                 'host'      => 'localhost' ,
                 'port'      => 5432 ,
-                'schema'    => array ( 'bds' ) ,
-                'database'  => 'sabido' ,
+                'schema'    => array ( 'teste' ) ,
+                'database'  => 'postgres' ,
                 'username'  => 'postgres' ,
                 'socket'    => null ,
                 'password'  => '123' ,

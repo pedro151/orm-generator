@@ -1,6 +1,7 @@
 {
     "name": "pedro151/dao-generator",
     "description": "DAO-generator creates 'Data Access Object' Frameworks as DbTable of ZF1",
+    "keywords": ["orm", "datamapper", "database", "model", "mapper", "entity", "dao", "generator"],
     "license": "MIT",
     "authors": [
         {
