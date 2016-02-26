@@ -27,3 +27,12 @@ Configurations optionals
 in prompt
 
 <code>php DAO-generator.php --framework=zend_framework --database=foo --driver=pgsql</code>
+
+Framework Class Generator DAO
+-----------------------------
+
+| Frameworks    | Classes      |
+|---------------|--------------|
+|Zend Framework | *DbTable  *Entity *Model  |
+
+
