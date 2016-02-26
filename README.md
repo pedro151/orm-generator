@@ -33,6 +33,6 @@ Framework Class Generator DAO
 
 | Frameworks    | Classes      |
 |---------------|--------------|
-|Zend Framework | *DbTable  *Entity *Model  |
+|Zend Framework | DbTable, Entity, Model  |
 
 
