@@ -24,6 +24,10 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp ()
     {
+        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ] , $GLOBALS[ 'db_username' ] , $GLOBALS[ 'db_password' ] );
+        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE , \PDO::ERRMODE_EXCEPTION );
+        $this->pdo->query ( "CREATE TABLE teste_dao.dao (test VARCHAR(50) NOT NULL)" );
+
         $this->objAdapterConfig = $this->getMockBuilder ( '\Classes\AdapterConfig\ZendFrameworkOne' )
                                        ->disableOriginalConstructor ( 0 )
                                        ->setMethods ( array ( 'getParams' ) )
@@ -31,6 +35,11 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
 
         $this->parseObj ();
         $this->objDriver = new Pgsql( $this->objAdapterConfig );
+    }
+
+    protected function tearDown ()
+    {
+        $this->pdo->query ( "DROP TABLE teste_dao.dao" );
     }
 
     protected function parseObj ()
@@ -43,8 +52,8 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
                 'driver'    => 'pdo_pgsql' ,
                 'host'      => 'localhost' ,
                 'port'      => 5432 ,
-                'schema'    => array ( 'bds' ) ,
-                'database'  => 'sabido' ,
+                'schema'    => array ( 'teste_dao' ) ,
+                'database'  => 'dao_generator' ,
                 'username'  => 'postgres' ,
                 'socket'    => null ,
                 'password'  => '123' ,
@@ -74,11 +83,11 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
     public function testGetTables ()
     {
         $this->assertTrue (
-            $this->objDriver->getTable ( "bds.bds_pessoa" ) instanceof
+            $this->objDriver->getTable ( "teste_dao.dao" ) instanceof
             \Classes\Db\DbTable
         );
         $arrTables = $this->objDriver->getTables ();
-        $this->assertTrue ( $arrTables[ "bds.bds_pessoa" ] instanceof
+        $this->assertTrue ( $arrTables[ "teste_dao.dao" ] instanceof
                             \Classes\Db\DbTable );
     }
 

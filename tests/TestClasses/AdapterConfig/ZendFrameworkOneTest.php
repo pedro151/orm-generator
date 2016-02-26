@@ -39,7 +39,7 @@ class ZendFrameworkOneTest extends \PHPUnit_Framework_TestCase
         $config = array (
             'driver'   => 'pdo_pgsql' ,
             'host'     => 'localhost' ,
-            'database' => 'database' ,
+            'database' => 'dao_generator' ,
             'username' => 'postgres' ,
             'password' => '123'
         );

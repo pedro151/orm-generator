@@ -32,9 +32,10 @@ matrix:
 
 # execute any number of scripts before the test run, custom env's are available as variables
 before_script:
-  - composer self-update
+  - if [[ "$DB" == "pgsql" ]]; then psql -c "DROP SCHEMA  IF EXISTS teste_dao;" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "DROP DATABASE IF EXISTS dao_generator;" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "create database dao_generator;" -U postgres; fi
+  - if [[ "$DB" == "pgsql" ]]; then psql -C "CREATE SCHEMA teste_dao"  -U postgres; fi
 #  - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS dao_generator;" -uroot; fi
 
 
@@ -47,4 +48,4 @@ script: phpunit --configuration phpunit_$DB.xml --coverage-text
 
 # configure notifications (email, IRC, campfire etc)
 #notifications:
-#  email: "phacl151@gmail.com"
+  email: "phacl151@gmail.com"

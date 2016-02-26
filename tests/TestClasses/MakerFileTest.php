@@ -42,6 +42,6 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
             )
         ) ) );
 
-        $maker->run ();
+       // $maker->run ();
     }
 }

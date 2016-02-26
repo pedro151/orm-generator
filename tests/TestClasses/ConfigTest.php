@@ -18,8 +18,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testAdapterDriver ()
     {
         $config = new Config( array (
-            'database' => 'postgres' ,
-            'schema'   => 'public' ,
+            'database' => 'dao_generator' ,
+            'schema'   => 'teste_dao' ,
             'driver'   => 'pgsql'
         ) );
         $driver = $config->getAdapterDriver ();
@@ -31,8 +31,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testAdapterConfig ()
     {
         $config = new Config( array (
-            'database' => 'postgres' ,
-            'schema'   => 'public' ,
+            'database' => 'dao_generator' ,
+            'schema'   => 'teste_dao' ,
             'driver'   => 'pgsql'
         ) );
         $config = $config->getAdapterConfig();
