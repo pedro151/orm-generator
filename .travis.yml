@@ -38,7 +38,6 @@ before_script:
 
 install:
   - composer install
-  - ./bin/ci/install_dependencies.sh
   - php vendor/vendors.php
 
 # omitting "script:" will default to phpunit
