@@ -32,10 +32,10 @@ matrix:
 
 # execute any number of scripts before the test run, custom env's are available as variables
 before_script:
-  - if [[ "$DB" == "pgsql" ]]; then psql -c "DROP SCHEMA  IF EXISTS teste_dao;" -U postgres; fi
+#  - if [[ "$DB" == "pgsql" ]]; then psql -c "DROP SCHEMA  IF EXISTS teste_dao;" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "DROP DATABASE IF EXISTS dao_generator;" -U postgres; fi
   - if [[ "$DB" == "pgsql" ]]; then psql -c "CREATE DATABASE dao_generator;" -U postgres; fi
-  - if [[ "$DB" == "pgsql" ]]; then psql -c "CREATE SCHEMA teste_dao"  -U postgres; fi
+#  - if [[ "$DB" == "pgsql" ]]; then psql -c "CREATE SCHEMA teste_dao"  -U postgres; fi
 #  - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS dao_generator;" -uroot; fi
 
 
