@@ -47,5 +47,5 @@ install:
 script: phpunit --configuration phpunit_$DB.xml --coverage-text
 
 # configure notifications (email, IRC, campfire etc)
-#notifications:
+notifications:
   email: "phacl151@gmail.com"
