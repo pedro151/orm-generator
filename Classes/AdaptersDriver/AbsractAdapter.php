@@ -159,7 +159,7 @@ abstract class AbsractAdapter
         $this->config = $adapterConfig;
         $this->host = $adapterConfig->getHost ();
         $this->database = $adapterConfig->getDatabase ();
-        $this->port = $adapterConfig->getPort () ? $adapterConfig->getPort ()
+        $this->port = $adapterConfig->hasPort () ? $adapterConfig->getPort ()
             : $this->port;
         $this->username = $adapterConfig->getUser ();
         $this->password = $adapterConfig->getPassword ();

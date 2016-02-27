@@ -19,7 +19,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $config = new Config( array (
             'database' => 'dao_generator' ,
-            'schema'   => 'teste_dao' ,
             'driver'   => 'pgsql'
         ) );
         $driver = $config->getAdapterDriver ();
@@ -32,12 +31,11 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $config = new Config( array (
             'database' => 'dao_generator' ,
-            'schema'   => 'teste_dao' ,
             'driver'   => 'pgsql'
         ) );
         $config = $config->getAdapterConfig();
         $strAuthor = $config->author;
-        $this->assertTrue ( $strAuthor == 'Pedro' );
+        $this->assertTrue ( $strAuthor == ucfirst ( get_current_user () ) );
         $this->assertTrue( $config->lol ==  null);
     }
 }

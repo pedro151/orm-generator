@@ -56,7 +56,7 @@ class Pgsql extends AbsractAdapter
     public function __construct ( AbstractAdapter $adapterConfig )
     {
         parent::__construct ( $adapterConfig );
-        if ( $adapterConfig->getSchemas () != array () )
+        if ( $adapterConfig->hasSchemas() )
         {
             $this->schema = ! is_array ( $adapterConfig->getSchemas () )
                 ? array ( $adapterConfig->getSchemas () ) : $adapterConfig->getSchemas ();
@@ -354,6 +354,6 @@ class Pgsql extends AbsractAdapter
             )->fetchColumn ();
         }
 
-        return $this->totalTables;
+        return (int) $this->totalTables;
     }
 }

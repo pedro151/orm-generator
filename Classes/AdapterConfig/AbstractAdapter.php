@@ -18,19 +18,19 @@ abstract class AbstractAdapter
         //Host do banco
         'host'            => 'localhost' ,
         //Port do banco
-        'port'            => null ,
+        'port'            => '' ,
         //usuario do banco
         'username'        => null ,
         //senha do banco
         'password'        => null ,
         // lista de schemas do banco de dados
-        'schema'          => array () ,
+        'schema'          => array ( ) ,
 
         'socket'          => null ,
 
         ########################### DOCS
         // autor que gerou o script
-        'author'          => "" ,
+        'author'          => "Pedro" ,
         'license'         => "New BSD License" ,
         'copyright'       => "DAO Generator-Pedro151" ,
         'link'            => 'https://github.com/pedro151' ,
@@ -162,7 +162,7 @@ abstract class AbstractAdapter
      */
     public function hasSchemas ()
     {
-        return count ( $this->arrConfig[ 'schema' ] ) > 0;
+        return isset ( $this->arrConfig[ 'schema' ] );
     }
 
     /**
@@ -193,6 +193,15 @@ abstract class AbstractAdapter
     {
         return $this->arrConfig[ 'port' ];
     }
+
+    /**
+     * @return boolean
+     */
+    public function hasPort ()
+    {
+        return isset($this->arrConfig[ 'port' ]);
+    }
+
 
     /**
      * @return string
