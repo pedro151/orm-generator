@@ -15,12 +15,12 @@ Install
 Configuration
 -------------
 
-setting is in `config/config.ini` if you do not use frameworks adapter, if you use the adapter configuration comes straight from the framework as Zend framework and others.
+setting is in `DAO-Generator/config/config.ini` if you do not use frameworks adapter, if you use the adapter configuration comes straight from the framework as Zend framework and others.
 
 Configuration in Frameworks
 ---------------------------
 
-Zend Framework - `config/application.ini`
+Zend Framework - `project__zend/config/application.ini`
 
 
 PHP Code Generation
