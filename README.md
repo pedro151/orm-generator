@@ -9,6 +9,7 @@ Install
 -------
 
 `composer require pedro151/dao-generator`
+
 `composer install`
 
 Configuration
@@ -26,6 +27,7 @@ PHP Code Generation
 -------------------
 
 Open the prompt in the directory DAO-Generator and write:
+
 `php DAO-generator.php`
 
 Configurations optionals
