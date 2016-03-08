@@ -61,38 +61,4 @@ class Phalcon extends AbstractAdapter
         );
     }
 
-    /**
-     * @param \Classes\AdapterMakerFile\AbstractAdapter $adapterFile
-     * @param \Classes\MakerFile $makerFile
-     * @param \Classes\Db\DbTable $dbTable
-     *
-     * @return string[]
-     */
-    public function factoryRelationTables ( \Classes\AdapterMakerFile\AbstractAdapter $adapterFile, \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
-    {
-        return $this->arrFunc;
-    }
-
-    /**
-     * @param \Classes\MakerFile $makerFile
-     * @param \Classes\Db\DbTable $dbTable
-     *
-     * @return string[]
-     */
-    private function parseRelationDbTable ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
-    {
-
-    }
-
-    /**
-     * @param \Classes\MakerFile $makerFile
-     * @param \Classes\Db\DbTable $dbTable
-     *
-     * @return array
-     */
-    public function parseRelationEmtity ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
-    {
-
-    }
-
 }

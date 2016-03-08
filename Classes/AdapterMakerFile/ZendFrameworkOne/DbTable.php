@@ -19,4 +19,67 @@ class DbTable extends AbstractAdapter
     protected $parentFileTpl = "dbtable_abstract.tpl";
     protected $fileTpl       = "dbtable.tpl";
 
+
+    /**
+     * @param \Classes\MakerFile $makerFile
+     * @param \Classes\Db\DbTable $dbTable
+     *
+     * @return string[]
+     */
+    public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
+    {
+        $referenceMap = '';
+        $references = array ();
+        $dependentTables = '';
+        $dependents = array ();
+        foreach ( $dbTable->getForeingkeys () as $fk )
+        {
+            $constrant = $fk->getFks ();
+            $references[] = sprintf (
+                "
+       '%s' => array (
+            'columns'       => '%s' ,
+            'refTableClass' => '%s',
+            'refColumns'    =>'%s'
+       )",
+                $constrant->getNameConstrant (),
+                $fk->getName (),
+                $dbTable->getNamespace ()
+                . '_Dbtable_'
+                . $makerFile->getClassName ( $dbTable->getName () ),
+                $constrant->getColumn ()
+
+            );
+        }
+
+        if ( sizeof ( $references ) > 0 )
+        {
+            $referenceMap = "protected \$_referenceMap = array(" .
+                join ( ',', $references ) . "\n    );";
+        }
+
+        foreach ( $dbTable->getDependences () as $objColumn )
+        {
+            foreach ( $objColumn->getDependences () as $dependence )
+            {
+                $dependents[] = $this->createClassNamespace ( $dependence )
+                    . '_Dbtable_'
+                    . $makerFile->getClassName ( $dependence->getTable () );
+            }
+        }
+
+        if ( sizeof ( $dependents ) > 0 )
+        {
+            $dependentTables = "protected \$_dependentTables = array(\n        '" .
+                join ( "',\n        '", $dependents ) . "'\n    );";
+        }
+
+
+        $this->arrFunc = array (
+            'referenceMap'    => $referenceMap,
+            'dependentTables' => $dependentTables
+        );
+
+    }
+
 }

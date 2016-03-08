@@ -37,6 +37,14 @@ abstract class AbstractAdapter
     }
 
     /**
+     * @param \Classes\MakerFile $makerFile
+     * @param \Classes\Db\DbTable $dbTable
+     *
+     * @return string[]
+     */
+    public abstract function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable );
+
+    /**
      * @type string
      */
     protected $parentClass;

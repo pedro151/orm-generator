@@ -17,4 +17,8 @@ class Model extends AbstractAdapter
     protected $parentFileTpl = "";
     protected $fileTpl       = "model.tpl";
 
+    public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
+    {
+        // TODO: Implement parseRelation() method.
+    }
 }

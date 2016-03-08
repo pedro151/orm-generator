@@ -116,14 +116,6 @@ abstract class AbstractAdapter
      */
     public abstract function getMakeFileInstances ();
 
-    /**
-     * @param \Classes\Db\DbTable $dbTable
-     * @param \Classes\MakerFile $makerFile
-     *
-     * @return string
-     */
-    public abstract function factoryRelationTables ( \Classes\AdapterMakerFile\AbstractAdapter $adapterFile, \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable );
-
     protected abstract function init ();
 
     public function __construct ( $array )

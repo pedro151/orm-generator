@@ -51,32 +51,35 @@ class MakerFile
     public function parseLocation ()
     {
         $arrBase = array (
-            dirname ( __FILE__ ) ,
-            '..' ,
+            dirname ( __FILE__ ),
+            '..',
             $this->config->path
         );
 
         # pasta com nome do driver do banco
         if ( $this->config->folder_database )
         {
-            $classDriver = explode ( '\\' , get_class ( $this->driver ) );
+            $classDriver = explode ( '\\', get_class ( $this->driver ) );
             $arrBase[] = end ( $classDriver );
         }
 
-        $this->baseLocation = implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrBase ) );
+        $this->baseLocation = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrBase ) );
 
         if ( $this->config->hasSchemas () )
         {
             $schemas = $this->config->getSchemas ();
             foreach ( $schemas as $schema )
             {
-                $this->location[ $schema ] = implode ( DIRECTORY_SEPARATOR , array (
-                        $this->baseLocation , ucfirst ( $schema )
-                    )
+                $this->location[ $schema ] = implode (
+                    DIRECTORY_SEPARATOR, array (
+                                           $this->baseLocation,
+                                           ucfirst ( $schema )
+                                       )
                 );
             }
 
-        } else
+        }
+        else
         {
             $this->location = array ( $this->baseLocation );
         }
@@ -87,8 +90,8 @@ class MakerFile
      */
     public function run ()
     {
-        $max=$this->driver->getTotalTables()*count($this->factoryMakerFile());
-        $cur=0;
+        $max = $this->driver->getTotalTables () * count ( $this->factoryMakerFile () );
+        $cur = 0;
         foreach ( $this->location as $schema => $location )
         {
             foreach ( $this->factoryMakerFile () as $objMakeFile )
@@ -99,30 +102,32 @@ class MakerFile
                 if ( $objMakeFile->getParentFileTpl () != '' )
                 {
                     $fileAbstract = $this->baseLocation
-                                    . DIRECTORY_SEPARATOR
-                                    . $objMakeFile->getParentClass () . '.php';
+                        . DIRECTORY_SEPARATOR
+                        . $objMakeFile->getParentClass () . '.php';
 
                     $tplAbstract = $this->getParsedTplContents ( $objMakeFile->getParentFileTpl () );
-                    $this->makeSourcer ( $fileAbstract , $tplAbstract );
-                    unset( $fileAbstract , $tplAbstract );
+                    $this->makeSourcer ( $fileAbstract, $tplAbstract );
+                    unset( $fileAbstract, $tplAbstract );
                 }
 
                 foreach (
                     $this->driver->getTables () as $key => $objTables
                 )
                 {
-                    printf("\r Creating: %6.2f%%",($cur/$max)*100);
+                    printf ( "\r Creating: %6.2f%%", ( $cur / $max ) * 100 );
                     $cur++;
 
                     $file = $path
-                            . DIRECTORY_SEPARATOR
-                            . $this->getClassName ( $objTables->getName () )
-                            . '.php';
+                        . DIRECTORY_SEPARATOR
+                        . $this->getClassName ( $objTables->getName () )
+                        . '.php';
 
 
-
-                    $tpl = $this->getParsedTplContents ( $objMakeFile->getFileTpl () , $objTables , $objMakeFile , $this->config->factoryRelationTables ( $objMakeFile , $this , $objTables ) );
-                    $this->makeSourcer ( $file , $tpl );
+                    $tpl = $this->getParsedTplContents (
+                        $objMakeFile->getFileTpl (), $objTables, $objMakeFile,
+                        $objMakeFile->parseRelation ( $this, $objTables )
+                    );
+                    $this->makeSourcer ( $file, $tpl );
                 }
 
             }
@@ -136,7 +141,7 @@ class MakerFile
      */
     public function factoryMakerFile ()
     {
-        return $this->config->getMakeFileInstances();
+        return $this->config->getMakeFileInstances ();
     }
 
     /**
@@ -146,20 +151,20 @@ class MakerFile
      */
     private function makeDir ( $dir )
     {
-        if ( ! is_dir ( $dir ) )
+        if ( !is_dir ( $dir ) )
         {
-            if ( ! @mkdir ( $dir , 0755 , true ) )
+            if ( !@mkdir ( $dir, 0755, true ) )
             {
                 die( "error: could not create directory $dir\n" );
             }
         }
     }
 
-    private function makeSourcer ( $modelFile , $modelData )
+    private function makeSourcer ( $modelFile, $modelData )
     {
-        if ( ! is_file ( $modelFile ) )
+        if ( !is_file ( $modelFile ) )
         {
-            if ( ! file_put_contents ( $modelFile , $modelData ) )
+            if ( !file_put_contents ( $modelFile, $modelData ) )
             {
                 die( "Error: could not write model file $modelFile." );
             }
@@ -175,7 +180,7 @@ class MakerFile
     public function getClassName ( $str )
     {
         $temp = '';
-        foreach ( explode ( self::SEPARETOR , $str ) as $part )
+        foreach ( explode ( self::SEPARETOR, $str ) as $part )
         {
             $temp .= ucfirst ( $part );
         }
@@ -191,7 +196,7 @@ class MakerFile
      *
      * @return String
      */
-    public function getParsedTplContents ( $tplFile , \Classes\Db\DbTable $objTables = null , $objMakeFile = null , $vars = array () )
+    public function getParsedTplContents ( $tplFile, \Classes\Db\DbTable $objTables = null, $objMakeFile = null, $vars = array () )
     {
         if ( empty( $vars ) )
         {
@@ -199,15 +204,15 @@ class MakerFile
         }
 
         $arrUrl = array (
-            dirname ( __FILE__ ) ,
-            'templates' ,
-            $this->config->framework ,
+            dirname ( __FILE__ ),
+            'templates',
+            $this->config->framework,
             $tplFile
         );
 
         extract ( $vars );
         ob_start ();
-        require implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrUrl ) );
+        require implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrUrl ) );
         $data = ob_get_contents ();
         ob_end_clean ();
 
