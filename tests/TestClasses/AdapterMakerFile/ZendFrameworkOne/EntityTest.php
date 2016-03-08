@@ -6,15 +6,15 @@
  * Time: 17:45
  */
 
-namespace TestClasses\AdapterMakerFile;
+namespace TestClasses\AdapterMakerFile\ZendFrameworkOne;
 
 
 class EntityTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetInstace ()
     {
-        $instance = \Classes\AdapterMakerFile\Entity::getInstance ();
-        $this->assertTrue ( $instance instanceof \Classes\AdapterMakerFile\Entity );
+        $instance = \Classes\AdapterMakerFile\ZendFrameworkOne\Entity::getInstance ();
+        $this->assertTrue ( $instance instanceof \Classes\AdapterMakerFile\ZendFrameworkOne\Entity );
         $this->assertTrue ( $instance->getPastName () == 'Entity' );
         $this->assertTrue ( $instance->getParentClass () == "EntityAbstract" );
         $this->assertTrue ( $instance->getParentFileTpl () == "entity_abstract.tpl" );

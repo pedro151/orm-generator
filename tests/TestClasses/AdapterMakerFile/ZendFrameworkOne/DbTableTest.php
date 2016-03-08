@@ -6,15 +6,15 @@
  * Time: 18:56
  */
 
-namespace TestClasses\AdapterMakerFile;
+namespace TestClasses\AdapterMakerFile\ZendFrameworkOne;
 
 class DbTableTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testGetInstace ()
     {
-        $instance = \Classes\AdapterMakerFile\DbTable::getInstance ();
-        $this->assertTrue ( $instance instanceof \Classes\AdapterMakerFile\DbTable );
+        $instance = \Classes\AdapterMakerFile\ZendFrameworkOne\DbTable::getInstance ();
+        $this->assertTrue ( $instance instanceof \Classes\AdapterMakerFile\ZendFrameworkOne\DbTable );
         $this->assertTrue ( $instance->getPastName () == "DbTable" );
         $this->assertTrue ( $instance->getFileTpl () == "dbtable.tpl" );
         $this->assertTrue ( $instance->getParentClass () == "TableAbstract" );

@@ -2,6 +2,10 @@
 
 namespace Classes\AdapterConfig;
 
+use Classes\AdapterMakerFile\ZendFrameworkOne\DbTable;
+use Classes\AdapterMakerFile\ZendFrameworkOne\Entity;
+use Classes\AdapterMakerFile\ZendFrameworkOne\Model;
+
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
  * @link   https://github.com/pedro151/DAO-Generator
@@ -38,7 +42,7 @@ class None extends AbstractAdapter
     public function createClassNamespace ( $table )
     {
         $arrNames = array (
-            $this->arrConfig[ 'namespace' ] ,
+            $this->arrConfig[ 'namespace' ],
             'Model'
         );
         if ( $table->hasSchema () )
@@ -46,28 +50,42 @@ class None extends AbstractAdapter
             $arrNames[] = ucfirst ( $table->getSchema () );
         }
 
-        return implode ( '_' , array_filter ( $arrNames ) );
+        return implode ( '_', array_filter ( $arrNames ) );
+    }
+
+    /**
+     * Cria Instancias dos arquivos que devem ser gerados
+     *
+     * @return AbstractAdapter[]
+     */
+    public function getMakeFileInstances ()
+    {
+        return array (
+            DbTable::getInstance (),
+            Entity::getInstance (),
+            Model::getInstance ()
+        );
     }
 
     /**
      * @param \Classes\AdapterMakerFile\AbstractAdapter $adapterFile
-     * @param \Classes\MakerFile                        $makerFile
-     * @param \Classes\Db\DbTable                       $dbTable
+     * @param \Classes\MakerFile $makerFile
+     * @param \Classes\Db\DbTable $dbTable
      *
      * @return string[]
      */
-    public function factoryRelationTables ( \Classes\AdapterMakerFile\AbstractAdapter $adapterFile , \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable )
+    public function factoryRelationTables ( \Classes\AdapterMakerFile\AbstractAdapter $adapterFile, \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {
         switch ( $adapterFile->getPastName () )
         {
             case 'DbTable':
             {
-                $this->parseRelationDbTable ( $makerFile , $dbTable );
+                $this->parseRelationDbTable ( $makerFile, $dbTable );
                 break;
             }
             case 'Entity':
             {
-                $this->parseRelationEmtity ( $makerFile , $dbTable );
+                $this->parseRelationEmtity ( $makerFile, $dbTable );
                 break;
             }
             case 'Model':
@@ -81,12 +99,12 @@ class None extends AbstractAdapter
     }
 
     /**
-     * @param \Classes\MakerFile  $makerFile
+     * @param \Classes\MakerFile $makerFile
      * @param \Classes\Db\DbTable $dbTable
      *
      * @return string[]
      */
-    private function parseRelationDbTable ( \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable )
+    private function parseRelationDbTable ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {
         $referenceMap = '';
         $references = array ();
@@ -95,17 +113,18 @@ class None extends AbstractAdapter
         foreach ( $dbTable->getForeingkeys () as $fk )
         {
             $constrant = $fk->getFks ();
-            $references[] = sprintf ( "
+            $references[] = sprintf (
+                "
        '%s' => array (
             'columns'       => '%s' ,
             'refTableClass' => '%s',
             'refColumns'    =>'%s'
-       )" ,
-                $constrant->getNameConstrant () ,
-                $fk->getName () ,
+       )",
+                $constrant->getNameConstrant (),
+                $fk->getName (),
                 $dbTable->getNamespace ()
                 . '_Dbtable_'
-                . $makerFile->getClassName ( $dbTable->getName () ) ,
+                . $makerFile->getClassName ( $dbTable->getName () ),
                 $constrant->getColumn ()
 
             );
@@ -114,7 +133,7 @@ class None extends AbstractAdapter
         if ( sizeof ( $references ) > 0 )
         {
             $referenceMap = "protected \$_referenceMap = array(" .
-                            join ( ',' , $references ) . "\n    );";
+                join ( ',', $references ) . "\n    );";
         }
 
         foreach ( $dbTable->getDependences () as $objColumn )
@@ -122,31 +141,32 @@ class None extends AbstractAdapter
             foreach ( $objColumn->getDependences () as $dependence )
             {
                 $dependents[] = $this->createClassNamespace ( $dependence )
-                                . '_Dbtable_'
-                                . $makerFile->getClassName ( $dependence->getTable () );
+                    . '_Dbtable_'
+                    . $makerFile->getClassName ( $dependence->getTable () );
             }
         }
 
         if ( sizeof ( $dependents ) > 0 )
         {
             $dependentTables = "protected \$_dependentTables = array(\n        '" .
-                               join ( "',\n        '" , $dependents ) . "'\n    );";
+                join ( "',\n        '", $dependents ) . "'\n    );";
         }
 
 
         $this->arrFunc = array (
-            'referenceMap' => $referenceMap , 'dependentTables' => $dependentTables
+            'referenceMap'    => $referenceMap,
+            'dependentTables' => $dependentTables
         );
 
     }
 
     /**
-     * @param \Classes\MakerFile  $makerFile
+     * @param \Classes\MakerFile $makerFile
      * @param \Classes\Db\DbTable $dbTable
      *
      * @return array
      */
-    public function parseRelationEmtity ( \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable )
+    public function parseRelationEmtity ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {
 
         $parents = array ();
@@ -159,18 +179,18 @@ class None extends AbstractAdapter
                 foreach ( $objColumn->getFks () as $constrant )
                 {
                     $name = $constrant->getTable ()
-                            . self::SEPARETOR
-                            . 'By'
-                            . self::SEPARETOR
-                            .  $objColumn->getName ();
+                        . self::SEPARETOR
+                        . 'By'
+                        . self::SEPARETOR
+                        . $objColumn->getName ();
 
-                    if ( ! in_array ( $name , $this->arrFunc ) )
+                    if ( !in_array ( $name, $this->arrFunc ) )
                     {
                         $parents[] = array (
                             'class'    => $this->createClassNamespace ( $constrant ) . '_'
-                                          . $makerFile->getClassName ( $constrant->getTable () ) ,
-                            'function' => $makerFile->getClassName ($name) ,
-                            'table'    => $constrant->getTable () ,
+                                . $makerFile->getClassName ( $constrant->getTable () ),
+                            'function' => $makerFile->getClassName ( $name ),
+                            'table'    => $constrant->getTable (),
                             'column'   => $objColumn->getName ()
                         );
                     }
@@ -183,18 +203,18 @@ class None extends AbstractAdapter
                 foreach ( $objColumn->getDependences () as $constrant )
                 {
                     $name = $constrant->getTable ()
-                            . self::SEPARETOR
-                            . 'By'
-                            . self::SEPARETOR
-                            .  $objColumn->getName () ;
+                        . self::SEPARETOR
+                        . 'By'
+                        . self::SEPARETOR
+                        . $objColumn->getName ();
 
-                    if ( ! in_array ( $name , $this->arrFunc ) )
+                    if ( !in_array ( $name, $this->arrFunc ) )
                     {
                         $depends[] = array (
                             'class'    => $this->createClassNamespace ( $constrant ) . '_'
-                                          . $makerFile->getClassName ( $constrant->getTable () ) ,
-                            'function' => $makerFile->getClassName ($name) ,
-                            'table'    => $constrant->getTable () ,
+                                . $makerFile->getClassName ( $constrant->getTable () ),
+                            'function' => $makerFile->getClassName ( $name ),
+                            'table'    => $constrant->getTable (),
                             'column'   => $objColumn->getName ()
                         );
                     }
@@ -204,7 +224,8 @@ class None extends AbstractAdapter
         }
 
         $this->arrFunc = array (
-            'parents' => $parents , 'depends' => $depends
+            'parents' => $parents,
+            'depends' => $depends
         );
 
     }

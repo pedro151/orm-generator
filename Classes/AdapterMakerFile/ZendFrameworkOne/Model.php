@@ -1,6 +1,7 @@
 <?php
 
-namespace Classes\AdapterMakerFile;
+namespace Classes\AdapterMakerFile\ZendFrameworkOne;
+use Classes\AdapterMakerFile\AbstractAdapter;
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>

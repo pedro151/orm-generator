@@ -6,15 +6,15 @@
  * Time: 17:47
  */
 
-namespace TestClasses\AdapterMakerFile;
+namespace TestClasses\AdapterMakerFile\ZendFrameworkOne;
 
 
 class ModelTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetInstace ()
     {
-        $instance = \Classes\AdapterMakerFile\Model::getInstance ();
-        $this->assertTrue ( $instance instanceof \Classes\AdapterMakerFile\Model );
+        $instance = \Classes\AdapterMakerFile\ZendFrameworkOne\Model::getInstance ();
+        $this->assertTrue ( $instance instanceof \Classes\AdapterMakerFile\ZendFrameworkOne\Model );
         $this->assertTrue ( $instance->getPastName () == 'Model' );
         $this->assertTrue ( $instance->getParentClass () == "" );
         $this->assertTrue ( $instance->getParentFileTpl () == "" );

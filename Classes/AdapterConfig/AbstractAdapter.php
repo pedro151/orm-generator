@@ -12,48 +12,48 @@ abstract class AbstractAdapter
     protected $arrConfig = array (
         ############################# DATABASE
         //Driver do banco de dados
-        'driver'          => null ,
+        'driver'   => null,
         //Nome do banco de dados
-        'database'        => null ,
+        'database' => null,
         //Host do banco
-        'host'            => 'localhost' ,
+        'host'     => 'localhost',
         //Port do banco
-        'port'            => '' ,
+        'port'     => '',
         //usuario do banco
-        'username'        => null ,
+        'username' => null,
         //senha do banco
-        'password'        => null ,
+        'password' => null,
         // lista de schemas do banco de dados
-        'schema'          => array ( ) ,
+        'schema'   => array (),
 
-        'socket'          => null ,
+        'socket'          => null,
 
         ########################### DOCS
         // autor que gerou o script
-        'author'          => "Pedro" ,
-        'license'         => "New BSD License" ,
-        'copyright'       => "DAO Generator-Pedro151" ,
-        'link'            => 'https://github.com/pedro151' ,
+        'author'          => "Pedro",
+        'license'         => "New BSD License",
+        'copyright'       => "DAO Generator-Pedro151",
+        'link'            => 'https://github.com/pedro151',
         // data que foi gerado o script
-        'last_modify'     => null ,
+        'last_modify'     => null,
 
         ########################## Ambiente/Arquivos
         // Nome do framework para o adapter
-        'framework'       => null ,
+        'framework'       => null,
         // namespace das classes
-        'namespace'       => "" ,
+        'namespace'       => "",
         // ambiente
-        'environment'     => null ,
+        'environment'     => null,
         // caminho onde os arquivos devem ser criados
-        'path'            => 'models' ,
+        'path'            => 'models',
         // flag para gerar pasta com o nome do driver do banco de dados
-        'folder_database' => 0 ,
+        'folder_database' => 0,
 
         ############################## Comandos adicionais
         // flags para criar todas as tabelas ou nao
-        'allTables'       => true ,
+        'allTables'       => true,
         //Lista de tabelas a serem ignoradas
-        'ignoreTable'     => array () ,
+        'ignoreTable'     => array (),
 
     );
 
@@ -61,17 +61,17 @@ abstract class AbstractAdapter
      * @var string[] um array com todos os campos obrigatorios
      */
     protected $attRequered = array (
-        'driver'    => true ,
-        'database'  => true ,
-        'host'      => true ,
-        'username'  => true ,
-        'password'  => true ,
-        'path'      => true ,
+        'driver'    => true,
+        'database'  => true,
+        'host'      => true,
+        'username'  => true,
+        'password'  => true,
+        'path'      => true,
         'framework' => true
     );
 
 
-    protected $arrFunc=array();
+    protected $arrFunc = array ();
 
     /**
      * verifica se todos valores obrigatorios tem valor
@@ -80,7 +80,7 @@ abstract class AbstractAdapter
      */
     protected function checkConfig ()
     {
-        if ( array_diff_key ( $this->attRequered , array_filter ( $this->arrConfig ) ) )
+        if ( array_diff_key ( $this->attRequered, array_filter ( $this->arrConfig ) ) )
         {
             return false;
         }
@@ -95,6 +95,11 @@ abstract class AbstractAdapter
      */
     protected abstract function getParams ();
 
+    /**
+     * Popula as config do generater com as configuraçoes do framework
+     *
+     * @return mixed
+     */
     protected abstract function parseFrameworkConfig ();
 
     /**
@@ -105,28 +110,35 @@ abstract class AbstractAdapter
     public abstract function createClassNamespace ( $table );
 
     /**
+     * Cria Instancias dos arquivos que devem ser gerados
+     *
+     * @return AbstractAdapter[]
+     */
+    public abstract function getMakeFileInstances ();
+
+    /**
      * @param \Classes\Db\DbTable $dbTable
-     * @param \Classes\MakerFile  $makerFile
+     * @param \Classes\MakerFile $makerFile
      *
      * @return string
      */
-    public abstract function factoryRelationTables ( \Classes\AdapterMakerFile\AbstractAdapter $adapterFile , \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable  );
+    public abstract function factoryRelationTables ( \Classes\AdapterMakerFile\AbstractAdapter $adapterFile, \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable );
 
     protected abstract function init ();
 
     public function __construct ( $array )
     {
         $array += array (
-            'author'      => ucfirst ( get_current_user () ) ,
+            'author'      => ucfirst ( get_current_user () ),
             'last_modify' => date ( "d-m-Y H:i:s." )
         );
         $this->parseFrameworkConfig ();
         $this->setParams ( $this->getParams () );
         $this->setParams ( $array );
         $this->init ();
-        if ( ! $this->isValid () )
+        if ( !$this->isValid () )
         {
-            $var = array_diff_key ( $this->attRequered , array_filter ( $this->arrConfig ) );
+            $var = array_diff_key ( $this->attRequered, array_filter ( $this->arrConfig ) );
             throw new Exception( $var );
         }
     }
@@ -199,7 +211,7 @@ abstract class AbstractAdapter
      */
     public function hasPort ()
     {
-        return isset($this->arrConfig[ 'port' ]);
+        return isset( $this->arrConfig[ 'port' ] );
     }
 
 
@@ -235,18 +247,18 @@ abstract class AbstractAdapter
     public function __get ( $str )
     {
         $arr = array (
-            'namespace' ,
-            'framework' ,
-            'author' ,
-            'license' ,
-            'copyright' ,
-            'link' ,
-            'last_modify' ,
-            'path' ,
+            'namespace',
+            'framework',
+            'author',
+            'license',
+            'copyright',
+            'link',
+            'last_modify',
+            'path',
             'folder_database'
         );
 
-        if ( in_array ( $str , $arr ) )
+        if ( in_array ( $str, $arr ) )
         {
             return $this->arrConfig[ strtolower ( $str ) ];
         }

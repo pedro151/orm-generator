@@ -136,11 +136,7 @@ class MakerFile
      */
     public function factoryMakerFile ()
     {
-        return array (
-            DbTable::getInstance () ,
-            Entity::getInstance () ,
-            Model::getInstance ()
-        );
+        return $this->config->getMakeFileInstances();
     }
 
     /**
