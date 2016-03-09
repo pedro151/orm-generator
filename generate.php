@@ -6,10 +6,24 @@
  * @author Pedro Alarcao <phacl151@gmail.com>
  */
 
-function __autoload ( $class )
+$parts = array (
+    '..',
+    '..',
+    'autoload'
+);
+$autoload = __DIR__ . DIRECTORY_SEPARATOR . implode ( DIRECTORY_SEPARATOR, $parts ) . '.php';
+if ( is_file ( $autoload ) )
 {
-    $parts = explode ( '\\', $class );
-    require dirname ( __FILE__ ) .DIRECTORY_SEPARATOR. implode ( DIRECTORY_SEPARATOR, $parts ) . '.php';
+    require $autoload;
+}
+else
+{
+    $parts = array (
+        'vendor',
+        'autoload'
+    );
+
+    require __DIR__ . DIRECTORY_SEPARATOR . implode ( DIRECTORY_SEPARATOR, $parts ) . '.php';
 }
 
 

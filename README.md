@@ -28,7 +28,7 @@ PHP Code Generation
 
 Open the prompt in the directory DAO-Generator and write:
 
-`php DAO-generator.php`
+`php generate.php`
 
 Configurations optionals
 ------------------------
@@ -44,7 +44,7 @@ Configurations optionals
 
 in prompt
 
-<code>php DAO-generator.php --framework=zend_framework --database=foo --driver=pgsql</code>
+<code>php generate.php --framework=zend_framework --database=foo --driver=pgsql</code>
 
 Framework Class Generator DAO
 -----------------------------
