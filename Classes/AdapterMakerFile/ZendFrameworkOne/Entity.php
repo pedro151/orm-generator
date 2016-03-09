@@ -48,7 +48,7 @@ class Entity extends AbstractAdapter
                     if ( !in_array ( $name, $this->arrFunc ) )
                     {
                         $parents[] = array (
-                            'class'    => $this->createClassNamespace ( $constrant ) . '_'
+                            'class'    => $makerFile->getConfig()->createClassNamespace ( $constrant ) . '_'
                                 . $makerFile->getClassName ( $constrant->getTable () ),
                             'function' => $makerFile->getClassName ( $name ),
                             'table'    => $constrant->getTable (),
@@ -72,7 +72,7 @@ class Entity extends AbstractAdapter
                     if ( !in_array ( $name, $this->arrFunc ) )
                     {
                         $depends[] = array (
-                            'class'    => $this->createClassNamespace ( $constrant ) . '_'
+                            'class'    => $makerFile->getConfig()->createClassNamespace ( $constrant ) . '_'
                                 . $makerFile->getClassName ( $constrant->getTable () ),
                             'function' => $makerFile->getClassName ( $name ),
                             'table'    => $constrant->getTable (),

@@ -86,6 +86,14 @@ class MakerFile
     }
 
     /**
+     * @return AdapterConfig\AbstractAdapter
+     */
+    public function getConfig ()
+    {
+        return $this->config;
+    }
+
+    /**
      * Executa o Make, criando arquivos e Diretorios
      */
     public function run ()

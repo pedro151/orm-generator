@@ -62,7 +62,7 @@ class DbTable extends AbstractAdapter
         {
             foreach ( $objColumn->getDependences () as $dependence )
             {
-                $dependents[] = $this->createClassNamespace ( $dependence )
+                $dependents[] = $makerFile->getConfig()->createClassNamespace ( $dependence )
                     . '_Dbtable_'
                     . $makerFile->getClassName ( $dependence->getTable () );
             }

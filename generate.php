@@ -11,7 +11,7 @@ $parts = array (
     '..',
     'autoload'
 );
-$autoload = __DIR__ . DIRECTORY_SEPARATOR . implode ( DIRECTORY_SEPARATOR, $parts ) . '.php';
+$autoload = realpath ( __DIR__ . DIRECTORY_SEPARATOR . implode ( DIRECTORY_SEPARATOR, $parts ) . '.php' );
 if ( is_file ( $autoload ) )
 {
     require $autoload;
@@ -23,7 +23,7 @@ else
         'autoload'
     );
 
-    require __DIR__ . DIRECTORY_SEPARATOR . implode ( DIRECTORY_SEPARATOR, $parts ) . '.php';
+    require realpath ( __DIR__ . DIRECTORY_SEPARATOR . implode ( DIRECTORY_SEPARATOR, $parts ) . '.php' );
 }
 
 

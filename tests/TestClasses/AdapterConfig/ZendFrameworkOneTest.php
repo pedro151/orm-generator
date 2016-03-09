@@ -61,7 +61,7 @@ class ZendFrameworkOneTest extends \PHPUnit_Framework_TestCase
 
         $obj = $this->getMockBuilder ( '\Classes\AdapterConfig\ZendFrameworkOne' )
                     ->setConstructorArgs ( array ( array () ) )
-                    ->setMethods ( array ( 'getParams' ) )
+                    ->setMethods ( array ( 'getParams', 'parseFrameworkConfig' ) )
                     ->getMock ();
 
         $obj->expects ( $this->any () )

@@ -19,6 +19,8 @@ class ZendFrameworkOne extends AbstractAdapter
      */
     protected $framework = "zend_framework";
 
+    private $config;
+
     const SEPARETOR = "_";
 
     protected function init ()
@@ -32,23 +34,40 @@ class ZendFrameworkOne extends AbstractAdapter
      */
     protected function getParams ()
     {
+        if ( !$this->config )
+        {
+            return array ();
+        }
 
+        return array (
+            //Driver do banco de dados
+            'driver'   => $this->config[ 'adapter' ],
+            //Nome do banco de dados
+            'database' => $this->config[ 'params' ][ 'dbname' ],
+            //Host do banco
+            'host'     => $this->config[ 'params' ][ 'host' ],
+            //Port do banco
+            'port'     => isset( $this->config[ 'params' ][ 'port' ] ) ? $this->config[ 'params' ][ 'port' ] : '',
+            //usuario do banco
+            'username' => $this->config[ 'params' ][ 'username' ],
+            //senha do banco
+            'password' => $this->config[ 'params' ][ 'password' ],
+        );
     }
 
 
     protected function parseFrameworkConfig ()
     {
-        if ( file_exists ( 'Zend/Config/Ini.php' ) )
+        $objConfig = new \Zend_Config_Ini(
+            realpath ( __DIR__ . '/../../../../../application/configs/application.ini' ), 'dev'
+        );
+
+        $arrConfig = $objConfig->toArray ();
+
+        if ( isset( $arrConfig[ 'resources' ][ 'db' ] ) )
         {
-            require_once 'Zend/Config/Ini.php';
-            $this->config = new Zend_Config_Ini(
-                APPLICATION_PATH
-                . '/configs/application.ini', APPLICATION_ENV
-            );
-
-            $this->config = $this->config->toArray ();
+            $this->config = $arrConfig[ 'resources' ][ 'db' ];
         }
-
     }
 
     public function createClassNamespace ( $table )

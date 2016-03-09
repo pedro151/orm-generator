@@ -16,7 +16,7 @@ class None extends AbstractAdapter
     /**
      * @var string
      */
-    protected $framework = "zend_framework";
+    protected $framework = "none";
 
     const SEPARETOR = "_";
 

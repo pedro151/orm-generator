@@ -166,7 +166,7 @@ abstract class AbstractAdapter
      */
     public function hasSchemas ()
     {
-        return isset ( $this->arrConfig[ 'schema' ] );
+        return !empty ( $this->arrConfig[ 'schema' ] );
     }
 
     /**
@@ -180,6 +180,11 @@ abstract class AbstractAdapter
         }
 
         return $this->arrConfig[ 'schema' ];
+    }
+
+    public function setSchema ( $schema )
+    {
+        $this->arrConfig[ 'schema' ] = $schema;
     }
 
     /**
@@ -203,7 +208,7 @@ abstract class AbstractAdapter
      */
     public function hasPort ()
     {
-        return isset( $this->arrConfig[ 'port' ] );
+        return !empty( $this->arrConfig[ 'port' ] );
     }
 
 
