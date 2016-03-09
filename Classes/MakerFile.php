@@ -100,6 +100,7 @@ class MakerFile
     {
         $max = $this->driver->getTotalTables () * count ( $this->factoryMakerFile () );
         $cur = 0;
+        echo "Starting..\n";
         foreach ( $this->location as $schema => $location )
         {
             foreach ( $this->factoryMakerFile () as $objMakeFile )
@@ -122,7 +123,7 @@ class MakerFile
                     $this->driver->getTables () as $key => $objTables
                 )
                 {
-                    printf ( "\r Creating: %6.2f%%", ( $cur / $max ) * 100 );
+                    printf ( "\r Creating: %6.2f%%", ceil( $cur / $max * 100  ));
                     $cur++;
 
                     $file = $path
@@ -140,6 +141,8 @@ class MakerFile
 
             }
         }
+
+        echo "\nfinished!";
     }
 
     /**
