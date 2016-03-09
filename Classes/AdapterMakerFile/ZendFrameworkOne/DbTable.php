@@ -3,7 +3,7 @@
 namespace Classes\AdapterMakerFile\ZendFrameworkOne;
 
 use Classes\AdapterMakerFile\AbstractAdapter;
-
+use Classes\AdapterConfig\ZendFrameworkOne;
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
  * @link   https://github.com/pedro151/DAO-Generator
