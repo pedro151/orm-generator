@@ -40,9 +40,9 @@ class Entity extends AbstractAdapter
                 foreach ( $objColumn->getFks () as $constrant )
                 {
                     $name = $constrant->getTable ()
-                        . self::SEPARETOR
+                        . ZendFrameworkOne::SEPARETOR
                         . 'By'
-                        . self::SEPARETOR
+                        . ZendFrameworkOne::SEPARETOR
                         . $objColumn->getName ();
 
                     if ( !in_array ( $name, $this->arrFunc ) )
@@ -64,9 +64,9 @@ class Entity extends AbstractAdapter
                 foreach ( $objColumn->getDependences () as $constrant )
                 {
                     $name = $constrant->getTable ()
-                        . self::SEPARETOR
+                        . ZendFrameworkOne::SEPARETOR
                         . 'By'
-                        . self::SEPARETOR
+                        . ZendFrameworkOne::SEPARETOR
                         . $objColumn->getName ();
 
                     if ( !in_array ( $name, $this->arrFunc ) )
