@@ -32,7 +32,7 @@ class Entity extends AbstractAdapter
 
         $parents = array ();
         $depends = array ();
-
+        $arrFunc=array();;
         foreach ( $dbTable->getColumns () as $objColumn )
         {
             if ( $objColumn->isForeingkey () )
@@ -45,8 +45,9 @@ class Entity extends AbstractAdapter
                         . ZendFrameworkOne::SEPARETOR
                         . $objColumn->getName ();
 
-                    if ( !in_array ( $name, $this->arrFunc ) )
+                    if ( !in_array ( $name, $arrFunc) )
                     {
+                        $arrFunc[]=$name;
                         $parents[] = array (
                             'class'    => $makerFile->getConfig()->createClassNamespace ( $constrant ) . '_'
                                 . $makerFile->getClassName ( $constrant->getTable () ),
@@ -69,8 +70,9 @@ class Entity extends AbstractAdapter
                         . ZendFrameworkOne::SEPARETOR
                         . $objColumn->getName ();
 
-                    if ( !in_array ( $name, $this->arrFunc ) )
+                    if ( !in_array ( $name, $arrFunc ) )
                     {
+                        $arrFunc[]=$name;
                         $depends[] = array (
                             'class'    => $makerFile->getConfig()->createClassNamespace ( $constrant ) . '_'
                                 . $makerFile->getClassName ( $constrant->getTable () ),
@@ -84,7 +86,7 @@ class Entity extends AbstractAdapter
             }
         }
 
-        $this->arrFunc = array (
+       return array (
             'parents' => $parents,
             'depends' => $depends
         );

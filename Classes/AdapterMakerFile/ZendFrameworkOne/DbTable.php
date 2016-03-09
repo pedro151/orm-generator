@@ -79,7 +79,7 @@ class DbTable extends AbstractAdapter
         }
 
 
-        $this->arrFunc = array (
+        return array (
             'referenceMap'    => $referenceMap,
             'dependentTables' => $dependentTables
         );
