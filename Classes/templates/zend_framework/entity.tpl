@@ -151,8 +151,8 @@ class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile
     */
     public function set<?=$this->getClassName($column->getName())?>($<?=$column->getName()?>)
     {
-<?php switch ( $column->getType () ): ?>
-    <?php case 'date': ?>
+<?php switch ( $column->getType () ):
+        case 'date': ?>
         if (! empty($<?=$column->getName()?>))
         {
             if (! $<?=$column->getName()?> instanceof Zend_Date)
