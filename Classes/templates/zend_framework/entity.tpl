@@ -252,12 +252,12 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     /**
     * Retorna a Dbtable da class model
     *
-    * @return <?=$objTables->getNamespace()?>_Entity_<?=$this->getClassName ( $objTables->getName () ).'\n'?>
+    * @return <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTables->getName () ).'\n'?>
     */
     public function getTable()
     {
         if ($this->_table === null) {
-            $this->setTable(new <?=$objTables->getNamespace()?>_Entity_<?=$this->getClassName ( $objTables->getName () )?>());
+            $this->setTable(new <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTables->getName () )?>());
         }
 
         return $this->_table;
