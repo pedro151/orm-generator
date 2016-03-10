@@ -117,6 +117,11 @@ abstract class AbsractAdapter
      */
     public function getTables ( $schema = 0 )
     {
+        if ( !isset( $this->objDbTables[ $schema ] ) )
+        {
+            return array();
+        }
+
         return $this->objDbTables[ $schema ];
     }
 
