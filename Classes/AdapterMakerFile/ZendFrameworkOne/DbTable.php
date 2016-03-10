@@ -4,6 +4,7 @@ namespace Classes\AdapterMakerFile\ZendFrameworkOne;
 
 use Classes\AdapterMakerFile\AbstractAdapter;
 use Classes\AdapterConfig\ZendFrameworkOne;
+
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
  * @link   https://github.com/pedro151/DAO-Generator
@@ -44,11 +45,11 @@ class DbTable extends AbstractAdapter
        )",
                 $constrant->getNameConstrant (),
                 $fk->getName (),
-                $dbTable->getNamespace ()
+                $makerFile->getConfig ()->createClassNamespace ( $constrant )
                 . ZendFrameworkOne::SEPARETOR
                 . 'Dbtable'
                 . ZendFrameworkOne::SEPARETOR
-                . $makerFile->getClassName ( $constrant->getTable() ),
+                . $makerFile->getClassName ( $constrant->getTable () ),
                 $constrant->getColumn ()
 
             );
@@ -64,7 +65,7 @@ class DbTable extends AbstractAdapter
         {
             foreach ( $objColumn->getDependences () as $dependence )
             {
-                $dependents[] = $makerFile->getConfig()->createClassNamespace ( $dependence )
+                $dependents[] = $makerFile->getConfig ()->createClassNamespace ( $dependence )
                     . ZendFrameworkOne::SEPARETOR
                     . 'Dbtable'
                     . ZendFrameworkOne::SEPARETOR
