@@ -124,7 +124,8 @@ class MakerFile
                     $this->driver->getTables () as $key => $objTables
                 )
                 {
-                    printf ( "\r Creating: %6.2f%%", ceil ( $cur / $max * 100 ) );
+                    $total = ( $cur / $max * 100 )/count ( $this->location ) ;
+                    printf ( "\r Creating: %6.2f%%", ceil ( $total ) );
                     $cur++;
 
                     $file = $path
