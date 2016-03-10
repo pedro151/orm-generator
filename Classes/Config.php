@@ -69,6 +69,7 @@ parameters:
  *  --schema              : database schema
     --driver              : database driver (Ex.: pgsql)
     --framework           : name framework used, which has the contents of the database configurations
+                            and framework template
     --path                : specify where to create the files (default is current directory)
 
  example: php DAO-generator.php --framework=zend_framework --database=foo --table=foobar
