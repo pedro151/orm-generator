@@ -44,25 +44,25 @@ class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile
      * @see <?=$this->config->namespace?>Model_EntityAbstract::$_filters
      */
     protected $_filters = array(
-<?php foreach ($objTables->getColumns() as $column): ?>
-        '<?=$column->getName()?>'=>array (
+<?php foreach ( $objTables->getColumns () as $column ): ?>
     <?php
-	$filters=null;
-	switch( ucfirst( $column->getType() ) )
-	{
-	    case 'String':
-		$filters = 'StripTags", "StringTrim';
-	    break;
-	    case 'Float':
-		$filters =  'Digits';
-	    break;
-	    default:
-		$filters = ucfirst($column->getType());
-	    break;
-	}
-	
-	echo (!empty($filters))?'"'. $filters.'"':null;
-	?> ),
+    $filters = null;
+    switch ( ucfirst ( $column->getType () ) )
+    {
+        case 'String':
+            $filters = 'StripTags", "StringTrim';
+            break;
+        case 'Float':
+            $filters = 'Digits';
+            break;
+        default:
+            $filters = ucfirst ( $column->getType () );
+            break;
+    }
+    ?>
+        '<?=$column->getName()?>'=>array (
+            <?=( !empty( $filters ) ) ? "{$filters}\n" : null; ?>
+        ),
 <?php endforeach;?>
     );
 
@@ -70,32 +70,33 @@ class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile
      * @see <?=$this->config->namespace?>Model_EntityAbstract::$_validators
      */
     protected $_validators= array(
-<?php foreach ($objTables->getColumns() as $column): ?>
-        '<?=$column->getName()?>' => array ( <?php
-	$validators=array();
+<?php foreach ( $objTables->getColumns () as $column ): ?>
+    <?php
+    $validators = array ();
 
-	if($column->isNullable()){
-	    $validators[] = "'allowEmpty' => true";
-    }
+    $validators[] = $column->isNullable () ? "'allowEmpty' => true" : "'NotEmpty' => true";
 
-        switch( ucfirst( $column->getType() ) )
-        {
-            case 'String':
-            if($column->getMaxLength()){
-                $validators[]="array( 'StringLength', array( 'max' => ".$column->getMaxLength()." ) )";
+    switch ( ucfirst ( $column->getType () ) )
+    {
+        case 'String':
+            if ( $column->getMaxLength () )
+            {
+                $validators[] = "array( 'StringLength', array( 'max' => " . $column->getMaxLength () . " ) )";
             }
 
-	        break;
-            case 'Boolean':
             break;
-            default:
-                $validators[] = "'".ucfirst($column->getType())."'";
+        case 'Boolean':
             break;
-	}
-	$validators = implode( ", " , $validators );
-	echo (!empty($validators))? $validators:null;
-	?> ),
-<?php endforeach;?>
+        default:
+            $name = ucfirst ( $column->getType () );
+            $validators[] = "'$name'";
+            break;
+    }
+    $validators = implode ( ", ", $validators )?>
+        '<?= $column->getName () ?>' => array (
+             <?=( !empty( $validators ) ) ? "{$validators}\n" : null?>
+        ),
+<?php endforeach; ?>
     );
 
 
@@ -106,24 +107,25 @@ class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile
     * @access protected
     */
 <?php if(count($objTables->getPrimarykeys())>1):?>
-    protected $_primary = array(<?php foreach($objTables->getPrimarykeys() as $pks) : ?>
+    protected $_primary = array(
+    <?php foreach($objTables->getPrimarykeys() as $pks) : ?>
             '<?=$pks->getName()?>',
-<?php endforeach ?>;
+    <?php endforeach ?>
+    );
 <?php elseif(count($objTables->getPrimarykeys())==1): ?>
-<?php $pk = $objTables->getPrimarykeys() ?>
+    <?php $pk = $objTables->getPrimarykeys() ?>
     protected $_primary = '<?=$pk[0]->getName()?>';
 <?php endif ?>
 
 <?php foreach ($parents as $parent): ?>
-/**
-* Parent relation <?=$this->getClassName($parent['column']) . "\n"?>
-*
-* @var $parent['class'] . "\n"?>
-*/
-protected $_<?=$this->getClassName($parent['column'])?>;
+    /**
+    * Parent relation <?=$this->getClassName($parent['column']) . "\n"?>
+    *
+    * @var <?=$parent['class'] . "\n"?>
+    */
+    protected $_<?=$this->getClassName($parent['column'])?>;
 
 <?php endforeach;?>
-
 <?php foreach ($depends as $depend): ?>
     /**
      * Parent relation <?=$this->getClassName($depend['column']) . "\n"?>
@@ -133,53 +135,56 @@ protected $_<?=$this->getClassName($parent['column'])?>;
      protected $_<?=$depend['column']?>;
 
 <?php endforeach;?>
-
-
 <?php foreach ($objTables->getColumns() as $column): ?>
-
     /**
     *
     * Sets column <?=$column->getName()."\n"?>
     *
-  <?php if ($column->getType()=='date'): ?>
-  * Stored in ISO 8601 format.
-  *
-  * @param string|Zend_Date $<?=$column->getName() . "\n"?>
-  <?php else: ?>
-  * @param <?=$column->getType()?> $<?=$column->getName() . "\n"?>
-  <?php endif; ?>
-  * @return <?=$className . "\n"?>
+<?php if ($column->getType()=='date'): ?>
+    * Stored in ISO 8601 format.
+    *
+    * @param string|Zend_Date $<?=$column->getName() . "\n"?>
+<?php else: ?>
+    * @param <?=$column->getType()?> $<?=$column->getName() . "\n"?>
+<?php endif; ?>
+    * @return <?=$className . "\n"?>
     */
     public function set<?=$this->getClassName($column->getName())?>($<?=$column->getName()?>)
     {
-  <?php if ($column->getType()=='date'): ?>
-    if (! empty($<?=$column->getName()?>)) {
-        if (! $<?=$column->getName()?> instanceof Zend_Date) {
-            $<?=$column->getName()?> = new Zend_Date($<?=$column->getName()?>);
+<?php switch ( $column->getType () ): ?>
+    <?php case 'date': ?>
+        if (! empty($<?=$column->getName()?>))
+        {
+            if (! $<?=$column->getName()?> instanceof Zend_Date)
+            {
+                $<?=$column->getName()?> = new Zend_Date($<?=$column->getName()?>);
+            }
+
+            $this-><?=$column->getName()?> = $<?=$column->getName()?>->toString(Zend_Date::ISO_8601);
         }
 
-        $this-><?=$column->getName()?> = $<?=$column->getName()?>->toString(Zend_Date::ISO_8601);
-    }
-  <?php endif; ?>
+    <?php break ?>
+    <?php case 'boolean': ?>
+        $this-><?=$column->getName()?> = $<?=$column->getName()?> ? true : false;
 
-  <?php if ($column->getType() == 'boolean'): ?>
-    $this-><?=$column->getName()?> = $<?=$column->getName()?> ? true : false;
-  <?php else: ?>
-	$<?=$column->getName()?> = (<?=ucfirst($column->getType())?>) $<?=$column->getName()?> ;
-	$input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?=$column->getName()?> '=>$<?=$column->getName()?> ));
-	if(!$input->isValid ('<?=$column->getName()?> '))
-	{
-	   $errors =  $input->getMessages ();
-	    foreach ( $errors['<?=$column->getName()?> '] as $key => $value )
-	    {
-		throw new Exception ( $value );
-	    }
-	}
+    <?php break ?>
+    <?php default: ?>
+        $<?=$column->getName()?> = (<?=ucfirst($column->getType())?>) $<?=$column->getName()?> ;
+        $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?=$column->getName()?> '=>$<?=$column->getName()?> ));
+        if(!$input->isValid ('<?=$column->getName()?> '))
+        {
+            $errors =  $input->getMessages ();
+            foreach ( $errors['<?=$column->getName()?> '] as $key => $value )
+            {
+                throw new Exception ( $value );
+            }
+        }
 
-	$this-><?=$column->getName()?>  = $<?=$column->getName()?> ;
-  <?php endif; ?>
+        $this-><?=$column->getName()?>  = $<?=$column->getName()?> ;
 
-	return $this;
+    <?php break ?>
+<?php endswitch ?>
+	    return $this;
     }
 
     /**
@@ -199,19 +204,18 @@ protected $_<?=$this->getClassName($parent['column'])?>;
         {
             if ($this->_data['<?=$column->getName()?>'] === null)
             {
-            return null;
+                return null;
             }
 
             return new Zend_Date($this-><?=$column->getName()?>, Zend_Date::ISO_8601);
         }
-<?php endif; ?>
 
+<?php endif; ?>
         return $this-><?=$column->getName()?>;
     }
+
 <?php endforeach; ?>
-
 <?php foreach ($parents as $parent): ?>
-
     /**
     * Gets parent <?=$this->getClassName($parent['column']) . "\n"?>
     *
@@ -226,9 +230,8 @@ protected $_<?=$this->getClassName($parent['column'])?>;
 
         return $this->_<?=$parent['column']?>;
     }
+
 <?php endforeach; ?>
-
-
 <?php foreach ($depends as $value): ?>
     /**
     * Gets dependent <?=$this->getClassName($depend['column']) . "\n"?>
@@ -244,12 +247,12 @@ protected $_<?=$this->getClassName($parent['column'])?>;
 
       return $this->_<?=$depend['column']?>;
     }
-<?php endforeach; ?>
 
+<?php endforeach; ?>
     /**
     * Retorna a Dbtable da class model
     *
-    * @return <?=$objTables->getNamespace()?>_Entity_<?=$this->getClassName ( $objTables->getName () )?>
+    * @return <?=$objTables->getNamespace()?>_Entity_<?=$this->getClassName ( $objTables->getName () ).'\n'?>
     */
     public function getTable()
     {
