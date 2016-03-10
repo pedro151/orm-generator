@@ -21,7 +21,7 @@
  */
 require_once dirname(__FILE__) . '/../../EntityAbstract.php';
 
-class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
+abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
 {
 
 <?php foreach ($objTables->getColumns() as $column): ?>
