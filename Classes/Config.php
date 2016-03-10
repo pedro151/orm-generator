@@ -66,8 +66,8 @@ class Config
         return <<<USAGE
 parameters:
     --database            : database name
- *  --schema              : database schema
-    --driver              : database driver (Ex.: pgsql)
+ *  --schema              : database schema name (one or more than one)
+    --driver              : database driver name (Ex.: pgsql)
     --framework           : name framework used, which has the contents of the database configurations
                             and framework template
     --path                : specify where to create the files (default is current directory)
