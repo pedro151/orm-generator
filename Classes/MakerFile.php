@@ -121,10 +121,10 @@ class MakerFile
                 }
 
                 foreach (
-                    $this->driver->getTables () as $key => $objTables
+                    $this->driver->getTables ( $schema ) as $key => $objTables
                 )
                 {
-                    $total = ( $cur / $max * 100 )/count ( $this->location ) ;
+                    $total = ( $cur / $max * 100 ) / count ( $this->location );
                     printf ( "\r Creating: %6.2f%%", ceil ( $total ) );
                     $cur++;
 
