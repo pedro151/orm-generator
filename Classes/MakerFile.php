@@ -151,11 +151,11 @@ class MakerFile
     private function reportProcess ( $countFiles, $countDir )
     {
         $databases = count ( $this->location );
-        $totalTable = ( $countFiles / $countDir ) * $databases;
+        $totalTable = $this->driver->getTotalTables ();
         echo "\n------";
-        printf ( "\n\r-Files generated:%s", $databases * $countFiles );
+        printf ( "\n\r-Files generated:%s", $countFiles );
         printf ( "\n\r-Diretory generated:%s", $databases * $countDir );
-        printf ( "\n\r-Scanned tables:%s", ceil ( $totalTable ) );
+        printf ( "\n\r-Scanned tables:%s", $totalTable );
         echo "\n------";
     }
 
