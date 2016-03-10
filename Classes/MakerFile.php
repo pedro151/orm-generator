@@ -99,7 +99,7 @@ class MakerFile
     public function run ()
     {
         $countDir = $this->countDiretory ();
-        $max = $this->driver->getTotalTables () * $countDir;
+        $max = $this->driver->getTotalTables () * count ( $this->factoryMakerFile () );
         $cur = 0;
         echo "Starting..\n";
         foreach ( $this->location as $schema => $location )
