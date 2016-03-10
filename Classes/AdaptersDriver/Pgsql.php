@@ -259,7 +259,7 @@ class Pgsql extends AbsractAdapter
         $return2 = $stmt->fetchColumn ();
         if ( $return2 )
         {
-            return $dtbase[ 0 ] . '.' . preg_filter (
+            return preg_filter (
                 array (
                     '/nextval\(\'/',
                     '/\'::regclass\)/'
@@ -283,7 +283,7 @@ class Pgsql extends AbsractAdapter
         {
             $schema = $table[ 'table_schema' ];
             $key = $table[ 'table_schema' ] . '.' . $table [ 'table_name' ];
-            if ( !isset( $this->objDbTables[ $key ] ) )
+            if ( !isset( $this->objDbTables[ $schema ][ $key ] ) )
             {
                 $this->objDbTables[ $schema ][ $key ] = new DbTable();
                 $this->objDbTables[ $schema ][ $key ]->populate (

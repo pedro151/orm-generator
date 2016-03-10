@@ -20,7 +20,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         $names = array (
             'DbTable' ,
             'Entity' ,
-            'Model'
+            ''
         );
         $maker = new MakerFile( new Config( array (
             'schema' => array (

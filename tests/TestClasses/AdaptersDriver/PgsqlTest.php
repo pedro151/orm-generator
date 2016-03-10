@@ -81,10 +81,10 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
     public function testGetTables ()
     {
         $this->assertTrue (
-            $this->objDriver->getTable ( "public.dao" ) instanceof
+            $this->objDriver->getTable ( "public.dao", "public" ) instanceof
             \Classes\Db\DbTable
         );
-        $arrTables = $this->objDriver->getTables ();
+        $arrTables = $this->objDriver->getTables ('public');
         $this->assertTrue ( $arrTables[ "public.dao" ] instanceof \Classes\Db\DbTable );
     }
 

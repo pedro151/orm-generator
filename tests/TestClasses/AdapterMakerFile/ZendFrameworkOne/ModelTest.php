@@ -15,7 +15,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase
     {
         $instance = \Classes\AdapterMakerFile\ZendFrameworkOne\Model::getInstance ();
         $this->assertTrue ( $instance instanceof \Classes\AdapterMakerFile\ZendFrameworkOne\Model );
-        $this->assertTrue ( $instance->getPastName () == 'Model' );
+        $this->assertTrue ( $instance->getPastName () == '' );
         $this->assertTrue ( $instance->getParentClass () == "" );
         $this->assertTrue ( $instance->getParentFileTpl () == "" );
         $this->assertTrue ( $instance->getFileTpl () == "model.tpl" );

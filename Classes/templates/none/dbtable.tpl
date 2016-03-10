@@ -25,7 +25,7 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTable
      * @access protected
      */
     protected $_name = '<?=$objTables->getName()?>';
-	<?php if($objTables->hasSchema()){ ?>
+<?php if($objTables->hasSchema()): ?>
 
     /**
      * Schema da tabela do banco de dados
@@ -34,7 +34,7 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTable
      * @access protected
      */
     protected $_schema = '<?=$objTables->getSchema()?>';
-    <?php } ?>
+<?php endif ?>
 
     /**
      * Nome do objeto quando retornado so um valor das consultas
@@ -42,7 +42,7 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTable
      * @var string
      * @access protected
      */
-    protected $_rowClass = 'Main\Model\\<?=$this->getClassName ( $objTables->getName () )?>';
+    protected $_rowClass = '<?=$objTables->getNamespace()?>_<?=$this->getClassName ( $objTables->getName () )?>';
 
 	/**
      * Nome da Primary Key
@@ -72,8 +72,8 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTable
     protected $_sequence = false;
 <?php endif ?>
 
-    <?=$referenceMap?>
+<?=$referenceMap?>
 
-    <?=$dependentTables?>
+<?=$dependentTables?>
 
 }
