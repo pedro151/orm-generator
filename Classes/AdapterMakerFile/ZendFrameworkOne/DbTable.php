@@ -48,7 +48,7 @@ class DbTable extends AbstractAdapter
                 . ZendFrameworkOne::SEPARETOR
                 . 'Dbtable'
                 . ZendFrameworkOne::SEPARETOR
-                . $makerFile->getClassName ( $dbTable->getName () ),
+                . $makerFile->getClassName ( $constrant->getTable() ),
                 $constrant->getColumn ()
 
             );
