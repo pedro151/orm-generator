@@ -12,7 +12,7 @@ class Model extends AbstractAdapter
     /**
      * @var void
      */
-    public    $pastName      = 'Model';
+    public    $pastName      = "";
     protected $parentClass   = "";
     protected $parentFileTpl = "";
     protected $fileTpl       = "model.tpl";

@@ -26,9 +26,9 @@ abstract class AbstractAdapter
     public static function getInstance ()
     {
         $class = get_called_class ();
-        $arr = explode ( '\\' , $class );
+        $arr = explode ( '\\', $class );
         $classEnd = end ( $arr );
-        if ( ! isset( self::$_instance[ $classEnd ] ) )
+        if ( !isset( self::$_instance[ $classEnd ] ) )
         {
             self::$_instance[ $classEnd ] = new $class();
         }
@@ -63,6 +63,16 @@ abstract class AbstractAdapter
      * @type string
      */
     protected $pastName;
+
+    /**
+     * verifica se existe diretorio nesta makeFile
+     *
+     * @return bool
+     */
+    public function hasDiretory ()
+    {
+       return !empty( $this->pastName );
+    }
 
     /**
      * @return string

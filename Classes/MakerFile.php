@@ -98,7 +98,7 @@ class MakerFile
      */
     public function run ()
     {
-        $countDir = count ( $this->factoryMakerFile () );
+        $countDir = $this->countDiretory ();
         $max = $this->driver->getTotalTables () * $countDir;
         $cur = 0;
         echo "Starting..\n";
@@ -167,6 +167,24 @@ class MakerFile
     public function factoryMakerFile ()
     {
         return $this->config->getMakeFileInstances ();
+    }
+
+    /**
+     * conta o numero de diretorios que serao criados
+     *
+     * @return int
+     */
+    public function countDiretory ()
+    {
+        $dir = 0;
+        foreach ( $this->factoryMakerFile () as $abstractAdapter )
+        {
+            if ( $abstractAdapter->hasDiretory () )
+            {
+                $dir++;
+            }
+        }
+        return $dir;
     }
 
     /**
