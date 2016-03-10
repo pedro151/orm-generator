@@ -66,11 +66,10 @@ class Config
         return <<<USAGE
 parameters:
     --database            : database name
-    --driver              : driver do banco de dados
-    --framework           : framework
+ *  --schema              : database schema
+    --driver              : database driver (Ex.: pgsql)
+    --framework           : name framework used, which has the contents of the database configurations
     --path                : specify where to create the files (default is current directory)
- *  --table               : table name (parameter can be used more then once)
-    --all-tables          : create classes for all the scripts in the database
 
  example: php DAO-generator.php --framework=zend_framework --database=foo --table=foobar
 

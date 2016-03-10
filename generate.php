@@ -42,6 +42,7 @@ try
     $arrValid = array (
         'help',
         'database:',
+        'schema:',
         'driver:',
         'framework:',
         'path:'

@@ -98,9 +98,10 @@ class MakerFile
      */
     public function run ()
     {
-        $max = $this->driver->getTotalTables () * count ( $this->factoryMakerFile () );
+        $countDir = count ( $this->factoryMakerFile () );
+        $max = $this->driver->getTotalTables () * $countDir;
         $cur = 0;
-        echo "Starting..\n";
+        echo "Starting..";
         foreach ( $this->location as $schema => $location )
         {
             foreach ( $this->factoryMakerFile () as $objMakeFile )
@@ -123,7 +124,8 @@ class MakerFile
                     $this->driver->getTables () as $key => $objTables
                 )
                 {
-                    printf ( "\r Creating: %6.2f%%", ceil( $cur / $max * 100  ));
+                    echo "\n";
+                    printf ( "\r Creating: %6.2f%%", ceil ( $cur / $max * 100 ) );
                     $cur++;
 
                     $file = $path
@@ -142,7 +144,19 @@ class MakerFile
             }
         }
 
+        $this->reportProcess ( $cur, $countDir );
         echo "\nfinished!";
+    }
+
+    private function reportProcess ( $countFiles, $countDir )
+    {
+        $databases = count ( $this->location );
+        $totalTable = ( $countFiles / $countDir ) * $databases;
+        echo "\n------";
+        printf ( "\n\r-Files generated:%s", $databases * $countFiles );
+        printf ( "\n\r-Diretory generated:%s", $databases * $countDir );
+        printf ( "\n\r-Scanned tables:%s", ceil ( $totalTable ) );
+        echo "\n------";
     }
 
     /**
