@@ -45,7 +45,7 @@ class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile
      */
     protected $_filters = array(
 <?php foreach ( $objTables->getColumns () as $column ): ?>
-    <?php
+<?php
     $filters = null;
     switch ( ucfirst ( $column->getType () ) )
     {
@@ -59,9 +59,9 @@ class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile
             $filters = ucfirst ( $column->getType () );
             break;
     }
-    ?>
+?>
         '<?=$column->getName()?>'=>array (
-            <?=( !empty( $filters ) ) ? "{$filters}\n" : null; ?>
+            <?=( !empty( $filters ) ) ? "\"{$filters}\"\n" : null; ?>
         ),
 <?php endforeach;?>
     );
@@ -71,7 +71,7 @@ class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile
      */
     protected $_validators= array(
 <?php foreach ( $objTables->getColumns () as $column ): ?>
-    <?php
+<?php
     $validators = array ();
 
     $validators[] = $column->isNullable () ? "'allowEmpty' => true" : "'NotEmpty' => true";
@@ -113,7 +113,7 @@ class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile
     <?php endforeach ?>
     );
 <?php elseif(count($objTables->getPrimarykeys())==1): ?>
-    <?php $pk = $objTables->getPrimarykeys() ?>
+<?php $pk = $objTables->getPrimarykeys() ?>
     protected $_primary = '<?=$pk[0]->getName()?>';
 <?php endif ?>
 
@@ -163,12 +163,12 @@ class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile
             $this-><?=$column->getName()?> = $<?=$column->getName()?>->toString(Zend_Date::ISO_8601);
         }
 
-    <?php break ?>
-    <?php case 'boolean': ?>
+<?php break ?>
+<?php case 'boolean': ?>
         $this-><?=$column->getName()?> = $<?=$column->getName()?> ? true : false;
 
-    <?php break ?>
-    <?php default: ?>
+<?php break ?>
+<?php default: ?>
         $<?=$column->getName()?> = (<?=ucfirst($column->getType())?>) $<?=$column->getName()?> ;
         $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?=$column->getName()?> '=>$<?=$column->getName()?> ));
         if(!$input->isValid ('<?=$column->getName()?> '))
@@ -182,7 +182,7 @@ class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile
 
         $this-><?=$column->getName()?>  = $<?=$column->getName()?> ;
 
-    <?php break ?>
+<?php break ?>
 <?php endswitch ?>
 	    return $this;
     }
