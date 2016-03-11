@@ -15,7 +15,7 @@ class Model extends AbstractAdapter
     public    $pastName      = "";
     protected $parentClass   = "";
     protected $parentFileTpl = "";
-    protected $fileTpl       = "model.tpl";
+    protected $fileTpl       = "model.php";
 
     public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {

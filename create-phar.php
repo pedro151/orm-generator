@@ -20,7 +20,7 @@ try
     $phar->startBuffering ();
     $phar->buildFromDirectory ( BUILD_DIR , INCLUDE_EXTENSION );
     $stub = $phar->createDefaultStub ( DEFAULT_STUB );
-    $phar->setStub ( $stub );
+    $phar->setStub ( "#!/usr/bin/php\n". $stub );
     $phar->stopBuffering ();
 
 

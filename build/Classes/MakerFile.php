@@ -266,7 +266,7 @@ class MakerFile
         }
 
         $arrUrl = array (
-            __DIR__ ,
+            __DIR__,
             'templates' ,
             $this->config->framework ,
             $tplFile

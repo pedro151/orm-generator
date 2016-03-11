@@ -26,22 +26,20 @@ abstract class AbstractAdapter
         // lista de schemas do banco de dados
         'schema'   => array () ,
 
-        'socket'      => null ,
+        'socket'          => null ,
 
         ########################### DOCS
         // autor que gerou o script
-        'author'      => "Pedro" ,
-        'license'     => "New BSD License" ,
-        'copyright'   => "DAO Generator-Pedro151" ,
-        'link'        => 'https://github.com/pedro151' ,
+        'author'          => "Pedro" ,
+        'license'         => "New BSD License" ,
+        'copyright'       => "DAO Generator-Pedro151" ,
+        'link'            => 'https://github.com/pedro151' ,
         // data que foi gerado o script
-        'last_modify' => null ,
+        'last_modify'     => null ,
 
         ########################## Ambiente/Arquivos
         // Nome do framework para o adapter
-        'framework'   => null ,
-
-        'framework-ini'   => '' ,
+        'framework'       => null ,
         // namespace das classes
         'namespace'       => "" ,
         // ambiente
@@ -103,7 +101,7 @@ abstract class AbstractAdapter
      *
      * @return mixed
      */
-    protected abstract function parseFrameworkConfig ();
+    protected abstract function parseFrameworkConfig ( $frameworkIni );
 
     /**
      * @param \Classes\Db\DbTable|\Classes\Db\Constrant $table
@@ -127,7 +125,10 @@ abstract class AbstractAdapter
             'author'      => ucfirst ( get_current_user () ) ,
             'last_modify' => date ( "d-m-Y H:i:s." )
         );
-        $this->parseFrameworkConfig ();
+
+        $framworkIni = isset( $array[ 'framework-ini' ] ) ? $array[ 'framework-ini' ]
+            : null;
+        $this->parseFrameworkConfig ( $framworkIni );
         $this->setParams ( $this->getParams () );
         $this->setParams ( $array );
         $this->init ();

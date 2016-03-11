@@ -37,7 +37,7 @@ class Config
      */
     private $adapterDriver;
 
-    public function __construct ( $argv, $configIni )
+    public function __construct ( $argv , $configIni )
     {
         if ( array_key_exists ( 'help' , $argv ) )
         {
@@ -50,6 +50,10 @@ class Config
         if ( strtolower ( $this->argv[ 'framework' ] ) == 'none' )
         {
             $this->argv += $configDefaul[ 'none' ];
+        } else
+        {
+            global $_path;
+            require $_path . '/vendor/autoload.php';
         }
     }
 

@@ -16,8 +16,8 @@ class DbTableTest extends \PHPUnit_Framework_TestCase
         $instance = \Classes\AdapterMakerFile\ZendFrameworkOne\DbTable::getInstance ();
         $this->assertTrue ( $instance instanceof \Classes\AdapterMakerFile\ZendFrameworkOne\DbTable );
         $this->assertTrue ( $instance->getPastName () == "DbTable" );
-        $this->assertTrue ( $instance->getFileTpl () == "dbtable.tpl" );
+        $this->assertTrue ( $instance->getFileTpl () == "dbtable.php" );
         $this->assertTrue ( $instance->getParentClass () == "TableAbstract" );
-        $this->assertTrue ( $instance->getParentFileTpl () == "dbtable_abstract.tpl" );
+        $this->assertTrue ( $instance->getParentFileTpl () == "dbtable_abstract.php" );
     }
 }

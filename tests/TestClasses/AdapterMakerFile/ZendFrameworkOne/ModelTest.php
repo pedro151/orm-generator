@@ -18,6 +18,6 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue ( $instance->getPastName () == '' );
         $this->assertTrue ( $instance->getParentClass () == "" );
         $this->assertTrue ( $instance->getParentFileTpl () == "" );
-        $this->assertTrue ( $instance->getFileTpl () == "model.tpl" );
+        $this->assertTrue ( $instance->getFileTpl () == "model.php" );
     }
 }

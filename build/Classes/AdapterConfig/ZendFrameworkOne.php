@@ -56,15 +56,15 @@ class ZendFrameworkOne extends AbstractAdapter
         );
     }
 
-    protected function parseFrameworkConfig ()
+    protected function parseFrameworkConfig ( $frameworkIni = null )
     {
-        if ( empty( $this->config[ 'framework-ini' ] ) )
+        if ( ! is_file ( $frameworkIni ) )
         {
             throw new \Exception( "inform the .ini file in the 'framework-ini' existing configuration." );
         }
 
         $objConfig = new \Zend_Config_Ini(
-            realpath ( $this->config[ 'framework-ini' ] ) , 'production'
+            realpath ( $frameworkIni ) , 'production'
         );
 
         $arrConfig = $objConfig->toArray ();

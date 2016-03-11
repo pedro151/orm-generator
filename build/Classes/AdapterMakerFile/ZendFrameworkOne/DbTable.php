@@ -17,8 +17,8 @@ class DbTable extends AbstractAdapter
      */
     protected $pastName      = 'DbTable';
     protected $parentClass   = "TableAbstract";
-    protected $parentFileTpl = "dbtable_abstract.tpl";
-    protected $fileTpl       = "dbtable.tpl";
+    protected $parentFileTpl = "dbtable_abstract.php";
+    protected $fileTpl       = "dbtable.php";
 
 
     /**

@@ -10,6 +10,7 @@ if ( ! ini_get ( 'register_argc_argv' ) )
     die( "please enable register_argc_argv directive in php.ini\n" );
 }
 
+\Phar::interceptFileFuncs();
 function __autoload ( $class )
 {
     $parts = \explode ( '\\' , $class );
@@ -18,7 +19,6 @@ function __autoload ( $class )
 }
 
 global $_path;
-\Phar::interceptFileFuncs();
 
 try
 {
@@ -31,7 +31,6 @@ try
         'status:' ,
         'path:'
     );
-
 
     $_path = realpath ( dirname ( str_replace (
         'phar://'

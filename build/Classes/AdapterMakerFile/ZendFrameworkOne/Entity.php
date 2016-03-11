@@ -17,8 +17,8 @@ class Entity extends AbstractAdapter
      */
     public    $pastName      = 'Entity';
     protected $parentClass   = "EntityAbstract";
-    protected $parentFileTpl = "entity_abstract.tpl";
-    protected $fileTpl       = "entity.tpl";
+    protected $parentFileTpl = "entity_abstract.php";
+    protected $fileTpl       = "entity.php";
 
 
     /**

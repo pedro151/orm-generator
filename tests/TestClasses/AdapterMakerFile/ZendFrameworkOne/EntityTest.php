@@ -17,7 +17,7 @@ class EntityTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue ( $instance instanceof \Classes\AdapterMakerFile\ZendFrameworkOne\Entity );
         $this->assertTrue ( $instance->getPastName () == 'Entity' );
         $this->assertTrue ( $instance->getParentClass () == "EntityAbstract" );
-        $this->assertTrue ( $instance->getParentFileTpl () == "entity_abstract.tpl" );
-        $this->assertTrue ( $instance->getFileTpl () == "entity.tpl" );
+        $this->assertTrue ( $instance->getParentFileTpl () == "entity_abstract.php" );
+        $this->assertTrue ( $instance->getFileTpl () == "entity.php" );
     }
 }
