@@ -40,7 +40,7 @@ class MakerFile
 
     public function __construct ( Config $config )
     {
-        $this->startTime();
+        $this->startTime ();
         $this->config = $config->getAdapterConfig ();
         $this->driver = $config->getAdapterDriver ();
         $this->parseLocation ();
@@ -51,9 +51,10 @@ class MakerFile
      */
     public function parseLocation ()
     {
+        global $_path;
+
         $arrBase = array (
-            dirname ( __FILE__ ) ,
-            '..' ,
+            $_path ,
             $this->config->path
         );
 
@@ -157,20 +158,23 @@ class MakerFile
         }
 
         $this->reportProcess ( $cur );
-        echo "\nfinished!";
+        echo "\nProcess finished!\n";
     }
 
     private function reportProcess ( $countFiles )
     {
-        $databases = count ( $this->location );
-        $countDir = $this->countDiretory ();
-        $totalTable = $this->driver->getTotalTables ();
-        echo "\n------";
-        printf ( "\n\r-Files generated:%s" , $countFiles );
-        printf ( "\n\r-Diretory generated:%s" , $databases * $countDir );
-        printf ( "\n\r-Scanned tables:%s" , $totalTable );
-        printf ( "\n\r-Execution time: %ssec" , $this->getRunTime () );
-        echo "\n------";
+        if ( $this->config->isStatusEnabled () )
+        {
+            $databases = count ( $this->location );
+            $countDir = $this->countDiretory ();
+            $totalTable = $this->driver->getTotalTables ();
+            echo "\n------";
+            printf ( "\n\r-Files generated:%s" , $countFiles );
+            printf ( "\n\r-Diretory generated:%s" , $databases * $countDir );
+            printf ( "\n\r-Scanned tables:%s" , $totalTable );
+            printf ( "\n\r-Execution time: %ssec" , $this->getRunTime () );
+            echo "\n------";
+        }
     }
 
     /**
@@ -262,15 +266,17 @@ class MakerFile
         }
 
         $arrUrl = array (
-            dirname ( __FILE__ ) ,
+            __DIR__ ,
             'templates' ,
             $this->config->framework ,
             $tplFile
         );
 
+        $filePath = implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrUrl ) );
+
         extract ( $vars );
         ob_start ();
-        require implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrUrl ) );
+        require $filePath;
         $data = ob_get_contents ();
         ob_end_clean ();
 

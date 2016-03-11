@@ -22,11 +22,14 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
             'Entity' ,
             ''
         );
+
+        $configIni = realpath ( __DIR__ . '/../../configs/config.ini' );
+
         $maker = new MakerFile( new Config( array (
             'schema' => array (
                 'public' , 'quiz'
             )
-        ) ) );
+        ) , $configIni ) );
         foreach ( $maker->factoryMakerFile () as $key => $obj )
         {
             $this->assertTrue ( $obj->getPastName () == $names[ $key ] );
@@ -35,13 +38,15 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
 
     public function testLocation ()
     {
+        $configIni = realpath ( __DIR__ . '/../../configs/config.ini' );
+
         $maker = new MakerFile( new Config( array (
             'database' => 'postgres' ,
             'schema'   => array (
                 'public'
             )
-        ) ) );
+        ) , $configIni ) );
 
-       // $maker->run ();
+        // $maker->run ();
     }
 }

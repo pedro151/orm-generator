@@ -12,7 +12,7 @@
     "minimum-stability": "dev",
       "autoload" : {
         "psr-4" : {
-          "Classes\\" : "Classes"
+          "Classes\\" : "build/Classes"
         }
       },
       "autoload-dev" : {

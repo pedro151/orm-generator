@@ -37,22 +37,20 @@ class Config
      */
     private $adapterDriver;
 
-    public function __construct ( $argv )
+    public function __construct ( $argv, $configIni )
     {
         if ( array_key_exists ( 'help' , $argv ) )
         {
             die ( $this->getUsage () );
         }
 
-        $configDefaul = parse_ini_file ( dirname ( __FILE__ )
-                                         . '/../configs/config.ini' , true );
+        $configDefaul = parse_ini_file ( $configIni , true );
         $this->argv = $argv + array_filter ( $configDefaul[ 'main' ] );
 
         if ( strtolower ( $this->argv[ 'framework' ] ) == 'none' )
         {
             $this->argv += $configDefaul[ 'none' ];
         }
-
     }
 
     /**
@@ -67,9 +65,10 @@ parameters:
     --driver              : database driver name (Ex.: pgsql)
     --framework           : name framework used, which has the contents of the database configurations
                             and framework template
+    --status              : show status of implementation carried out after completing the process
     --path                : specify where to create the files (default is current directory)
 
- example: php DAO-generator.php --framework=zend_framework --database=foo --table=foobar
+ example: php DAO-generator.php --framework=zend_framework --database=foo --table=foobar --status=1
 
 Data Access Object DAO-generator By: Pedro Alarcao Version: $this->version
 USAGE;
@@ -87,7 +86,7 @@ USAGE;
      * analisa a opção e cria a instancia do Atapter do determinado framework
      *
      */
-    public function factoryConfig ()
+    private function factoryConfig ()
     {
         switch ( strtolower ( $this->argv[ 'framework' ] ) )
         {
@@ -105,7 +104,7 @@ USAGE;
      * Analisa a opção e instancia o determinado banco de dados
      *
      */
-    public function factoryDriver ()
+    private function factoryDriver ()
     {
         switch ( $this->argv[ 'driver' ] )
         {

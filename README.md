@@ -35,6 +35,7 @@ Configurations optionals
 | Command        | description       |
 |----------------|------------------|
 |--help          | help command explaining all the options and manner of use |
+|--status        | show status of implementation carried out after completing the process |
 |--database      | database name     |
 |--schema        | database schema name (one or more than one)    |
 |--driver        | database driver name (Ex.: pgsql)|
@@ -45,7 +46,7 @@ Configurations optionals
 
 in prompt
 
-<code>php generate.php --framework=zend_framework --database=foo --driver=pgsql</code>
+<code>php generate.php --framework=zend_framework --database=foo --driver=pgsql --status=1</code>
 
 Framework Class Generator DAO
 -----------------------------

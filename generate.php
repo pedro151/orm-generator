@@ -7,52 +7,64 @@
  */
 
 $parts = array (
-    '..',
-    '..',
+    '..' ,
+    '..' ,
     'autoload'
 );
-$autoload = realpath ( __DIR__ . DIRECTORY_SEPARATOR . implode ( DIRECTORY_SEPARATOR, $parts ) . '.php' );
+$autoload = realpath ( __DIR__ . DIRECTORY_SEPARATOR
+                       . implode ( DIRECTORY_SEPARATOR , $parts ) . '.php' );
 if ( is_file ( $autoload ) )
 {
     require $autoload;
-}
-else
+} else
 {
     $parts = array (
-        'vendor',
+        'vendor' ,
         'autoload'
     );
 
-    require realpath ( __DIR__ . DIRECTORY_SEPARATOR . implode ( DIRECTORY_SEPARATOR, $parts ) . '.php' );
+    require realpath ( __DIR__ . DIRECTORY_SEPARATOR
+                       . implode ( DIRECTORY_SEPARATOR , $parts ) . '.php' );
 }
 
 
-if ( !ini_get ( 'short_open_tag' ) )
+if ( ! ini_get ( 'short_open_tag' ) )
 {
     die( "please enable short_open_tag directive in php.ini\n" );
 }
 
-if ( !ini_get ( 'register_argc_argv' ) )
+if ( ! ini_get ( 'register_argc_argv' ) )
 {
     die( "please enable register_argc_argv directive in php.ini\n" );
 }
 
+global $_path;
+
 try
 {
     $arrValid = array (
-        'help',
-        'database:',
-        'schema:',
-        'driver:',
-        'framework:',
+        'help' ,
+        'database:' ,
+        'schema:' ,
+        'driver:' ,
+        'framework:' ,
+        'status:' ,
         'path:'
     );
 
-    $maker = new \Classes\MakerFile( new \Classes\Config( getopt ( null, $arrValid ) ) );
+    $_path = realpath ( __DIR__ );
+
+    $configIni = $_path . '/configs/config.ini';
+
+    if ( ! is_file ( $configIni ) )
+    {
+        throw new \Exception( "File does not exist: $configIni \n" );
+    }
+
+    $maker = new \Classes\MakerFile( new \Classes\Config( getopt ( null , $arrValid ) , $configIni ) );
     $maker->run ();
 
-}
-catch ( \Exception $e )
+} catch ( \Exception $e )
 {
     die( $e->getMessage () );
 }
