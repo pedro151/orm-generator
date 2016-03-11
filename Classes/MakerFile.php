@@ -41,8 +41,6 @@ class MakerFile
     public function __construct ( Config $config )
     {
         $this->startTime();
-        $this->factoryConfig ();
-        $this->factoryDriver ();
         $this->config = $config->getAdapterConfig ();
         $this->driver = $config->getAdapterDriver ();
         $this->parseLocation ();

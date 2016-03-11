@@ -53,7 +53,6 @@ class Config
             $this->argv += $configDefaul[ 'none' ];
         }
 
-        unset( $this->argv );
     }
 
     /**
@@ -136,6 +135,11 @@ USAGE;
      */
     public function getAdapterConfig ()
     {
+        if ( ! $this->adapterConfig )
+        {
+            $this->factoryConfig ();
+        }
+
         return $this->adapterConfig;
     }
 
@@ -144,6 +148,11 @@ USAGE;
      */
     public function getAdapterDriver ()
     {
+        if ( ! $this->adapterDriver )
+        {
+            $this->factoryDriver ();
+        }
+
         return $this->adapterDriver;
     }
 
