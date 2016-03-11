@@ -40,6 +40,9 @@ class MakerFile
 
     public function __construct ( Config $config )
     {
+        $this->startTime();
+        $this->factoryConfig ();
+        $this->factoryDriver ();
         $this->config = $config->getAdapterConfig ();
         $this->driver = $config->getAdapterDriver ();
         $this->parseLocation ();
@@ -109,8 +112,6 @@ class MakerFile
      */
     public function run ()
     {
-        $this->startTime();
-        $countDir = $this->countDiretory ();
         $max = $this->driver->getTotalTables () * count ( $this->factoryMakerFile () );
         $cur = 0;
 
@@ -157,13 +158,14 @@ class MakerFile
             }
         }
 
-        $this->reportProcess ( $cur , $countDir );
+        $this->reportProcess ( $cur );
         echo "\nfinished!";
     }
 
-    private function reportProcess ( $countFiles , $countDir )
+    private function reportProcess ( $countFiles )
     {
         $databases = count ( $this->location );
+        $countDir = $this->countDiretory ();
         $totalTable = $this->driver->getTotalTables ();
         echo "\n------";
         printf ( "\n\r-Files generated:%s" , $countFiles );

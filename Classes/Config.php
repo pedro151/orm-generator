@@ -53,8 +53,6 @@ class Config
             $this->argv += $configDefaul[ 'none' ];
         }
 
-        $this->factoryConfig ();
-        $this->factoryDriver ();
         unset( $this->argv );
     }
 
@@ -90,7 +88,7 @@ USAGE;
      * analisa a opção e cria a instancia do Atapter do determinado framework
      *
      */
-    private function factoryConfig ()
+    public function factoryConfig ()
     {
         switch ( strtolower ( $this->argv[ 'framework' ] ) )
         {
@@ -108,7 +106,7 @@ USAGE;
      * Analisa a opção e instancia o determinado banco de dados
      *
      */
-    private function factoryDriver ()
+    public function factoryDriver ()
     {
         switch ( $this->argv[ 'driver' ] )
         {
