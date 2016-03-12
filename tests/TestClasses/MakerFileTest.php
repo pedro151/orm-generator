@@ -120,6 +120,26 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         {
             $this->assertTrue ( $item == '\models\\' . ucfirst ( $index ) );
         }
+    }
+
+    public function testLocationSchemaOff ()
+    {
+        $configIni = $this->path . '/configs/config.ini';
+
+        $maker = new MakerFile(
+            new Config(
+                array (
+                    'folder-database' => false,
+                    'driver'          => 'pgsql',
+                    'schema'          => array ()
+                ), $configIni
+            )
+        );
+
+        foreach ( $maker->location as $index => $item )
+        {
+            $this->assertTrue ( $item == '\models' );
+        }
 
     }
 }
