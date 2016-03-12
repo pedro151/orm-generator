@@ -17,6 +17,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
     const FILE_EntityAbstract = "EntityAbstract.php";
     const FILE_TableAbstract  = "TableAbstract.php";
     public $path;
+
     private function rrmdir ( $dir )
     {
         if ( is_dir ( $dir ) )
@@ -79,7 +80,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         $configIni = $this->path . '/configs/config.ini';
 
         global $_path;
-        $_path='';
+        $_path = '';
         $maker = new MakerFile(
             new Config(
                 array (
@@ -93,9 +94,19 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
             )
         );
 
+        $arrBase = array (
+            '',
+            'models',
+            'Pgsql'
+        );
+
         foreach ( $maker->location as $index => $item )
         {
-            $this->assertTrue ( $item == '\models\Pgsql\\' . ucfirst ( $index ) );
+            $arrBaseFinal = $arrBase;
+            $arrBaseFinal[] = ucfirst ( $index );
+            $location = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrBaseFinal ) );
+            $this->assertTrue ( $item == $location );
+            unset( $arrBaseFinal );
         }
     }
 
@@ -104,7 +115,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
     {
         $configIni = $this->path . '/configs/config.ini';
         global $_path;
-        $_path='';
+        $_path = '';
         $maker = new MakerFile(
             new Config(
                 array (
@@ -118,9 +129,18 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
             )
         );
 
+        $arrBase = array (
+            '',
+            'models'
+        );
+
         foreach ( $maker->location as $index => $item )
         {
-            $this->assertTrue ( $item == '\models\\' . ucfirst ( $index ) );
+            $arrBaseFinal = $arrBase;
+            $arrBaseFinal[] = ucfirst ( $index );
+            $location = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrBaseFinal ) );
+            $this->assertTrue ( $item == $location );
+            unset( $arrBaseFinal );
         }
     }
 
@@ -128,7 +148,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
     {
         $configIni = $this->path . '/configs/config.ini';
         global $_path;
-        $_path='';
+        $_path = '';
         $maker = new MakerFile(
             new Config(
                 array (
@@ -139,9 +159,14 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
             )
         );
 
+        $arrBase = array (
+            '',
+            'models'
+        );
         foreach ( $maker->location as $index => $item )
         {
-            $this->assertTrue ( $item == '\models' );
+            $location = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrBase ) );
+            $this->assertTrue ( $item == $location );
         }
 
     }
