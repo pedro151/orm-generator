@@ -1,9 +1,10 @@
 <?php
-define ( 'PREFIX' , 'dao-generator' );
-define ( 'PHAR_FILE' , PREFIX . '.phar' );
-define ( 'DEFAULT_STUB' , 'phar-generate.php' );
-define ( 'BUILD_DIR' , realpath ( __DIR__ . '/build' ) );
-define ( 'INCLUDE_EXTENSION' , '/\.php$/' );
+define ( 'PREFIX', 'dao-generator' );
+define ( 'PHAR_FILE', PREFIX . '.phar' );
+define ( 'PHAR_OUTPUT', 'bin' . DIRECTORY_SEPARATOR . PHAR_FILE );
+define ( 'DEFAULT_STUB', 'phar-generate.php' );
+define ( 'BUILD_DIR', realpath ( __DIR__ . '/build' ) );
+define ( 'INCLUDE_EXTENSION', '/\.php$/' );
 
 try
 {
@@ -15,16 +16,17 @@ try
     /****************************************
      * phar file creation
      ****************************************/
-    $tarphar = new Phar( PHAR_FILE );
+    $tarphar = new Phar( PHAR_OUTPUT );
     $phar = $tarphar->convertToExecutable ( Phar::PHAR );
     $phar->startBuffering ();
-    $phar->buildFromDirectory ( BUILD_DIR , INCLUDE_EXTENSION );
+    $phar->buildFromDirectory ( BUILD_DIR, INCLUDE_EXTENSION );
     $stub = $phar->createDefaultStub ( DEFAULT_STUB );
-    $phar->setStub ( "#!/usr/bin/php\n". $stub );
+    $phar->setStub ( "#!/usr/bin/php\n" . $stub );
     $phar->stopBuffering ();
 
 
-} catch ( Exception $e )
+}
+catch ( Exception $e )
 {
     echo $e;
 }

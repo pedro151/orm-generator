@@ -128,11 +128,11 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php endforeach;?>
 <?php foreach ($depends as $depend): ?>
     /**
-     * Parent relation <?=$this->getClassName($depend['column']) . "\n"?>
+     * Parent relation <?=$this->getClassName($depend['table']) . "\n"?>
      *
      * @var <?=$depend['class'] . "\n"?>
      */
-     protected $_<?=$depend['column']?>;
+     protected $_<?=$depend['table']?>;
 
 <?php endforeach;?>
 <?php foreach ($objTables->getColumns() as $column): ?>

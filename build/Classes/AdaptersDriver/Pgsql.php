@@ -128,12 +128,12 @@ class Pgsql extends AbsractAdapter
             "SELECT distinct
                 tc.constraint_type,
                 tc.constraint_name,
-                tc.table_schema,
-                tc.table_name,
-                kcu.column_name,
-                ccu.table_schema AS foreign_table_schema,
-                ccu.table_name AS foreign_table_name,
-                ccu.column_name AS foreign_column_name
+		        ccu.table_schema,
+                ccu.table_name,
+                ccu.column_name,
+                tc.table_schema AS foreign_table_schema,
+                tc.table_name AS foreign_table_name,
+                kcu.column_name AS foreign_column_name
                   FROM
                 information_schema.table_constraints AS tc
                     JOIN information_schema.key_column_usage AS kcu

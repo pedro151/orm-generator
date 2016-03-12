@@ -59,7 +59,7 @@ class MakerFile
         );
 
         # pasta com nome do driver do banco
-        if ( $this->config->folder_database )
+        if ( $this->config->{"folder-database"} )
         {
             $classDriver = explode ( '\\' , get_class ( $this->driver ) );
             $arrBase[] = end ( $classDriver );

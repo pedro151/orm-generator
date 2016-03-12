@@ -37,8 +37,7 @@ class Entity extends AbstractAdapter
         {
             if ( $objColumn->isForeingkey () )
             {
-                foreach ( $objColumn->getFks () as $constrant )
-                {
+                $constrant = $objColumn->getFks ();
                     $name = $constrant->getTable ()
                         . ZendFrameworkOne::SEPARETOR
                         . 'By'
@@ -57,7 +56,6 @@ class Entity extends AbstractAdapter
                         );
                     }
                     unset( $name );
-                }
             }
 
             if ( $objColumn->hasDependence () )

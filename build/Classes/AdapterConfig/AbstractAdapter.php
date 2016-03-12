@@ -38,16 +38,16 @@ abstract class AbstractAdapter
         'last_modify'     => null ,
 
         ########################## Ambiente/Arquivos
+        // ambiente
+        'environment'     => null ,
         // Nome do framework para o adapter
         'framework'       => null ,
         // namespace das classes
         'namespace'       => "" ,
-        // ambiente
-        'environment'     => null ,
         // caminho onde os arquivos devem ser criados
         'path'            => 'models' ,
         // flag para gerar pasta com o nome do driver do banco de dados
-        'folder_database' => 0 ,
+        'folder-database' => 0 ,
 
         ############################## Comandos adicionais
         //flag para mostrar o status da execução ao termino do processo
@@ -263,7 +263,7 @@ abstract class AbstractAdapter
             'link' ,
             'last_modify' ,
             'path' ,
-            'folder_database'
+            'folder-database'
         );
 
         if ( in_array ( $str , $arr ) )

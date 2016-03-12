@@ -38,12 +38,6 @@ try
     ) ) );
 
     $configIni = $_path . '/configs/config.ini' ;
-
-    if ( ! is_file ( $configIni ) )
-    {
-        throw new \Exception( "File does not exist: configs/config.ini \n" );
-    }
-
     $maker = new \Classes\MakerFile( new \Classes\Config( getopt ( null , $arrValid ) , $configIni ) );
     $maker->run ();
 

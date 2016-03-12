@@ -23,6 +23,13 @@ class Config
     private $version = "1.0";
 
     /**
+     * String that separates the parent section name
+     *
+     * @var string
+     */
+    protected $sectionSeparator = ':';
+
+    /**
      * @var array
      */
     private $argv = array ();
@@ -37,24 +44,20 @@ class Config
      */
     private $adapterDriver;
 
-    public function __construct ( $argv , $configIni )
+    public function __construct ( $argv, $configIni )
     {
-        if ( array_key_exists ( 'help' , $argv ) )
+        if ( array_key_exists ( 'help', $argv ) )
         {
             die ( $this->getUsage () );
         }
 
-        $configDefaul = parse_ini_file ( $configIni , true );
-        $this->argv = $argv + array_filter ( $configDefaul[ 'main' ] );
+        $configTemp = $this->loadIniFile ( $configIni );
+        $thisSection = isset( $argv[ 'framework' ] ) ? $argv[ 'framework' ] : $configTemp[ 'main' ][ 'framework' ];
+        $configDefaul = $configTemp[ $thisSection ] + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
+        unset( $configTemp );
 
-        if ( strtolower ( $this->argv[ 'framework' ] ) == 'none' )
-        {
-            $this->argv += $configDefaul[ 'none' ];
-        } else
-        {
-            global $_path;
-            require $_path . '/vendor/autoload.php';
-        }
+        $this->argv = $argv + array_filter ( $configDefaul );
+
     }
 
     /**
@@ -76,6 +79,48 @@ parameters:
 
 Data Access Object DAO-generator By: Pedro Alarcao Version: $this->version
 USAGE;
+    }
+
+    /**
+     * Carregar o arquivo ini e pré-processa o separador de seção ':'
+     * no nome da seção (que é usado para a extensão seção) de modo a que a
+     * matriz resultante tem os nomes de seção corretos e as informações de
+     * extensão é armazenado em uma sub-chave
+     *
+     * @param string $filename
+     * @throws \Exception
+     * @return array
+     */
+    protected function loadIniFile ( $filename )
+    {
+        if ( !is_file ( $filename ) )
+        {
+            throw new \Exception( "File does not exist: configs/config.ini \n" );
+        }
+
+        $loaded = parse_ini_file ( $filename, true );
+        $iniArray = array ();
+        foreach ( $loaded as $key => $data )
+        {
+            $pieces = explode ( $this->sectionSeparator, $key );
+            $thisSection = trim ( $pieces[ 0 ] );
+            switch ( count ( $pieces ) )
+            {
+                case 1:
+                    $iniArray[ $thisSection ] = $data;
+                    break;
+
+                case 2:
+                    $extendedSection = trim ( $pieces[ 1 ] );
+                    $iniArray[ $thisSection ] = array_merge ( array ( 'extends' => $extendedSection ), $data );
+                    break;
+
+                default:
+                    throw new \Exception( "Section '$thisSection' may not extend multiple sections in $filename" );
+            }
+        }
+
+        return $iniArray;
     }
 
     /**
@@ -138,7 +183,7 @@ USAGE;
      */
     public function getAdapterConfig ()
     {
-        if ( ! $this->adapterConfig )
+        if ( !$this->adapterConfig )
         {
             $this->factoryConfig ();
         }
@@ -151,7 +196,7 @@ USAGE;
      */
     public function getAdapterDriver ()
     {
-        if ( ! $this->adapterDriver )
+        if ( !$this->adapterDriver )
         {
             $this->factoryDriver ();
         }
