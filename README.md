@@ -23,6 +23,7 @@ Configuration in Frameworks
 in `config.ini` must put the `library` and the file `.ini` of the desired framework
 
 `framework-ini = "C:\Apache24\htdocs\project\application\configs\application.ini"`
+
 `framework-path-library = "C:\Apache24\htdocs\project\library"`
 
 
