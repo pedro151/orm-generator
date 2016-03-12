@@ -17,7 +17,6 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
     const FILE_EntityAbstract = "EntityAbstract.php";
     const FILE_TableAbstract  = "TableAbstract.php";
     public $path;
-
     private function rrmdir ( $dir )
     {
         if ( is_dir ( $dir ) )
@@ -79,6 +78,8 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
     {
         $configIni = $this->path . '/configs/config.ini';
 
+        global $_path;
+        $_path='';
         $maker = new MakerFile(
             new Config(
                 array (
@@ -102,7 +103,8 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
     public function testLocationDatabaseFalse ()
     {
         $configIni = $this->path . '/configs/config.ini';
-
+        global $_path;
+        $_path='';
         $maker = new MakerFile(
             new Config(
                 array (
@@ -125,7 +127,8 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
     public function testLocationSchemaOff ()
     {
         $configIni = $this->path . '/configs/config.ini';
-
+        global $_path;
+        $_path='';
         $maker = new MakerFile(
             new Config(
                 array (
