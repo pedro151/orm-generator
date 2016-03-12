@@ -14,22 +14,61 @@ use Classes\MakerFile;
 
 class MakerFileTest extends \PHPUnit_Framework_TestCase
 {
+    const FILE_EntityAbstract = "EntityAbstract.php";
+    const FILE_TableAbstract  = "TableAbstract.php";
+    public $path;
+
+    private function rrmdir ( $dir )
+    {
+        if ( is_dir ( $dir ) )
+        {
+            $objects = scandir ( $dir );
+            foreach ( $objects as $object )
+            {
+                if ( $object != "." && $object != ".." )
+                {
+                    if ( is_dir ( $dir . "/" . $object ) )
+                    {
+                        $this->rrmdir ( $dir . "/" . $object );
+                    }
+                    else
+                    {
+                        unlink ( $dir . "/" . $object );
+                    }
+                }
+            }
+            rmdir ( $dir );
+        }
+    }
+
+
+    protected function setUp ()
+    {
+        //C:\Apache24\htdocs\DAO-Generator\models\"
+        $this->path = realpath ( __DIR__ . '/../../' );
+    }
+
 
     public function testFactory ()
     {
         $names = array (
-            'DbTable' ,
-            'Entity' ,
+            'DbTable',
+            'Entity',
             ''
         );
 
-        $configIni = realpath ( __DIR__ . '/../../configs/config.ini' );
+        $configIni = $this->path . '/configs/config.ini';
 
-        $maker = new MakerFile( new Config( array (
-            'schema' => array (
-                'public' , 'quiz'
+        $maker = new MakerFile(
+            new Config(
+                array (
+                    'schema' => array (
+                        'public',
+                        'quiz'
+                    )
+                ), $configIni
             )
-        ) , $configIni ) );
+        );
         foreach ( $maker->factoryMakerFile () as $key => $obj )
         {
             $this->assertTrue ( $obj->getPastName () == $names[ $key ] );
@@ -38,15 +77,25 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
 
     public function testLocation ()
     {
-        $configIni = realpath ( __DIR__ . '/../../configs/config.ini' );
+        $configIni = $this->path . '/configs/config.ini';
 
-        $maker = new MakerFile( new Config( array (
-            'database' => 'postgres' ,
-            'schema'   => array (
-                'public'
+        $maker = new MakerFile(
+            new Config(
+                array (
+                    'schema' => array (
+                        'public',
+                        'quiz'
+                    )
+                ), $configIni
             )
-        ) , $configIni ) );
+        );
 
-        // $maker->run ();
+        $maker->parseLocation ();
+
+        foreach ( $maker->location as $index => $item )
+        {
+            $this->assertTrue ( $item == '\models\\' . ucfirst ( $index ) );
+        }
+
     }
 }
