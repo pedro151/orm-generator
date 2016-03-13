@@ -44,6 +44,7 @@ try
 {
     $arrValid = array (
         'help' ,
+        'config-ini',
         'database:' ,
         'schema:' ,
         'driver:' ,
@@ -54,14 +55,7 @@ try
 
     $_path = realpath ( __DIR__ );
 
-    $configIni = $_path . '/configs/config.ini';
-
-    if ( ! is_file ( $configIni ) )
-    {
-        throw new \Exception( "File does not exist: $configIni \n" );
-    }
-
-    $maker = new \Classes\MakerFile( new \Classes\Config( getopt ( null , $arrValid ) , $configIni ) );
+    $maker = new \Classes\MakerFile( new \Classes\Config( getopt ( null , $arrValid ) ) );
     $maker->run ();
 
 } catch ( \Exception $e )

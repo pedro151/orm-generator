@@ -44,23 +44,19 @@ class Config
      */
     private $adapterDriver;
 
-    public function __construct ( $argv, $configIni )
+    public function __construct ( $argv )
     {
         if ( array_key_exists ( 'help', $argv ) )
         {
             die ( $this->getUsage () );
         }
-
-        $configTemp = $this->loadIniFile ( $configIni );
-        $thisSection = isset( $argv[ 'framework' ] ) ? $argv[ 'framework' ] : $configTemp[ 'main' ][ 'framework' ];
-        $configDefaul = $configTemp[ $thisSection ] + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
-        unset( $configTemp );
-
-        $this->argv = $argv + array_filter ( $configDefaul );
-
+        global $_path;
+        $this->argv = $this->parseConfig ( $_path, $argv );
     }
 
     /**
+     * Lista de ajuda quando digita 'help'
+     *
      * @return string
      */
     public function getUsage ()
@@ -68,6 +64,7 @@ class Config
         return <<<USAGE
 parameters:
     --database            : database name
+    --config-ini          : reference to another .ini file configuration (relative path)
  *  --schema              : database schema name (one or more than one)
     --driver              : database driver name (Ex.: pgsql)
     --framework           : name framework used, which has the contents of the database configurations
@@ -80,6 +77,38 @@ parameters:
 Data Access Object DAO-generator By: Pedro Alarcao Version: $this->version
 USAGE;
     }
+
+    /**
+     * Analisa e estrutura a Configuracao do generate
+     *
+     * @param $_path
+     * @param $argv
+     * @return array
+     * @throws \Exception
+     */
+    private function parseConfig ( $_path, $argv )
+    {
+        $configIni = isset( $argv[ 'config-ini' ] ) ? $_path . $argv[ 'config-ini' ] : $_path . '/configs/config.ini';
+
+        $configTemp = $this->loadIniFile ( $configIni );
+
+        if ( !isset( $configTemp[ key ( $configTemp ) ][ 'framework' ] ) or isset( $argv[ 'framework' ] ) )
+        {
+            throw new \Exception( "configure which framework you want to use! \n" );
+        }
+        $thisSection = isset( $argv[ 'framework' ] ) ?
+            $argv[ 'framework' ] :
+            $configTemp[ key ( $configTemp ) ][ 'framework' ];
+
+        $configCurrent = $configTemp[ key ( $configTemp ) ];
+        if ( isset( $configTemp[ $thisSection ][ 'extends' ] ) )
+        {
+            $configCurrent = $configTemp[ $thisSection ] + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
+        }
+
+        return $argv + array_filter ( $configCurrent );
+    }
+
 
     /**
      * Carregar o arquivo ini e pré-processa o separador de seção ':'
@@ -95,7 +124,7 @@ USAGE;
     {
         if ( !is_file ( $filename ) )
         {
-            throw new \Exception( "File does not exist: configs/config.ini \n" );
+            throw new \Exception( "configuration file does not exist! \n" );
         }
 
         $loaded = parse_ini_file ( $filename, true );

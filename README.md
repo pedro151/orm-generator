@@ -39,6 +39,7 @@ Configurations optionals
 | Command        | description       |
 |----------------|------------------|
 |--help          | help command explaining all the options and manner of use |
+|--config-ini    | reference to another .ini file configuration (relative path) |
 |--status        | show status of implementation carried out after completing the process |
 |--database      | database name     |
 |--schema        | database schema name (one or more than one)    |
