@@ -40,7 +40,6 @@ class MakerFile
 
     public function __construct ( Config $config )
     {
-        $this->startTime ();
         $this->config = $config->getAdapterConfig ();
         $this->driver = $config->getAdapterDriver ();
         $this->parseLocation ( $config->_basePath );
@@ -111,6 +110,8 @@ class MakerFile
      */
     public function run ()
     {
+        $this->startTime ();
+        $this->driver->runDatabase();
         $max = $this->driver->getTotalTables () * count ( $this->factoryMakerFile () );
         $cur = 0;
 

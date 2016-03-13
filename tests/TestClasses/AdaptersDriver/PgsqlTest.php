@@ -35,6 +35,7 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
 
         $this->parseObj ();
         $this->objDriver = new Pgsql( $this->objAdapterConfig );
+        $this->objDriver->runDatabase();
     }
 
     protected function tearDown ()

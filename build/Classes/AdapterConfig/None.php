@@ -13,11 +13,6 @@ use Classes\AdapterMakerFile\ZendFrameworkOne\Model;
 class None extends AbstractAdapter
 {
 
-    /**
-     * @var string
-     */
-    protected $framework = "none";
-
     const SEPARETOR = "_";
 
     protected function init ()
@@ -34,7 +29,7 @@ class None extends AbstractAdapter
 
     }
 
-    protected function parseFrameworkConfig ( $frameworkIni = null )
+    protected function parseFrameworkConfig ()
     {
         // TODO: Implement parseFrameworkConfig() method.
     }
@@ -42,7 +37,7 @@ class None extends AbstractAdapter
     public function createClassNamespace ( $table )
     {
         $arrNames = array (
-            $this->arrConfig[ 'namespace' ] ,
+            $this->arrConfig[ 'namespace' ],
             'Model'
         );
         if ( $table->hasSchema () )
@@ -50,7 +45,7 @@ class None extends AbstractAdapter
             $arrNames[] = ucfirst ( $table->getSchema () );
         }
 
-        return implode ( '_' , array_filter ( $arrNames ) );
+        return implode ( '_', array_filter ( $arrNames ) );
     }
 
     /**
@@ -61,8 +56,8 @@ class None extends AbstractAdapter
     public function getMakeFileInstances ()
     {
         return array (
-            DbTable::getInstance () ,
-            Entity::getInstance () ,
+            DbTable::getInstance (),
+            Entity::getInstance (),
             Model::getInstance ()
         );
     }

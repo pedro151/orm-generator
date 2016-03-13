@@ -119,7 +119,7 @@ abstract class AbsractAdapter
     {
         if ( !isset( $this->objDbTables[ $schema ] ) )
         {
-            return array();
+            return array ();
         }
 
         return $this->objDbTables[ $schema ];
@@ -170,6 +170,15 @@ abstract class AbsractAdapter
         $this->password = $adapterConfig->getPassword ();
         $this->socket = $adapterConfig->getSocket ();
 
+    }
+
+    /**
+     * Executa as consultas do banco de dados
+     */
+    public function runDatabase ()
+    {
+        $this->parseTables ();
+        $this->parseForeignKeys ();
     }
 
     /**

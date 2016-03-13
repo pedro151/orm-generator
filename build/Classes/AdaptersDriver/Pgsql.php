@@ -61,8 +61,6 @@ class Pgsql extends AbsractAdapter
             $this->schema = $adapterConfig->getSchemas ();
         }
 
-        $this->parseTables ();
-        $this->parseForeignKeys ();
     }
 
     /**
