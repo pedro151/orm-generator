@@ -43,18 +43,17 @@ class MakerFile
         $this->startTime ();
         $this->config = $config->getAdapterConfig ();
         $this->driver = $config->getAdapterDriver ();
-        $this->parseLocation ();
+        $this->parseLocation ( $config->_basePath );
     }
 
     /**
      * Analisa os caminhos das pastas base
      */
-    public function parseLocation ()
+    public function parseLocation ( $basePath )
     {
-        global $_path;
 
         $arrBase = array (
-            dirname ( $_path ),
+            $basePath,
             $this->config->path
         );
 

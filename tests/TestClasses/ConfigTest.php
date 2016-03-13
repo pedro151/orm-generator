@@ -14,6 +14,11 @@ use Classes\Config;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp ()
+    {
+        $this->basePath =  dirname($GLOBALS[ 'base_path' ]);
+    }
+
 
     public function testAdapterDriver ()
     {
@@ -22,7 +27,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 'framework' => 'none',
                 'database'  => 'dao_generator',
                 'driver'    => 'pgsql'
-            )
+            ),
+            $this->basePath
         );
 
         $driver = $config->getAdapterDriver ();
@@ -37,7 +43,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             array (
                 'database' => 'dao_generator',
                 'driver'   => 'pgsql'
-            )
+            ),
+            $this->basePath
         );
         $config = $config->getAdapterConfig ();
         $strAuthor = $config->author;

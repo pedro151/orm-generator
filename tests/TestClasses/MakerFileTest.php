@@ -16,7 +16,13 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
 {
     const FILE_EntityAbstract = "EntityAbstract.php";
     const FILE_TableAbstract  = "TableAbstract.php";
-    public $path;
+    public $basePath;
+
+    protected function setUp ()
+    {
+        $this->basePath = dirname ( $GLOBALS[ 'base_path' ] );
+    }
+
 
     private function rrmdir ( $dir )
     {
@@ -56,7 +62,8 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                         'public',
                         'quiz'
                     )
-                )
+                ),
+                $this->basePath
             )
         );
         foreach ( $maker->factoryMakerFile () as $key => $obj )
@@ -76,13 +83,13 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                         'public',
                         'quiz',
                     )
-                )
+                ),
+                $this->basePath
             )
         );
 
-        global $_path;
         $arrBase = array (
-            dirname ( $_path ),
+            $this->basePath,
             'models',
             'Pgsql'
         );
@@ -109,13 +116,13 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                         'public',
                         'quiz',
                     )
-                )
+                ),
+                $this->basePath
             )
         );
 
-        global $_path;
         $arrBase = array (
-            dirname ( $_path ),
+            $this->basePath,
             'models'
         );
 
@@ -137,13 +144,13 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                     'folder-database' => false,
                     'driver'          => 'pgsql',
                     'schema'          => array ()
-                )
+                ),
+                $this->basePath
             )
         );
 
-        global $_path;
         $arrBase = array (
-            dirname ( $_path ),
+            $this->basePath,
             'models'
         );
         foreach ( $maker->location as $index => $item )

@@ -40,7 +40,7 @@ try
             )
     );
 
-    $maker = new \Classes\MakerFile( new \Classes\Config( getopt ( null, $arrValid ) ) );
+    $maker = new \Classes\MakerFile( new \Classes\Config( getopt ( null, $arrValid ), $_path ) );
     $maker->run ();
 
 }

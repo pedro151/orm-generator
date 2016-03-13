@@ -4,7 +4,7 @@
         <var name="db_dsn" value="pgsql:host=localhost;port=5432;dbname=dao_generator"/>
         <var name="db_username" value="postgres"/>
         <var name="db_password" value="123"/>
-        <var name="_path" value="__FILE__" />
+        <var name="base_path" value="__FILE__" />
     </php>
 
     <testsuites>

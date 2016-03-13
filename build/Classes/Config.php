@@ -35,6 +35,10 @@ class Config
     private $configIniDefault = '/configs/config.ini';
 
     /**
+     * @var string
+     */
+    public $_basePath;
+    /**
      * @var array
      */
     private $argv = array ();
@@ -49,14 +53,14 @@ class Config
      */
     private $adapterDriver;
 
-    public function __construct ( $argv )
+    public function __construct ( $argv, $basePath )
     {
         if ( array_key_exists ( 'help', $argv ) )
         {
             die ( $this->getUsage () );
         }
-        global $_path;
-        $this->argv = $this->parseConfig ( $_path, $argv );
+
+        $this->argv = $this->parseConfig ( $basePath, $argv );
     }
 
     /**
@@ -91,9 +95,11 @@ USAGE;
      * @return array
      * @throws \Exception
      */
-    private function parseConfig ( $_path, $argv )
+    private function parseConfig ( $basePath, $argv )
     {
-        $configIni = isset( $argv[ 'config-ini' ] ) ? dirname($_path) . $argv[ 'config-ini' ] : dirname($_path) . $this->configIniDefault;
+        $this->_basePath = dirname ( $basePath );
+
+        $configIni = isset( $argv[ 'config-ini' ] ) ? $this->_basePath . $argv[ 'config-ini' ] : $this->_basePath . $this->configIniDefault;
         $configTemp = $this->loadIniFile ( $configIni );
 
         if ( !isset( $configTemp[ key ( $configTemp ) ][ 'framework' ] ) && !isset( $argv[ 'framework' ] ) )
