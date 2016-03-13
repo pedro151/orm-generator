@@ -30,6 +30,11 @@ class Config
     protected $sectionSeparator = ':';
 
     /**
+     * @var string
+     */
+    private $configIniDefault = '/configs/config.ini';
+
+    /**
      * @var array
      */
     private $argv = array ();
@@ -81,18 +86,17 @@ USAGE;
     /**
      * Analisa e estrutura a Configuracao do generate
      *
-     * @param $_path
-     * @param $argv
+     * @param string $_path
+     * @param array $argv
      * @return array
      * @throws \Exception
      */
     private function parseConfig ( $_path, $argv )
     {
-        $configIni = isset( $argv[ 'config-ini' ] ) ? $_path . $argv[ 'config-ini' ] : $_path . '/configs/config.ini';
-
+        $configIni = isset( $argv[ 'config-ini' ] ) ? dirname($_path) . $argv[ 'config-ini' ] : dirname($_path) . $this->configIniDefault;
         $configTemp = $this->loadIniFile ( $configIni );
 
-        if ( !isset( $configTemp[ key ( $configTemp ) ][ 'framework' ] ) or isset( $argv[ 'framework' ] ) )
+        if ( !isset( $configTemp[ key ( $configTemp ) ][ 'framework' ] ) && !isset( $argv[ 'framework' ] ) )
         {
             throw new \Exception( "configure which framework you want to use! \n" );
         }

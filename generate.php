@@ -53,7 +53,7 @@ try
         'path:'
     );
 
-    $_path = realpath ( __DIR__ );
+    $_path = realpath ( __FILE__ );
 
     $maker = new \Classes\MakerFile( new \Classes\Config( getopt ( null , $arrValid ) ) );
     $maker->run ();

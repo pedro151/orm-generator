@@ -34,16 +34,13 @@ try
     );
 
     $_path = realpath (
-        dirname (
             str_replace (
                 'phar://'
                 , '', __DIR__
             )
-        )
     );
 
-    $configIni = $_path . '/configs/config.ini';
-    $maker = new \Classes\MakerFile( new \Classes\Config( getopt ( null, $arrValid ), $configIni ) );
+    $maker = new \Classes\MakerFile( new \Classes\Config( getopt ( null, $arrValid ) ) );
     $maker->run ();
 
 }

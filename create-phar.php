@@ -8,9 +8,9 @@ define ( 'INCLUDE_EXTENSION', '/\.php$/' );
 
 try
 {
-    if ( file_exists ( PHAR_FILE ) )
+    if ( file_exists ( PHAR_OUTPUT ) )
     {
-        unlink ( PHAR_FILE );
+        unlink ( PHAR_OUTPUT );
     }
 
     /****************************************

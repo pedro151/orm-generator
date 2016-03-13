@@ -41,14 +41,6 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-
-    protected function setUp ()
-    {
-        //C:\Apache24\htdocs\DAO-Generator\models\"
-        $this->path = realpath ( __DIR__ . '/../../' );
-    }
-
-
     public function testFactory ()
     {
         $names = array (
@@ -57,8 +49,6 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
             ''
         );
 
-        $configIni = $this->path . '/configs/config.ini';
-
         $maker = new MakerFile(
             new Config(
                 array (
@@ -66,7 +56,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                         'public',
                         'quiz'
                     )
-                ), $configIni
+                )
             )
         );
         foreach ( $maker->factoryMakerFile () as $key => $obj )
@@ -77,10 +67,6 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
 
     public function testLocationDatabaseTrue ()
     {
-        $configIni = $this->path . '/configs/config.ini';
-
-        global $_path;
-        $_path = '';
         $maker = new MakerFile(
             new Config(
                 array (
@@ -90,12 +76,13 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                         'public',
                         'quiz',
                     )
-                ), $configIni
+                )
             )
         );
 
+        global $_path;
         $arrBase = array (
-            '',
+            dirname ( $_path ),
             'models',
             'Pgsql'
         );
@@ -113,9 +100,6 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
 
     public function testLocationDatabaseFalse ()
     {
-        $configIni = $this->path . '/configs/config.ini';
-        global $_path;
-        $_path = '';
         $maker = new MakerFile(
             new Config(
                 array (
@@ -125,12 +109,13 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                         'public',
                         'quiz',
                     )
-                ), $configIni
+                )
             )
         );
 
+        global $_path;
         $arrBase = array (
-            '',
+            dirname ( $_path ),
             'models'
         );
 
@@ -146,21 +131,19 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
 
     public function testLocationSchemaOff ()
     {
-        $configIni = $this->path . '/configs/config.ini';
-        global $_path;
-        $_path = '';
         $maker = new MakerFile(
             new Config(
                 array (
                     'folder-database' => false,
                     'driver'          => 'pgsql',
                     'schema'          => array ()
-                ), $configIni
+                )
             )
         );
 
+        global $_path;
         $arrBase = array (
-            '',
+            dirname ( $_path ),
             'models'
         );
         foreach ( $maker->location as $index => $item )

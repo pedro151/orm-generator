@@ -54,18 +54,18 @@ class MakerFile
         global $_path;
 
         $arrBase = array (
-            $_path ,
+            dirname ( $_path ),
             $this->config->path
         );
 
         # pasta com nome do driver do banco
         if ( $this->config->{"folder-database"} )
         {
-            $classDriver = explode ( '\\' , get_class ( $this->driver ) );
+            $classDriver = explode ( '\\', get_class ( $this->driver ) );
             $arrBase[] = end ( $classDriver );
         }
 
-        $this->baseLocation = implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrBase ) );
+        $this->baseLocation = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrBase ) );
 
         if ( $this->config->hasSchemas () )
         {
@@ -73,14 +73,15 @@ class MakerFile
             foreach ( $schemas as $schema )
             {
                 $this->location[ $schema ] = implode (
-                    DIRECTORY_SEPARATOR , array (
-                        $this->baseLocation ,
-                        ucfirst ( $schema )
-                    )
+                    DIRECTORY_SEPARATOR, array (
+                                           $this->baseLocation,
+                                           ucfirst ( $schema )
+                                       )
                 );
             }
 
-        } else
+        }
+        else
         {
             $this->location = array ( $this->baseLocation );
         }
@@ -103,7 +104,7 @@ class MakerFile
 
     private function getRunTime ()
     {
-        return round ( ( microtime ( true ) - $this->startTime ) , 3 );
+        return round ( ( microtime ( true ) - $this->startTime ), 3 );
     }
 
     /**
@@ -125,12 +126,12 @@ class MakerFile
                 if ( $objMakeFile->getParentFileTpl () != '' )
                 {
                     $fileAbstract = $this->baseLocation
-                                    . DIRECTORY_SEPARATOR
-                                    . $objMakeFile->getParentClass () . '.php';
+                        . DIRECTORY_SEPARATOR
+                        . $objMakeFile->getParentClass () . '.php';
 
                     $tplAbstract = $this->getParsedTplContents ( $objMakeFile->getParentFileTpl () );
-                    $this->makeSourcer ( $fileAbstract , $tplAbstract );
-                    unset( $fileAbstract , $tplAbstract );
+                    $this->makeSourcer ( $fileAbstract, $tplAbstract );
+                    unset( $fileAbstract, $tplAbstract );
                 }
 
                 foreach (
@@ -138,20 +139,20 @@ class MakerFile
                 )
                 {
                     $total = ( $cur / $max * 100 );
-                    printf ( "\r Creating: %6.2f%%" , ceil ( $total ) );
-                    $cur ++;
+                    printf ( "\r Creating: %6.2f%%", ceil ( $total ) );
+                    $cur++;
 
                     $file = $path
-                            . DIRECTORY_SEPARATOR
-                            . $this->getClassName ( $objTables->getName () )
-                            . '.php';
+                        . DIRECTORY_SEPARATOR
+                        . $this->getClassName ( $objTables->getName () )
+                        . '.php';
 
 
                     $tpl = $this->getParsedTplContents (
-                        $objMakeFile->getFileTpl () , $objTables , $objMakeFile ,
-                        $objMakeFile->parseRelation ( $this , $objTables )
+                        $objMakeFile->getFileTpl (), $objTables, $objMakeFile,
+                        $objMakeFile->parseRelation ( $this, $objTables )
                     );
-                    $this->makeSourcer ( $file , $tpl );
+                    $this->makeSourcer ( $file, $tpl );
                 }
 
             }
@@ -169,10 +170,10 @@ class MakerFile
             $countDir = $this->countDiretory ();
             $totalTable = $this->driver->getTotalTables ();
             echo "\n------";
-            printf ( "\n\r-Files generated:%s" , $countFiles );
-            printf ( "\n\r-Diretory generated:%s" , $databases * $countDir );
-            printf ( "\n\r-Scanned tables:%s" , $totalTable );
-            printf ( "\n\r-Execution time: %ssec" , $this->getRunTime () );
+            printf ( "\n\r-Files generated:%s", $countFiles );
+            printf ( "\n\r-Diretory generated:%s", $databases * $countDir );
+            printf ( "\n\r-Scanned tables:%s", $totalTable );
+            printf ( "\n\r-Execution time: %ssec", $this->getRunTime () );
             echo "\n------";
         }
     }
@@ -199,7 +200,7 @@ class MakerFile
         {
             if ( $abstractAdapter->hasDiretory () )
             {
-                $dir ++;
+                $dir++;
             }
         }
 
@@ -213,20 +214,20 @@ class MakerFile
      */
     private function makeDir ( $dir )
     {
-        if ( ! is_dir ( $dir ) )
+        if ( !is_dir ( $dir ) )
         {
-            if ( ! @mkdir ( $dir , 0755 , true ) )
+            if ( !@mkdir ( $dir, 0755, true ) )
             {
                 die( "error: could not create directory $dir\n" );
             }
         }
     }
 
-    private function makeSourcer ( $modelFile , $modelData )
+    private function makeSourcer ( $modelFile, $modelData )
     {
-        if ( ! is_file ( $modelFile ) )
+        if ( !is_file ( $modelFile ) )
         {
-            if ( ! file_put_contents ( $modelFile , $modelData ) )
+            if ( !file_put_contents ( $modelFile, $modelData ) )
             {
                 die( "Error: could not write model file $modelFile." );
             }
@@ -242,7 +243,7 @@ class MakerFile
     public function getClassName ( $str )
     {
         $temp = '';
-        foreach ( explode ( self::SEPARETOR , $str ) as $part )
+        foreach ( explode ( self::SEPARETOR, $str ) as $part )
         {
             $temp .= ucfirst ( $part );
         }
@@ -258,7 +259,7 @@ class MakerFile
      *
      * @return String
      */
-    public function getParsedTplContents ( $tplFile , \Classes\Db\DbTable $objTables = null , $objMakeFile = null , $vars = array () )
+    public function getParsedTplContents ( $tplFile, \Classes\Db\DbTable $objTables = null, $objMakeFile = null, $vars = array () )
     {
         if ( empty( $vars ) )
         {
@@ -267,12 +268,12 @@ class MakerFile
 
         $arrUrl = array (
             __DIR__,
-            'templates' ,
-            $this->config->framework ,
+            'templates',
+            $this->config->framework,
             $tplFile
         );
 
-        $filePath = implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrUrl ) );
+        $filePath = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrUrl ) );
 
         extract ( $vars );
         ob_start ();

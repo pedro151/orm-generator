@@ -17,13 +17,13 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testAdapterDriver ()
     {
-        $configIni = realpath ( __DIR__ . '/../../configs/config.ini' );
-
-        $config = new Config( array (
-            'framework' => 'none' ,
-            'database'  => 'dao_generator' ,
-            'driver'    => 'pgsql'
-        ), $configIni );
+        $config = new Config(
+            array (
+                'framework' => 'none',
+                'database'  => 'dao_generator',
+                'driver'    => 'pgsql'
+            )
+        );
 
         $driver = $config->getAdapterDriver ();
         $table = $driver->getTables ();
@@ -33,12 +33,12 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testAdapterConfig ()
     {
-        $configIni = realpath ( __DIR__ . '/../../configs/config.ini' );
-
-        $config = new Config( array (
-            'database' => 'dao_generator' ,
-            'driver'   => 'pgsql'
-        ), $configIni );
+        $config = new Config(
+            array (
+                'database' => 'dao_generator',
+                'driver'   => 'pgsql'
+            )
+        );
         $config = $config->getAdapterConfig ();
         $strAuthor = $config->author;
         $this->assertTrue ( $strAuthor == ucfirst ( get_current_user () ) );
