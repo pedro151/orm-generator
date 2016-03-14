@@ -22,25 +22,61 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
      */
     private $objDriver;
 
+    /**
+     * http://framework.zend.com/manual/1.12/en/zend.db.adapter.html#zend.db.adapter.example-database
+     */
     protected function setUp ()
     {
-        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ] , $GLOBALS[ 'db_username' ] , $GLOBALS[ 'db_password' ] );
-        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE , \PDO::ERRMODE_EXCEPTION );
-        $this->pdo->query ( "CREATE TABLE dao (test VARCHAR(50) NOT NULL)" );
+        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ], $GLOBALS[ 'db_username' ], $GLOBALS[ 'db_password' ] );
+        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
+        $this->pdo->query (
+            "CREATE TABLE accounts (
+      account_name      VARCHAR(100) NOT NULL PRIMARY KEY
+    );"
+        );
+
+        $this->pdo->query (
+            "CREATE TABLE products (
+      product_id        INTEGER NOT NULL PRIMARY KEY,
+      product_name      VARCHAR(100)
+    );"
+        );
+
+        $this->pdo->query (
+            "CREATE TABLE bugs (
+      bug_id            INTEGER NOT NULL PRIMARY KEY,
+      bug_description   VARCHAR(100),
+      bug_status        VARCHAR(20),
+      reported_by       VARCHAR(100) REFERENCES accounts(account_name),
+      assigned_to       VARCHAR(100) REFERENCES accounts(account_name),
+      verified_by       VARCHAR(100) REFERENCES accounts(account_name)
+    );"
+        );
+
+        $this->pdo->query (
+            "CREATE TABLE bugs_products (
+      bug_id            INTEGER NOT NULL REFERENCES bugs,
+      product_id        INTEGER NOT NULL REFERENCES products,
+      PRIMARY KEY       (bug_id, product_id)
+    );"
+        );
 
         $this->objAdapterConfig = $this->getMockBuilder ( '\Classes\AdapterConfig\ZendFrameworkOne' )
-                                       ->disableOriginalConstructor ( 0 )
-                                       ->setMethods ( array ( 'getParams' ) )
-                                       ->getMock ();
+            ->disableOriginalConstructor ( 0 )
+            ->setMethods ( array ( 'getParams' ) )
+            ->getMock ();
 
         $this->parseObj ();
         $this->objDriver = new Pgsql( $this->objAdapterConfig );
-        $this->objDriver->runDatabase();
+        $this->objDriver->runDatabase ();
     }
 
     protected function tearDown ()
     {
-        $this->pdo->query ( "DROP TABLE dao" );
+        $this->pdo->query ( "DROP TABLE bugs_products" );
+        $this->pdo->query ( "DROP TABLE bugs" );
+        $this->pdo->query ( "DROP TABLE products" );
+        $this->pdo->query ( "DROP TABLE accounts" );
     }
 
     protected function parseObj ()
@@ -49,15 +85,15 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
         $property = $class->getProperty ( 'arrConfig' );
         $property->setAccessible ( true );
         $property->setValue (
-            $this->objAdapterConfig , array (
-                'driver'    => 'pdo_pgsql' ,
-                'host'      => 'localhost' ,
-                'database'  => 'dao_generator' ,
-                'username'  => 'postgres' ,
-                'socket'    => null ,
-                'password'  => '123' ,
-                'namespace' => ''
-            )
+            $this->objAdapterConfig, array (
+                                       'driver'    => 'pdo_pgsql',
+                                       'host'      => 'localhost',
+                                       'database'  => 'dao_generator',
+                                       'username'  => 'postgres',
+                                       'socket'    => null,
+                                       'password'  => '123',
+                                       'namespace' => ''
+                                   )
         );
 
         return $property;
@@ -82,11 +118,11 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
     public function testGetTables ()
     {
         $this->assertTrue (
-            $this->objDriver->getTable ( "public.dao", "public" ) instanceof
+            $this->objDriver->getTable ( "public.accounts", "public" ) instanceof
             \Classes\Db\DbTable
         );
-        $arrTables = $this->objDriver->getTables ('public');
-        $this->assertTrue ( $arrTables[ "public.dao" ] instanceof \Classes\Db\DbTable );
+        $arrTables = $this->objDriver->getTables ( 'public' );
+        $this->assertTrue ( $arrTables[ "public.accounts" ] instanceof \Classes\Db\DbTable );
     }
 
     public function testTotalTables ()
