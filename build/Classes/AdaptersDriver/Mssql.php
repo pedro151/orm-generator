@@ -57,7 +57,7 @@ class Mssql extends AbsractAdapter
      * @param string $databaseName
      * @return \Classes\Db\DbTable[]
      */
-    public function getTables($databaseName)
+    public function getTables($schema = 0)
     {
         // TODO: implement here
         return array();

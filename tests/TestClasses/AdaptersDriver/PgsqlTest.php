@@ -28,8 +28,8 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp ()
     {
-        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ] , $GLOBALS[ 'db_username' ] , $GLOBALS[ 'db_password' ] );
-        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE , \PDO::ERRMODE_EXCEPTION );
+        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ], $GLOBALS[ 'db_username' ], $GLOBALS[ 'db_password' ] );
+        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
         $this->pdo->query (
             "CREATE TABLE accounts (
               account_name      VARCHAR(100) NOT NULL PRIMARY KEY
@@ -80,15 +80,15 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
      */
     protected function getDataBaseDrive ()
     {
-        if ( ! $this->objDriver )
+        if ( !$this->objDriver )
         {
             $arrConfig = array (
-                'driver'    => 'pdo_pgsql' ,
-                'host'      => 'localhost' ,
-                'database'  => 'dao_generator' ,
-                'username'  => 'postgres' ,
-                'socket'    => null ,
-                'password'  => '123' ,
+                'driver'    => 'pdo_pgsql',
+                'host'      => 'localhost',
+                'database'  => 'dao_generator',
+                'username'  => 'postgres',
+                'socket'    => null,
+                'password'  => '123',
                 'namespace' => ''
             );
 
@@ -109,6 +109,7 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
 
     public function testSQLSequence ()
     {
+        var_dump ( $this->getDataBaseDrive ()->getSequence ( 'bugs', 'bug_id' ) );
 
     }
 
@@ -127,13 +128,13 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
                 {
                     case "FOREIGN KEY":
                     {
-                        $this->assertEquals ( 'accounts' , $contrstrant[ "foreign_table" ] );
-                        $this->assertEquals ( 'account_name' , $contrstrant[ "foreign_column" ] );
+                        $this->assertEquals ( 'accounts', $contrstrant[ "foreign_table" ] );
+                        $this->assertEquals ( 'account_name', $contrstrant[ "foreign_column" ] );
                         break;
                     }
                     case "PRIMARY KEY":
                     {
-                        $this->assertEquals ( 'bugs' , $contrstrant[ "foreign_table" ] );
+                        $this->assertEquals ( 'bugs', $contrstrant[ "foreign_table" ] );
                     }
 
                 };
@@ -143,16 +144,21 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
     }
 
 
-
     /**
      *
      */
     public function testGetListNameTable ()
     {
-        $this->assertTrue ( is_array ( $this->getDataBaseDrive ()
-                                            ->getListNameTable () ) );
-        $this->assertTrue ( count ( $this->getDataBaseDrive ()->getListNameTable () )
-                            > 0 );
+        $this->assertTrue (
+            is_array (
+                $this->getDataBaseDrive ()
+                    ->getListNameTable ()
+            )
+        );
+        $this->assertTrue (
+            count ( $this->getDataBaseDrive ()->getListNameTable () )
+            > 0
+        );
     }
 
     /**
@@ -169,13 +175,15 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
     public function testGetTables ()
     {
         $this->assertTrue (
-            $this->getDataBaseDrive ()->getTable ( "public.accounts" , "public" )
+            $this->getDataBaseDrive ()->getTable ( "public.accounts", "public" )
             instanceof
             \Classes\Db\DbTable
         );
         $arrTables = $this->getDataBaseDrive ()->getTables ( 'public' );
-        $this->assertTrue ( $arrTables[ "public.accounts" ] instanceof
-                            \Classes\Db\DbTable );
+        $this->assertTrue (
+            $arrTables[ "public.accounts" ] instanceof
+            \Classes\Db\DbTable
+        );
     }
 
     /**
