@@ -3,10 +3,8 @@
 namespace Classes;
 
 use Classes\AdapterMakerFile\AbstractAdapter;
-use Classes\AdapterMakerFile\DbTable;
-use Classes\AdapterMakerFile\Entity;
-use Classes\AdapterMakerFile\Model;
 
+require_once 'Classes/AdapterMakerFile/AbstractAdapter.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>

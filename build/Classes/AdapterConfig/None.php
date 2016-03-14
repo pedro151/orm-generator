@@ -6,6 +6,11 @@ use Classes\AdapterMakerFile\ZendFrameworkOne\DbTable;
 use Classes\AdapterMakerFile\ZendFrameworkOne\Entity;
 use Classes\AdapterMakerFile\ZendFrameworkOne\Model;
 
+require_once "Classes/AdapterConfig/AbstractAdapter.php";
+require_once "Classes/AdapterMakerFile/ZendFrameworkOne/DbTable.php";
+require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Entity.php";
+require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Model.php";
+
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
  * @link   https://github.com/pedro151/DAO-Generator

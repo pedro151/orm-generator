@@ -7,6 +7,11 @@ use Classes\Db\Column;
 use Classes\Db\Constrant;
 use Classes\Db\DbTable;
 
+require_once 'Classes/AdaptersDriver/AbsractAdapter.php';
+require_once 'Classes/Db/Column.php';
+require_once 'Classes/Db/Constrant.php';
+require_once 'Classes/Db/DbTable.php';
+
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
  * @link   https://github.com/pedro151/DAO-Generator

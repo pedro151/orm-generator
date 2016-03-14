@@ -204,7 +204,7 @@ abstract class AbsractAdapter
                     $pdoString, $this->username, $this->password
                 );
             }
-            catch ( Exception $e )
+            catch ( \Exception $e )
             {
                 die ( "pdo error: " . $e->getMessage () . "\n" );
             }
