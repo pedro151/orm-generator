@@ -109,7 +109,7 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
 
     public function testSQLSequence ()
     {
-        var_dump ( $this->getDataBaseDrive ()->getSequence ( 'bugs', 'bug_id' ) );
+        $this->assertEquals ( 'public.bugs_bug_id_seq', $this->getDataBaseDrive ()->getSequence ( 'bugs', 'bug_id' ) );
 
     }
 
