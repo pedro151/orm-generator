@@ -38,14 +38,14 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
 
         $this->pdo->query (
             "CREATE TABLE products (
-                  product_id        INTEGER NOT NULL PRIMARY KEY,
+                  product_id        SERIAL NOT NULL PRIMARY KEY,
                   product_name      VARCHAR(100)
                 );"
         );
 
         $this->pdo->query (
             "CREATE TABLE bugs (
-                  bug_id            INTEGER NOT NULL PRIMARY KEY,
+                  bug_id            SERIAL NOT NULL PRIMARY KEY,
                   bug_description   VARCHAR(100),
                   bug_status        VARCHAR(20),
                   reported_by       VARCHAR(100) REFERENCES accounts(account_name),
@@ -82,29 +82,21 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
     {
         if ( ! $this->objDriver )
         {
-            $this->objDriver = new Pgsql( $this->getAdapterConfig () );
+            $arrConfig = array (
+                'driver'    => 'pdo_pgsql' ,
+                'host'      => 'localhost' ,
+                'database'  => 'dao_generator' ,
+                'username'  => 'postgres' ,
+                'socket'    => null ,
+                'password'  => '123' ,
+                'namespace' => ''
+            );
+
+            $this->objDriver = new Pgsql( new None( $arrConfig ) );
             $this->objDriver->runDatabase ();
         }
 
         return $this->objDriver;
-    }
-
-    /**
-     * @return \Classes\AdapterConfig\None
-     */
-    protected function getAdapterConfig ()
-    {
-        $arrConfig = array (
-            'driver'    => 'pdo_pgsql' ,
-            'host'      => 'localhost' ,
-            'database'  => 'dao_generator' ,
-            'username'  => 'postgres' ,
-            'socket'    => null ,
-            'password'  => '123' ,
-            'namespace' => ''
-        );
-
-        return new None( $arrConfig );
     }
 
     /**
@@ -114,6 +106,43 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue ( $this->getDataBaseDrive ()->getPDO () instanceof \PDO );
     }
+
+    public function testSQLSequence ()
+    {
+
+    }
+
+    /**
+     *
+     */
+    public function testSQLConstrants ()
+    {
+        $arrConrstrants = $this->getDataBaseDrive ()->getListConstrant ();
+
+        foreach ( $arrConrstrants as $index => $contrstrant )
+        {
+            if ( $contrstrant[ 'table_name' ] == 'bugs' )
+            {
+                switch ( $contrstrant[ 'constraint_type' ] )
+                {
+                    case "FOREIGN KEY":
+                    {
+                        $this->assertEquals ( 'accounts' , $contrstrant[ "foreign_table" ] );
+                        $this->assertEquals ( 'account_name' , $contrstrant[ "foreign_column" ] );
+                        break;
+                    }
+                    case "PRIMARY KEY":
+                    {
+                        $this->assertEquals ( 'bugs' , $contrstrant[ "foreign_table" ] );
+                    }
+
+                };
+            }
+        }
+
+    }
+
+
 
     /**
      *

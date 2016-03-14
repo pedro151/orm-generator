@@ -31,28 +31,28 @@ class Pgsql extends AbsractAdapter
 
     protected $dataTypes = array (
         /* Numeric Types */
-        'smallint'         => 'int',
-        'integer'          => 'int',
-        'bigint'           => 'float',
-        'decimal'          => 'float',
-        'numeric'          => 'float',
-        'real'             => 'float',
-        'double precision' => 'float',
-        'serial'           => 'int',
-        'bigserial'        => 'float',
+        'smallint'         => 'int' ,
+        'integer'          => 'int' ,
+        'bigint'           => 'float' ,
+        'decimal'          => 'float' ,
+        'numeric'          => 'float' ,
+        'real'             => 'float' ,
+        'double precision' => 'float' ,
+        'serial'           => 'int' ,
+        'bigserial'        => 'float' ,
         /* Monetary Types */
-        'money'            => 'float',
+        'money'            => 'float' ,
         /* Character Types */
-        'character varyin' => 'string',
-        'varchar'          => 'string',
-        'character'        => 'string',
-        'char'             => 'string',
-        'text'             => 'string',
+        'character varyin' => 'string' ,
+        'varchar'          => 'string' ,
+        'character'        => 'string' ,
+        'char'             => 'string' ,
+        'text'             => 'string' ,
         /* Binary Data Types */
-        'bytea'            => 'string',
+        'bytea'            => 'string' ,
         /* Date/Time Types */
-        'datatime'         => 'date',
-        'date'             => 'date',
+        'datatime'         => 'date' ,
+        'date'             => 'date' ,
 
         /* Boolean Type */
         'boolean'          => 'boolean'
@@ -79,7 +79,7 @@ class Pgsql extends AbsractAdapter
     {
         if ( empty( $this->tableList ) )
         {
-            $strSchema = implode ( "', '", $this->schema );
+            $strSchema = implode ( "', '" , $this->schema );
 
             $this->tableList = $this->getPDO ()->query (
                 "SELECT table_schema,  table_name
@@ -104,7 +104,7 @@ class Pgsql extends AbsractAdapter
      */
     public function getListColumns ()
     {
-        $strSchema = implode ( "', '", $this->schema );
+        $strSchema = implode ( "', '" , $this->schema );
 
         return $this->getPDO ()->query (
             "SELECT distinct
@@ -125,18 +125,18 @@ class Pgsql extends AbsractAdapter
 
     public function getListConstrant ()
     {
-        $strSchema = implode ( "', '", $this->schema );
+        $strSchema = implode ( "', '" , $this->schema );
 
         return $this->getPDO ()->query (
             "SELECT distinct
                 tc.constraint_type,
                 tc.constraint_name,
-		        ccu.table_schema,
-                ccu.table_name,
-                ccu.column_name,
-                tc.table_schema AS foreign_table_schema,
-                tc.table_name AS foreign_table_name,
-                kcu.column_name AS foreign_column_name
+                tc.table_schema,
+                tc.table_name,
+                kcu.column_name,
+		        ccu.table_schema AS foreign_schema,
+                ccu.table_name AS foreign_table,
+                ccu.column_name as foreign_column
                   FROM
                 information_schema.table_constraints AS tc
                     JOIN information_schema.key_column_usage AS kcu
@@ -159,7 +159,7 @@ class Pgsql extends AbsractAdapter
         {
 
             if ( $constrant[ 'constraint_type' ] == "FOREIGN KEY"
-                or $constrant[ 'constraint_type' ] == "PRIMARY KEY"
+                 or $constrant[ 'constraint_type' ] == "PRIMARY KEY"
             )
             {
                 $schema = $constrant[ 'table_schema' ];
@@ -172,10 +172,10 @@ class Pgsql extends AbsractAdapter
                         $objConstrant = new Constrant();
                         $objConstrant->populate (
                             array (
-                                'constrant' => $constrant[ 'constraint_name' ],
-                                'schema'    => $constrant[ 'foreign_table_schema' ],
-                                'table'     => $constrant[ 'foreign_table_name' ],
-                                'column'    => $constrant[ 'foreign_column_name' ]
+                                'constrant' => $constrant[ 'constraint_name' ] ,
+                                'schema'    => $constrant[ 'foreign_schema' ] ,
+                                'table'     => $constrant[ 'foreign_table' ] ,
+                                'column'    => $constrant[ 'foreign_column' ]
                             )
                         );
 
@@ -192,7 +192,7 @@ class Pgsql extends AbsractAdapter
                                 $column->setPrimaryKey ( $objConstrant );
                                 $column->setSequence (
                                     $this->getSequence (
-                                        $key,
+                                        $key ,
                                         $constrant[ "column_name" ]
                                     )
                                 );
@@ -202,26 +202,26 @@ class Pgsql extends AbsractAdapter
                         }
                     }
                 }
-                unset( $key, $column );
+                unset( $key , $column );
             }
 
             if ( $constrant[ 'constraint_type' ] == "FOREIGN KEY" )
             {
-                $schema = $constrant[ 'foreign_table_schema' ];
-                $key = $constrant[ 'foreign_table_schema' ] . '.'
-                    . $constrant [ 'foreign_table_name' ];
+                $schema = $constrant[ 'foreign_schema' ];
+                $key = $constrant[ 'foreign_schema' ] . '.'
+                       . $constrant [ 'foreign_table' ];
                 if ( isset( $this->objDbTables[ $schema ][ $key ] ) )
                 {
-                    $column = $this->objDbTables[ $schema ][ $key ]->getColumn ( $constrant[ "foreign_column_name" ] );
+                    $column = $this->objDbTables[ $schema ][ $key ]->getColumn ( $constrant[ "foreign_column" ] );
 
                     if ( $column )
                     {
                         $objConstrantDependence = new Constrant();
                         $objConstrantDependence->populate (
                             array (
-                                'constrant' => $constrant[ 'constraint_name' ],
-                                'schema'    => $constrant[ 'table_schema' ],
-                                'table'     => $constrant[ 'table_name' ],
+                                'constrant' => $constrant[ 'constraint_name' ] ,
+                                'schema'    => $constrant[ 'table_schema' ] ,
+                                'table'     => $constrant[ 'table_name' ] ,
                                 'column'    => $constrant[ 'column_name' ]
                             )
                         );
@@ -229,25 +229,25 @@ class Pgsql extends AbsractAdapter
                         $column->addDependece ( $objConstrantDependence );
                     }
                 }
-                unset( $key, $column );
+                unset( $key , $column );
             }
 
 
         }
     }
 
-    public function getSequence ( $table, $column )
+    public function getSequence ( $table , $column )
     {
         $pdo = $this->getPDO ();
         $return1 = $pdo->query ( "SELECT pg_get_serial_sequence('$table', '$column');" )
-            ->fetchColumn ();
+                       ->fetchColumn ();
 
         if ( $return1 )
         {
             return $return1;
         }
 
-        $dtbase = explode ( '.', $table );;
+        $dtbase = explode ( '.' , $table );;
 
         $stmt = $pdo->prepare (
             "SELECT adsrc FROM pg_attrdef AS att
@@ -256,17 +256,17 @@ class Pgsql extends AbsractAdapter
             INNER JOIN pg_catalog.pg_namespace n
               ON n.oid = c.relnamespace and n.nspname=?"
         );
-        $stmt->bindParam ( 1, $dtbase[ 1 ] );
-        $stmt->bindParam ( 2, $dtbase[ 0 ] );
+        $stmt->bindParam ( 1 , $dtbase[ 1 ] );
+        $stmt->bindParam ( 2 , $dtbase[ 0 ] );
         $stmt->execute ();
         $return2 = $stmt->fetchColumn ();
         if ( $return2 )
         {
             return preg_filter (
                 array (
-                    '/nextval\(\'/',
+                    '/nextval\(\'/' ,
                     '/\'::regclass\)/'
-                ), '', $return2
+                ) , '' , $return2
             );
         }
 
@@ -277,7 +277,7 @@ class Pgsql extends AbsractAdapter
      */
     public function parseTables ()
     {
-        if ( !empty( $this->objDbTables ) )
+        if ( ! empty( $this->objDbTables ) )
         {
             return $this->objDbTables;
         }
@@ -286,13 +286,13 @@ class Pgsql extends AbsractAdapter
         {
             $schema = $table[ 'table_schema' ];
             $key = $table[ 'table_schema' ] . '.' . $table [ 'table_name' ];
-            if ( !isset( $this->objDbTables[ $schema ][ $key ] ) )
+            if ( ! isset( $this->objDbTables[ $schema ][ $key ] ) )
             {
                 $this->objDbTables[ $schema ][ $key ] = new DbTable();
                 $this->objDbTables[ $schema ][ $key ]->populate (
                     array (
-                        'table'    => $table [ 'table_name' ],
-                        'schema'   => $table[ 'table_schema' ],
+                        'table'    => $table [ 'table_name' ] ,
+                        'schema'   => $table[ 'table_schema' ] ,
                         'database' => $this->database
                     )
                 );
@@ -301,9 +301,9 @@ class Pgsql extends AbsractAdapter
             $column = new Column();
             $column->populate (
                 array (
-                    'name'       => $table [ 'column_name' ],
-                    'type'       => $this->convertTypeToPhp ( $table[ 'data_type' ] ),
-                    'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ),
+                    'name'       => $table [ 'column_name' ] ,
+                    'type'       => $this->convertTypeToPhp ( $table[ 'data_type' ] ) ,
+                    'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ) ,
                     'max_length' => $table[ 'max_length' ]
                 )
             );
@@ -323,9 +323,9 @@ class Pgsql extends AbsractAdapter
     public function getPDOString ()
     {
         return sprintf (
-            "pgsql:host=%s;port=%s;dbname=%s",
-            $this->host,
-            $this->port,
+            "pgsql:host=%s;port=%s;dbname=%s" ,
+            $this->host ,
+            $this->port ,
             $this->database
 
         );
@@ -338,8 +338,8 @@ class Pgsql extends AbsractAdapter
     public function getPDOSocketString ()
     {
         return sprintf (
-            "pgsql:unix_socket=%s;dbname=%s",
-            $this->socket,
+            "pgsql:unix_socket=%s;dbname=%s" ,
+            $this->socket ,
             $this->database
 
         );
@@ -354,7 +354,7 @@ class Pgsql extends AbsractAdapter
     {
         if ( empty( $this->totalTables ) )
         {
-            $strSchema = implode ( "', '", $this->schema );
+            $strSchema = implode ( "', '" , $this->schema );
 
             $this->totalTables = $this->getPDO ()->query (
                 "SELECT COUNT(table_name)  AS total
