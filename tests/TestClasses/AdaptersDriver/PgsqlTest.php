@@ -30,37 +30,38 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
     {
         $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ], $GLOBALS[ 'db_username' ], $GLOBALS[ 'db_password' ] );
         $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
-        $this->pdo->query (
-            "CREATE TABLE accounts (
+        $this->tearDown ();
+
+        $this->pdo->exec (
+            "
+            CREATE TABLE accounts (
               account_name      VARCHAR(100) NOT NULL PRIMARY KEY
-            );"
-        );
+            );
 
-        $this->pdo->query (
-            "CREATE TABLE products (
-                  product_id        SERIAL NOT NULL PRIMARY KEY,
+            CREATE TABLE products (
+                  product_id        INTEGER NOT NULL PRIMARY KEY,
                   product_name      VARCHAR(100)
-                );"
-        );
+                );
 
-        $this->pdo->query (
-            "CREATE TABLE bugs (
+              CREATE TABLE bugs (
                   bug_id            SERIAL NOT NULL PRIMARY KEY,
                   bug_description   VARCHAR(100),
                   bug_status        VARCHAR(20),
                   reported_by       VARCHAR(100) REFERENCES accounts(account_name),
                   assigned_to       VARCHAR(100) REFERENCES accounts(account_name),
                   verified_by       VARCHAR(100) REFERENCES accounts(account_name)
-                );"
-        );
+                );
 
-        $this->pdo->query (
-            "CREATE TABLE bugs_products (
+            CREATE TABLE bugs_products (
               bug_id            INTEGER NOT NULL REFERENCES bugs,
               product_id        INTEGER NOT NULL REFERENCES products,
               PRIMARY KEY       (bug_id, product_id)
-            );"
+            );
+
+            CREATE SEQUENCE products_product_id_seq;
+            ALTER TABLE products ALTER COLUMN product_id SET DEFAULT NEXTVAL(  'public.products_product_id_seq'::regclass );"
         );
+
 
     }
 
@@ -69,11 +70,15 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown ()
     {
-        $this->pdo->query ( "DROP TABLE bugs_products" );
-        $this->pdo->query ( "DROP TABLE bugs" );
-        $this->pdo->query ( "DROP TABLE products" );
-        $this->pdo->query ( "DROP TABLE accounts" );
+        $this->pdo->exec (
+            "DROP TABLE IF EXISTS bugs_products;
+             DROP TABLE IF EXISTS  bugs;
+             DROP TABLE IF EXISTS  products;
+             DROP TABLE IF EXISTS  accounts;
+             DROP SEQUENCE IF EXISTS products_product_id_seq;"
+        );
     }
+
 
     /**
      * @return \Classes\AdaptersDriver\Pgsql
@@ -107,10 +112,21 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue ( $this->getDataBaseDrive ()->getPDO () instanceof \PDO );
     }
 
+    public function testRunDatabase ()
+    {
+        $daoClone = clone $this->getDataBaseDrive ();
+        $this->getDataBaseDrive ()->runDatabase ();
+        $this->assertEquals ( $daoClone, $this->getDataBaseDrive () );
+    }
+
     public function testSQLSequence ()
     {
-        $this->assertEquals ( 'public.bugs_bug_id_seq', $this->getDataBaseDrive ()->getSequence ( 'bugs', 'bug_id' ) );
-
+        $this->assertEquals (
+            'public.bugs_bug_id_seq', $this->getDataBaseDrive ()->getSequence ( 'public.bugs', 'bug_id' )
+        );
+        $this->assertEquals (
+            'products_product_id_seq', $this->getDataBaseDrive ()->getSequence ( 'public.products', 'product_id' )
+        );
     }
 
     /**
