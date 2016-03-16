@@ -47,7 +47,7 @@ class DbTable extends AbstractAdapter
                 $fk->getName (),
                 $makerFile->getConfig ()->createClassNamespace ( $constrant )
                 . ZendFrameworkOne::SEPARETOR
-                . 'Dbtable'
+                . 'DbTable'
                 . ZendFrameworkOne::SEPARETOR
                 . $makerFile->getClassName ( $constrant->getTable () ),
                 $constrant->getColumn ()
@@ -67,7 +67,7 @@ class DbTable extends AbstractAdapter
             {
                 $dependents[] = $makerFile->getConfig ()->createClassNamespace ( $dependence )
                     . ZendFrameworkOne::SEPARETOR
-                    . 'Dbtable'
+                    . 'DbTable'
                     . ZendFrameworkOne::SEPARETOR
                     . $makerFile->getClassName ( $dependence->getTable () );
             }
