@@ -20,15 +20,15 @@ class Entity extends AbstractAdapter
     protected $parentFileTpl = "entity_abstract.php";
     protected $fileTpl       = "entity.php";
 
-    protected $validFunc = array();
+    protected $validFunc = array ();
 
     /**
-     * @param \Classes\MakerFile $makerFile
+     * @param \Classes\MakerFile  $makerFile
      * @param \Classes\Db\DbTable $dbTable
      *
      * @return array
      */
-    public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
+    public function parseRelation ( \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable )
     {
 
         $parents = array ();
@@ -39,7 +39,7 @@ class Entity extends AbstractAdapter
             {
                 $constrant = $objColumn->getFks ();
                 $name =
-                     'Parent'
+                    'Parent'
                     . ZendFrameworkOne::SEPARETOR
                     . $makerFile->getClassName ( $constrant->getTable () )
                     . ZendFrameworkOne::SEPARETOR
@@ -47,15 +47,17 @@ class Entity extends AbstractAdapter
                     . ZendFrameworkOne::SEPARETOR
                     . $constrant->getColumn ();
 
-                if ( !key_exists ( $name, $this->validFunc ) )
+                if ( ! key_exists ( $name , $this->validFunc ) )
                 {
                     $this->validFunc[ $name ] = true;
                     $parents[] = array (
-                        'class'    => $makerFile->getConfig ()->createClassNamespace ( $constrant ) . '_'
-                            . $makerFile->getClassName ( $constrant->getTable () ),
-                        'function' => $makerFile->getClassName ( $name ),
-                        'table'    => $constrant->getTable (),
-                        'column'   => $objColumn->getName (),
+                        'class'    => $makerFile->getConfig ()
+                                                ->createClassNamespace ( $constrant )
+                                      . ZendFrameworkOne::SEPARETOR
+                                      . $makerFile->getClassName ( $constrant->getTable () ) ,
+                        'function' => $makerFile->getClassName ( $name ) ,
+                        'table'    => $constrant->getTable () ,
+                        'column'   => $objColumn->getName () ,
                         'name'     => $makerFile->getClassName ( $constrant->getNameConstrant () )
                     );
                 }
@@ -75,17 +77,18 @@ class Entity extends AbstractAdapter
                         . ZendFrameworkOne::SEPARETOR
                         . $dependence->getColumn ();
 
-                    if ( !key_exists ( $name, $this->validFunc ) )
+                    if ( ! key_exists ( $name , $this->validFunc ) )
                     {
                         $this->validFunc[ $name ] = true;
                         $depends[] = array (
-                            'class'    => $makerFile->getConfig ()->createClassNamespace ( $dependence )
-                                . ZendFrameworkOne::SEPARETOR
-                                . $makerFile->getClassName ( $dependence->getTable () ),
-                            'function' => $makerFile->getClassName ( $name ),
-                            'table'    => $dependence->getTable (),
-                            'column'   => $dependence->getColumn (),
-                            'name'     => $dependence->getNameConstrant()
+                            'class'    => $makerFile->getConfig ()
+                                                    ->createClassNamespace ( $dependence )
+                                          . ZendFrameworkOne::SEPARETOR
+                                          . $makerFile->getClassName ( $dependence->getTable () ) ,
+                            'function' => $makerFile->getClassName ( $name ) ,
+                            'table'    => $dependence->getTable () ,
+                            'column'   => $dependence->getColumn () ,
+                            'name'     => $dependence->getNameConstrant ()
                         );
                     }
                     unset( $name );
@@ -94,11 +97,10 @@ class Entity extends AbstractAdapter
         }
 
         return array (
-            'parents' => $parents,
+            'parents' => $parents ,
             'depends' => $depends
         );
 
     }
-
 
 }
