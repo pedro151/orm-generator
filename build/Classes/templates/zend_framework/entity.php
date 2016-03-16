@@ -265,13 +265,4 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
         return $this->_table;
     }
 
-    /**
-    * @see Zend_Db_Adapter::fetchAll
-    */
-    public static function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
-    {
-        $name = __CLASS__;
-        $InstanceObject = new $name();
-        return $InstanceObject->getTable()->fetchAll ( $where , $order , $count , $offset );
-    }
 }

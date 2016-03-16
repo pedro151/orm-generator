@@ -237,29 +237,6 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
     }
 
     /**
-     * Retorna um array associativo de pares de valores de colunas se a
-     * primary key é um array de valores, ou o valor da primary key se não for array
-     *
-     * @return any|array
-     */
-    public function getPrimaryKey()
-    {
-        $primary_key = $this->getPrimaryKeyName();
-
-        if (is_array($primary_key)) {
-            $result = array();
-            foreach ($primary_key as $key) {
-                $result[$key] = $this->$key;
-            }
-
-            return $result;
-        } else {
-            return $this->$primary_key;
-        }
-
-    }
-
-    /**
      * Retorna o objeto pela primary key
      *
      * @param int|array $primary_key
@@ -337,4 +314,13 @@ public function find ( $primary_key )
 		}
     }
 
+    /**
+    * @see Zend_Db_Adapter::fetchAll
+    */
+    public static function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
+    {
+        $name =  get_called_class();
+        $InstanceObject = new $name();
+        return $InstanceObject->getTable()->fetchAll ( $where , $order , $count , $offset );
+    }
 }
