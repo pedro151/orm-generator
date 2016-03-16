@@ -128,11 +128,11 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php endforeach;?>
 <?php foreach ($depends as $depend): ?>
     /**
-     * Parent relation <?=$this->getClassName($depend['table']) . "\n"?>
+     * Depends relation <?=$this->getClassName($depend['table']) . "\n"?>
      *
      * @var <?=$depend['class'] . "\n"?>
      */
-     protected $_<?=$depend['table']?>;
+     protected $_<?=$depend['name']?>;
 
 <?php endforeach;?>
 <?php foreach ($objTables->getColumns() as $column): ?>
@@ -225,14 +225,16 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     {
         if ($this->_<?=$parent['column']?> === null)
         {
-            $this->_<?=$parent['column']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName($parent['table'])?>', '<?=$this->getClassName($parent['column'])?>');
+            $this->_<?=$parent['column']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName($parent['table'])?>', '<?=$this->getClassName($parent['name'])?>');
         }
 
         return $this->_<?=$parent['column']?>;
     }
 
 <?php endforeach; ?>
-<?php foreach ($depends as $value): ?>
+
+
+<?php foreach ($depends as $depend): ?>
     /**
     * Gets dependent <?=$this->getClassName($depend['column']) . "\n"?>
     *
@@ -240,19 +242,19 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     */
     public function get<?=$depend['function']?>()
     {
-        if ($this->_<?=$depend['column']?> === null)
+        if ($this->_<?=$depend['name']?> === null)
         {
-            $this->_<?=$depend['column']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName($depend['table'])?>', '<?=$this->getClassName($depend['column'])?>');
+            $this->_<?=$depend['name']?> = $this->findDependentRowset('<?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName($depend['table'])?>');
         }
 
-      return $this->_<?=$depend['column']?>;
+      return $this->_<?=$depend['name']?>;
     }
 
 <?php endforeach; ?>
     /**
     * Retorna a Dbtable da class model
     *
-    * @return <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTables->getName () ).'\n'?>
+    * @return <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTables->getName () )."\n"?>
     */
     public function getTable()
     {

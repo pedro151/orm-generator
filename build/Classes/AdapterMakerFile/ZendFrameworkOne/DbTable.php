@@ -43,7 +43,7 @@ class DbTable extends AbstractAdapter
             'refTableClass' => '%s',
             'refColumns'    =>'%s'
        )",
-                $constrant->getNameConstrant (),
+                $makerFile->getClassName($constrant->getNameConstrant ()),
                 $fk->getName (),
                 $makerFile->getConfig ()->createClassNamespace ( $constrant )
                 . ZendFrameworkOne::SEPARETOR

@@ -32,51 +32,54 @@ class Entity extends AbstractAdapter
 
         $parents = array ();
         $depends = array ();
-        $arrFunc=array();;
+        $arrFunc = array ();;
         foreach ( $dbTable->getColumns () as $objColumn )
         {
             if ( $objColumn->isForeingkey () )
             {
                 $constrant = $objColumn->getFks ();
-                    $name = $constrant->getTable ()
-                        . ZendFrameworkOne::SEPARETOR
-                        . 'By'
-                        . ZendFrameworkOne::SEPARETOR
-                        . $objColumn->getName ();
+                $name = $constrant->getTable ()
+                    . ZendFrameworkOne::SEPARETOR
+                    . 'By'
+                    . ZendFrameworkOne::SEPARETOR
+                    . $constrant->getColumn ();
 
-                    if ( !in_array ( $name, $arrFunc) )
-                    {
-                        $arrFunc[]=$name;
-                        $parents[] = array (
-                            'class'    => $makerFile->getConfig()->createClassNamespace ( $constrant ) . '_'
-                                . $makerFile->getClassName ( $constrant->getTable () ),
-                            'function' => $makerFile->getClassName ( $name ),
-                            'table'    => $constrant->getTable (),
-                            'column'   => $objColumn->getName ()
-                        );
-                    }
-                    unset( $name );
+                if ( !key_exists ( $name, $arrFunc ) )
+                {
+                    $arrFunc[ $name ] = true;
+                    $parents[] = array (
+                        'class'    => $makerFile->getConfig ()->createClassNamespace ( $constrant ) . '_'
+                            . $makerFile->getClassName ( $constrant->getTable () ),
+                        'function' => $makerFile->getClassName ( $name ),
+                        'table'    => $constrant->getTable (),
+                        'column'   => $objColumn->getName (),
+                        'name'     => $makerFile->getClassName ( $constrant->getNameConstrant () )
+                    );
+                }
+                unset( $name );
             }
 
-            if ( $objColumn->hasDependence () )
+            foreach ( $dbTable->getDependences () as $objColumn )
             {
-                foreach ( $objColumn->getDependences () as $constrant )
+                foreach ( $objColumn->getDependences () as $dependence )
                 {
-                    $name = $constrant->getTable ()
+                    $name = $makerFile->getClassName ( $dependence->getTable () )
                         . ZendFrameworkOne::SEPARETOR
                         . 'By'
                         . ZendFrameworkOne::SEPARETOR
-                        . $objColumn->getName ();
+                        . $dependence->getColumn ();
 
-                    if ( !in_array ( $name, $arrFunc ) )
+                    if ( !key_exists ( $name, $arrFunc ) )
                     {
-                        $arrFunc[]=$name;
+                        $arrFunc[ $name ] = true;
                         $depends[] = array (
-                            'class'    => $makerFile->getConfig()->createClassNamespace ( $constrant ) . '_'
-                                . $makerFile->getClassName ( $constrant->getTable () ),
+                            'class'    => $makerFile->getConfig ()->createClassNamespace ( $dependence )
+                                . ZendFrameworkOne::SEPARETOR
+                                . $makerFile->getClassName ( $dependence->getTable () ),
                             'function' => $makerFile->getClassName ( $name ),
-                            'table'    => $constrant->getTable (),
-                            'column'   => $objColumn->getName ()
+                            'table'    => $dependence->getTable (),
+                            'column'   => $dependence->getColumn (),
+                            'name'     => $dependence->getNameConstrant()
                         );
                     }
                     unset( $name );
@@ -84,7 +87,7 @@ class Entity extends AbstractAdapter
             }
         }
 
-       return array (
+        return array (
             'parents' => $parents,
             'depends' => $depends
         );
