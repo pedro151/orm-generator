@@ -41,10 +41,16 @@ framework-path-library = "C:\Apache24\htdocs\project\library"
 PHP Code Generation
 -------------------
 
-Open the prompt in the directory DAO-Generator and write:
+Open the prompt in the directory `DAO-Generator` and write:
 
 ```cmd
 $ php generate.php
+```
+
+Or Open the prompt in the directory `bin` and write:
+
+```cmd
+$ php dao-generate.phar
 ```
 
 Configurations optionals
