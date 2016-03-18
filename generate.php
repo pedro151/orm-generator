@@ -16,6 +16,35 @@ if ( ! ini_get ( 'register_argc_argv' ) )
     die( "please enable register_argc_argv directive in php.ini\n" );
 }
 
+
+if (function_exists('ini_set')) {
+    @ini_set('display_errors', 1);
+
+    $memoryInBytes = function ($value) {
+        $unit = strtolower(substr($value, -1, 1));
+        $value = (int) $value;
+        switch($unit) {
+            case 'g':
+                $value *= 1024;
+            // no break (cumulative multiplier)
+            case 'm':
+                $value *= 1024;
+            // no break (cumulative multiplier)
+            case 'k':
+                $value *= 1024;
+        }
+
+        return $value;
+    };
+
+    $memoryLimit = trim(ini_get('memory_limit'));
+    // Increase memory_limit if it is lower than 1GB
+    if ($memoryLimit != -1 && $memoryInBytes($memoryLimit) < 1024 * 1024 * 1024) {
+        @ini_set('memory_limit', '1G');
+    }
+    unset($memoryInBytes, $memoryLimit);
+}
+
 set_include_path (
     implode (
         PATH_SEPARATOR ,
@@ -33,7 +62,7 @@ try
 {
     $arrValid = array (
         'help' ,
-        'config-ini' ,
+        'config-ini:' ,
         'database:' ,
         'schema:' ,
         'driver:' ,

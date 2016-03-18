@@ -62,14 +62,14 @@ class Config
      */
     private $adapterDriver;
 
-    public function __construct ( $argv , $basePath )
+    public function __construct ( $argv, $basePath )
     {
-        if ( array_key_exists ( 'help' , $argv ) )
+        if ( array_key_exists ( 'help', $argv ) )
         {
             die ( $this->getUsage () );
         }
 
-        $this->argv = $this->parseConfig ( $basePath , $argv );
+        $this->argv = $this->parseConfig ( $basePath, $argv );
     }
 
     /**
@@ -100,22 +100,22 @@ USAGE;
      * Analisa e estrutura a Configuracao do generate
      *
      * @param string $_path
-     * @param array  $argv
+     * @param array $argv
      *
      * @return array
      * @throws \Exception
      */
-    private function parseConfig ( $basePath , $argv )
+    private function parseConfig ( $basePath, $argv )
     {
         $this->_basePath = dirname ( $basePath );
 
-        $configIni = isset( $argv[ 'config-ini' ] ) ? $this->_basePath
-                                                      . $argv[ 'config-ini' ]
+        $configIni = isset( $argv[ 'config-ini' ] ) ? $argv[ 'config-ini' ]
             : $this->_basePath . $this->configIniDefault;
-        $configTemp = $this->loadIniFile ( $configIni );
 
-        if ( ! isset( $configTemp[ key ( $configTemp ) ][ 'framework' ] )
-             && ! isset( $argv[ 'framework' ] )
+        $configTemp = $this->loadIniFile ( realpath ( $configIni ) );
+
+        if ( !isset( $configTemp[ key ( $configTemp ) ][ 'framework' ] )
+            && !isset( $argv[ 'framework' ] )
         )
         {
             throw new \Exception( "configure which framework you want to use! \n" );
@@ -130,7 +130,7 @@ USAGE;
         if ( isset( $configTemp[ $thisSection ][ 'extends' ] ) )
         {
             $configCurrent = $configTemp[ $thisSection ]
-                             + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
+                + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
         }
 
         return $argv + array_filter ( $configCurrent );
@@ -149,16 +149,16 @@ USAGE;
      */
     protected function loadIniFile ( $filename )
     {
-        if ( ! is_file ( $filename ) )
+        if ( !is_file ( $filename ) )
         {
             throw new \Exception( "configuration file does not exist! \n" );
         }
 
-        $loaded = parse_ini_file ( $filename , true );
+        $loaded = parse_ini_file ( $filename, true );
         $iniArray = array ();
         foreach ( $loaded as $key => $data )
         {
-            $pieces = explode ( $this->sectionSeparator , $key );
+            $pieces = explode ( $this->sectionSeparator, $key );
             $thisSection = trim ( $pieces[ 0 ] );
             switch ( count ( $pieces ) )
             {
@@ -168,7 +168,7 @@ USAGE;
 
                 case 2:
                     $extendedSection = trim ( $pieces[ 1 ] );
-                    $iniArray[ $thisSection ] = array_merge ( array ( 'extends' => $extendedSection ) , $data );
+                    $iniArray[ $thisSection ] = array_merge ( array ( 'extends' => $extendedSection ), $data );
                     break;
 
                 default:
@@ -239,7 +239,7 @@ USAGE;
      */
     public function getAdapterConfig ()
     {
-        if ( ! $this->adapterConfig )
+        if ( !$this->adapterConfig )
         {
             $this->factoryConfig ();
         }
@@ -252,7 +252,7 @@ USAGE;
      */
     public function getAdapterDriver ()
     {
-        if ( ! $this->adapterDriver )
+        if ( !$this->adapterDriver )
         {
             $this->factoryDriver ();
         }
