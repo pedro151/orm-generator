@@ -2,15 +2,26 @@
 
 [![Travis build status](https://api.travis-ci.org/pedro151/DAO-Generator.svg?branch=master)](https://travis-ci.org/pedro151/DAO-Generator)
 
-DAOGenerator Creates 'Data Access Object' frameworks as DbTable the ZF1, among others.
+DAO-Generator Creates 'Data Access Object' frameworks as DbTable the ZF1, among others.
 uses various types of databases like Postgres
 
 Install
 -------
+
+install via `composer` or download the contents of the directory `bin`.
+
+#####Install via `composer`:
 ```
 $ composer require pedro151/dao-generator`
 $ composer install`
 ```
+
+#####Download directories:
+
+- bin\configs\config.ini
+- bin\dao-generator.phar
+
+
 
 Configuration
 -------------
