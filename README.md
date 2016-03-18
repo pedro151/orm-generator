@@ -7,10 +7,10 @@ uses various types of databases like Postgres
 
 Install
 -------
-
-`composer require pedro151/dao-generator`
-
-`composer install`
+```
+$ composer require pedro151/dao-generator`
+$ composer install`
+```
 
 Configuration
 -------------
@@ -22,17 +22,19 @@ Configuration in Frameworks
 
 in `config.ini` must put the `library` and the file `.ini` of the desired framework
 
-`framework-ini = "C:\Apache24\htdocs\project\application\configs\application.ini"`
-
-`framework-path-library = "C:\Apache24\htdocs\project\library"`
-
+```ini
+framework-ini = "C:\Apache24\htdocs\project\application\configs\application.ini"
+framework-path-library = "C:\Apache24\htdocs\project\library"
+```
 
 PHP Code Generation
 -------------------
 
 Open the prompt in the directory DAO-Generator and write:
 
-`php generate.php`
+```php
+$ php generate.php
+```
 
 Configurations optionals
 ------------------------
@@ -51,7 +53,18 @@ Configurations optionals
 
 in prompt
 
-<code>php generate.php --framework=zend_framework --database=foo --driver=pgsql --status=1</code>
+```php
+$ php generate.php --framework=zend_framework --database=foo --driver=pgsql --status=1
+```
+
+Support Database ()
+-------------------
+
+- [x] Postgres
+- [ ] Mysql
+- [ ] Dblib
+- [ ] Mssql
+- [ ] Sqlserver
 
 Framework Class Generator DAO
 -----------------------------
@@ -59,5 +72,4 @@ Framework Class Generator DAO
 | Frameworks    | Generate Classes      |
 |---------------|--------------|
 |Zend Framework | DbTable, Entity, Model  |
-
 

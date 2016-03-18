@@ -119,11 +119,11 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 
 <?php foreach ($parents as $parent): ?>
     /**
-    * Parent relation <?=$this->getClassName($parent['column']) . "\n"?>
+    * Parent relation <?=$this->getClassName($parent['table']) . "\n"?>
     *
-    * @var <?=$parent['class'] . "\n"?>
+    * @var <?=$parent['name'] . "\n"?>
     */
-    protected $_<?=$this->getClassName($parent['column'])?>;
+    protected $_<?=$parent['name']?>;
 
 <?php endforeach;?>
 <?php foreach ($depends as $depend): ?>
@@ -217,18 +217,18 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php endforeach; ?>
 <?php foreach ($parents as $parent): ?>
     /**
-    * Gets parent <?=$this->getClassName($parent['column']) . "\n"?>
+    * Gets parent <?=$parent['table'] . "\n"?>
     *
     * @return <?=$parent['class'] . "\n"?>
     */
     public function get<?=$parent['function']?>()
     {
-        if ($this->_<?=$parent['column']?> === null)
+        if ($this->_<?=$parent['name']?> === null)
         {
-            $this->_<?=$parent['column']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName($parent['table'])?>', '<?=$this->getClassName($parent['name'])?>');
+            $this->_<?=$parent['name']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName($parent['table'])?>', '<?=$this->getClassName($parent['name'])?>');
         }
 
-        return $this->_<?=$parent['column']?>;
+        return $this->_<?=$parent['name']?>;
     }
 
 <?php endforeach; ?>
@@ -236,7 +236,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 
 <?php foreach ($depends as $depend): ?>
     /**
-    * Gets dependent <?=$this->getClassName($depend['column']) . "\n"?>
+    * Gets dependent <?=$depend['table'] . "\n"?>
     *
     * @return <?=$depend['class'] . "\n"?>
     */

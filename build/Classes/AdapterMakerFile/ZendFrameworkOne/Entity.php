@@ -23,81 +23,74 @@ class Entity extends AbstractAdapter
     protected $validFunc = array ();
 
     /**
-     * @param \Classes\MakerFile  $makerFile
+     * @param \Classes\MakerFile $makerFile
      * @param \Classes\Db\DbTable $dbTable
      *
      * @return array
      */
-    public function parseRelation ( \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable )
+    public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {
 
         $parents = array ();
         $depends = array ();
-        foreach ( $dbTable->getColumns () as $objColumn )
+        foreach ( $dbTable->getForeingkeys () as $fks )
         {
-            if ( $objColumn->isForeingkey () )
-            {
-                $constrant = $objColumn->getFks ();
-                $name =
-                    'Parent'
+            $constrant = $fks->getFks ();
+            $name =
+                'Parent'
+                . ZendFrameworkOne::SEPARETOR
+                . $makerFile->getClassName ( $constrant->getTable () )
+                . ZendFrameworkOne::SEPARETOR
+                . 'By'
+                . ZendFrameworkOne::SEPARETOR
+                . $constrant->getColumn ();
+
+            $parents[] = array (
+                'class'    => $makerFile->getConfig ()
+                        ->createClassNamespace ( $constrant )
                     . ZendFrameworkOne::SEPARETOR
-                    . $makerFile->getClassName ( $constrant->getTable () )
+                    . $makerFile->getClassName ( $constrant->getTable () ),
+                'function' => $makerFile->getClassName ( $name ),
+                'table'    => $constrant->getTable (),
+                'column'   => $fks->getName (),
+                'name'     => $constrant->getNameConstrant (),
+            );
+            unset( $name );
+        }
+
+        foreach ( $dbTable->getDependences () as $objColumn )
+        {
+            foreach ( $objColumn->getDependences () as $dependence )
+            {
+                $name =
+                    'Depend'
+                    . ZendFrameworkOne::SEPARETOR
+                    . $makerFile->getClassName ( $dependence->getTable () )
                     . ZendFrameworkOne::SEPARETOR
                     . 'By'
                     . ZendFrameworkOne::SEPARETOR
-                    . $constrant->getColumn ();
+                    . $dependence->getColumn ();
 
-                if ( ! key_exists ( $name , $this->validFunc ) )
+                if ( !key_exists ( $name, $this->validFunc ) )
                 {
                     $this->validFunc[ $name ] = true;
-                    $parents[] = array (
+                    $depends[] = array (
                         'class'    => $makerFile->getConfig ()
-                                                ->createClassNamespace ( $constrant )
-                                      . ZendFrameworkOne::SEPARETOR
-                                      . $makerFile->getClassName ( $constrant->getTable () ) ,
-                        'function' => $makerFile->getClassName ( $name ) ,
-                        'table'    => $constrant->getTable () ,
-                        'column'   => $objColumn->getName () ,
-                        'name'     => $makerFile->getClassName ( $constrant->getNameConstrant () )
+                                ->createClassNamespace ( $dependence )
+                            . ZendFrameworkOne::SEPARETOR
+                            . $makerFile->getClassName ( $dependence->getTable () ),
+                        'function' => $makerFile->getClassName ( $name ),
+                        'table'    => $dependence->getTable (),
+                        'column'   => $dependence->getColumn (),
+                        'name'     => $dependence->getNameConstrant ()
                     );
                 }
                 unset( $name );
             }
-
-            foreach ( $dbTable->getDependences () as $objColumn )
-            {
-                foreach ( $objColumn->getDependences () as $dependence )
-                {
-                    $name =
-                        'Depend'
-                        . ZendFrameworkOne::SEPARETOR
-                        . $makerFile->getClassName ( $dependence->getTable () )
-                        . ZendFrameworkOne::SEPARETOR
-                        . 'By'
-                        . ZendFrameworkOne::SEPARETOR
-                        . $dependence->getColumn ();
-
-                    if ( ! key_exists ( $name , $this->validFunc ) )
-                    {
-                        $this->validFunc[ $name ] = true;
-                        $depends[] = array (
-                            'class'    => $makerFile->getConfig ()
-                                                    ->createClassNamespace ( $dependence )
-                                          . ZendFrameworkOne::SEPARETOR
-                                          . $makerFile->getClassName ( $dependence->getTable () ) ,
-                            'function' => $makerFile->getClassName ( $name ) ,
-                            'table'    => $dependence->getTable () ,
-                            'column'   => $dependence->getColumn () ,
-                            'name'     => $dependence->getNameConstrant ()
-                        );
-                    }
-                    unset( $name );
-                }
-            }
         }
 
         return array (
-            'parents' => $parents ,
+            'parents' => $parents,
             'depends' => $depends
         );
 
