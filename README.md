@@ -32,7 +32,7 @@ PHP Code Generation
 
 Open the prompt in the directory DAO-Generator and write:
 
-```php
+```cmd
 $ php generate.php
 ```
 
@@ -53,12 +53,12 @@ Configurations optionals
 
 in prompt
 
-```php
+```cmd
 $ php generate.php --framework=zend_framework --database=foo --driver=pgsql --status=1
 ```
 
-Support Database ()
--------------------
+Support Database 
+----------------
 
 - [x] Postgres
 - [ ] Mysql
