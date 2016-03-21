@@ -96,15 +96,9 @@ class DbTable
      */
     public function getPrimaryKeys ()
     {
-        if ( ! count ( $this->primarykeys ) )
+        if ( empty ( $this->primarykeys ) )
         {
-            foreach ( $this->getColumns () as $column )
-            {
-                if ( $column->isPrimaryKey () )
-                {
-                    $this->primarykeys[] = $column;
-                }
-            }
+            $this->primarykeys = array_filter ( $this->columns , function ( $column ){ return $column->isPrimaryKey (); } );
         }
 
         return $this->primarykeys;
@@ -118,8 +112,7 @@ class DbTable
 
         if ( empty ( $this->foreingkeys ) )
         {
-            $columns = $this->getColumns ();
-            $this->foreingkeys = array_filter ( $columns , function ( $column ){ return $column->isForeingkey (); } );
+            $this->foreingkeys = array_filter ( $this->columns , function ( $column ){ return $column->isForeingkey (); } );
         }
 
         return $this->foreingkeys;
@@ -134,7 +127,7 @@ class DbTable
         if ( empty ( $this->dependence ) )
         {
             $columns = $this->getColumns ();
-            $this->dependence = array_filter ( $columns , function ( $column ){ return $column->hasDependence (); } );
+            $this->dependence = array_filter ( $this->columns , function ( $column ){ return $column->hasDependence (); } );
         }
 
         return $this->dependence;
@@ -148,7 +141,7 @@ class DbTable
         if ( empty ( $this->sequence ) )
         {
             $columns = $this->getColumns ();
-            $this->sequence = array_filter ( $columns , function ( $column ){ return $column->hasSequence (); } );
+            $this->sequence = array_filter ( $this->columns , function ( $column ){ return $column->hasSequence (); } );
         }
 
         return $this->sequence;

@@ -58,8 +58,8 @@ Configurations optionals
 | Command        | description       |
 |----------------|------------------|
 |--help          | help command explaining all the options and manner of use |
-|--config-ini    | reference to another .ini file configuration (relative path) |
 |--status        | show status of implementation carried out after completing the process |
+|--config-ini    | reference to another .ini file configuration (relative path) |
 |--database      | database name     |
 |--schema        | database schema name (one or more than one)    |
 |--driver        | database driver name (Ex.: pgsql)|
@@ -71,7 +71,7 @@ Configurations optionals
 in prompt
 
 ```cmd
-$ php generate.php --framework=zend_framework --database=foo --driver=pgsql --status=1
+$ php generate.php --framework=zend_framework --database=foo --driver=pgsql --status
 ```
 
 Support Database 
@@ -86,7 +86,7 @@ Support Database
 Framework Class Generator DAO
 -----------------------------
 
-| Frameworks    | Generate Classes      |
+| Frameworks    | Generate Classes |
 |---------------|--------------|
 |Zend Framework | DbTable, Entity, Model  |
 
