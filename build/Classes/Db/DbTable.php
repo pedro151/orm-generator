@@ -126,7 +126,6 @@ class DbTable
     {
         if ( empty ( $this->dependence ) )
         {
-            $columns = $this->getColumns ();
             $this->dependence = array_filter ( $this->columns , function ( $column ){ return $column->hasDependence (); } );
         }
 
@@ -140,7 +139,6 @@ class DbTable
     {
         if ( empty ( $this->sequence ) )
         {
-            $columns = $this->getColumns ();
             $this->sequence = array_filter ( $this->columns , function ( $column ){ return $column->hasSequence (); } );
         }
 
