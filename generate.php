@@ -62,12 +62,12 @@ try
 {
     $arrValid = array (
         'help' ,
+        'status' ,
         'config-ini:' ,
         'database:' ,
         'schema:' ,
         'driver:' ,
         'framework:' ,
-        'status:' ,
         'path:'
     );
 

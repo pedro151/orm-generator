@@ -4,6 +4,7 @@ namespace Classes\AdapterMakerFile\ZendFrameworkOne;
 
 use Classes\AdapterMakerFile\AbstractAdapter;
 use Classes\AdapterConfig\ZendFrameworkOne;
+use Classes\Maker\Template;
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -43,13 +44,13 @@ class DbTable extends AbstractAdapter
             'refTableClass' => '%s',
             'refColumns'    =>'%s'
        )",
-                $makerFile->getClassName($constrant->getNameConstrant ()),
+                Template::getClassName($constrant->getNameConstrant ()),
                 $fk->getName (),
                 $makerFile->getConfig ()->createClassNamespace ( $constrant )
                 . ZendFrameworkOne::SEPARETOR
                 . 'DbTable'
                 . ZendFrameworkOne::SEPARETOR
-                . $makerFile->getClassName ( $constrant->getTable () ),
+                . Template::getClassName ( $constrant->getTable () ),
                 $constrant->getColumn ()
 
             );
@@ -69,7 +70,7 @@ class DbTable extends AbstractAdapter
                     . ZendFrameworkOne::SEPARETOR
                     . 'DbTable'
                     . ZendFrameworkOne::SEPARETOR
-                    . $makerFile->getClassName ( $dependence->getTable () );
+                    . Template::getClassName ( $dependence->getTable () );
             }
         }
 

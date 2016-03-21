@@ -115,18 +115,15 @@ class DbTable
      */
     public function getForeingkeys ()
     {
-        if ( ! count ( $this->foreingkeys ) )
+
+        if ( empty ( $this->foreingkeys ) )
         {
-            foreach ( $this->getColumns () as $column )
-            {
-                if ( $column->isForeingkey () )
-                {
-                    $this->foreingkeys[] = $column;
-                }
-            }
+            $columns = $this->getColumns ();
+            $this->foreingkeys = array_filter ( $columns , function ( $column ){ return $column->isForeingkey (); } );
         }
 
         return $this->foreingkeys;
+
     }
 
     /**
@@ -134,15 +131,10 @@ class DbTable
      */
     public function getDependences ()
     {
-        if ( ! count ( $this->dependence ) )
+        if ( empty ( $this->dependence ) )
         {
-            foreach ( $this->getColumns () as $column )
-            {
-                if ( $column->hasDependence() )
-                {
-                    $this->dependence[] = $column;
-                }
-            }
+            $columns = $this->getColumns ();
+            $this->dependence = array_filter ( $columns , function ( $column ){ return $column->hasDependence (); } );
         }
 
         return $this->dependence;
@@ -153,18 +145,26 @@ class DbTable
      */
     public function getSequences ()
     {
-        if ( ! count ( $this->sequence ) )
+        if ( empty ( $this->sequence ) )
         {
-            foreach ( $this->getColumns () as $column )
-            {
-                if ( $column->hasSequence () )
-                {
-                    $this->sequence[] = $column->getSequence ();
-                }
-            }
+            $columns = $this->getColumns ();
+            $this->sequence = array_filter ( $columns , function ( $column ){ return $column->hasSequence (); } );
         }
 
         return $this->sequence;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSequences ()
+    {
+        if ( empty ( $this->sequence ) )
+        {
+            $this->getSequences ();
+        }
+
+        return ! empty ( $this->sequence );
     }
 
     /**

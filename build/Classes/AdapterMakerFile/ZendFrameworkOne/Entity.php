@@ -4,6 +4,7 @@ namespace Classes\AdapterMakerFile\ZendFrameworkOne;
 
 use Classes\AdapterMakerFile\AbstractAdapter;
 use Classes\AdapterConfig\ZendFrameworkOne;
+use Classes\Maker\Template;
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -39,7 +40,7 @@ class Entity extends AbstractAdapter
             $name =
                 'Parent'
                 . ZendFrameworkOne::SEPARETOR
-                . $makerFile->getClassName ( $constrant->getTable () )
+                . Template::getClassName ( $constrant->getTable () )
                 . ZendFrameworkOne::SEPARETOR
                 . 'By'
                 . ZendFrameworkOne::SEPARETOR
@@ -49,8 +50,8 @@ class Entity extends AbstractAdapter
                 'class'    => $makerFile->getConfig ()
                         ->createClassNamespace ( $constrant )
                     . ZendFrameworkOne::SEPARETOR
-                    . $makerFile->getClassName ( $constrant->getTable () ),
-                'function' => $makerFile->getClassName ( $name ),
+                    . Template::getClassName ( $constrant->getTable () ),
+                'function' => Template::getClassName ( $name ),
                 'table'    => $constrant->getTable (),
                 'column'   => $fks->getName (),
                 'name'     => $constrant->getNameConstrant (),
@@ -65,7 +66,7 @@ class Entity extends AbstractAdapter
                 $name =
                     'Depend'
                     . ZendFrameworkOne::SEPARETOR
-                    . $makerFile->getClassName ( $dependence->getTable () )
+                    . Template::getClassName ( $dependence->getTable () )
                     . ZendFrameworkOne::SEPARETOR
                     . 'By'
                     . ZendFrameworkOne::SEPARETOR
@@ -78,8 +79,8 @@ class Entity extends AbstractAdapter
                         'class'    => $makerFile->getConfig ()
                                 ->createClassNamespace ( $dependence )
                             . ZendFrameworkOne::SEPARETOR
-                            . $makerFile->getClassName ( $dependence->getTable () ),
-                        'function' => $makerFile->getClassName ( $name ),
+                            . Template::getClassName ( $dependence->getTable () ),
+                        'function' => Template::getClassName ( $name ),
                         'table'    => $dependence->getTable (),
                         'column'   => $dependence->getColumn (),
                         'name'     => $dependence->getNameConstrant ()

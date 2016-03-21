@@ -28,8 +28,8 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp ()
     {
-        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ], $GLOBALS[ 'db_username' ], $GLOBALS[ 'db_password' ] );
-        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
+        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ] , $GLOBALS[ 'db_username' ] , $GLOBALS[ 'db_password' ] );
+        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE , \PDO::ERRMODE_EXCEPTION );
         $this->tearDown ();
 
         $this->pdo->exec (
@@ -61,8 +61,6 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
             CREATE SEQUENCE products_product_id_seq;
             ALTER TABLE products ALTER COLUMN product_id SET DEFAULT NEXTVAL(  'public.products_product_id_seq'::regclass );"
         );
-
-
     }
 
     /**
@@ -79,21 +77,20 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
     /**
      * @return \Classes\AdaptersDriver\Pgsql
      */
     protected function getDataBaseDrive ()
     {
-        if ( !$this->objDriver )
+        if ( ! $this->objDriver )
         {
             $arrConfig = array (
-                'driver'    => 'pdo_pgsql',
-                'host'      => 'localhost',
-                'database'  => 'dao_generator',
-                'username'  => 'postgres',
-                'socket'    => null,
-                'password'  => '123',
+                'driver'    => 'pdo_pgsql' ,
+                'host'      => 'localhost' ,
+                'database'  => 'dao_generator' ,
+                'username'  => 'postgres' ,
+                'socket'    => null ,
+                'password'  => '123' ,
                 'namespace' => ''
             );
 
@@ -116,16 +113,18 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
     {
         $daoClone = clone $this->getDataBaseDrive ();
         $this->getDataBaseDrive ()->runDatabase ();
-        $this->assertEquals ( $daoClone, $this->getDataBaseDrive () );
+        $this->assertEquals ( $daoClone , $this->getDataBaseDrive () );
     }
 
     public function testSQLSequence ()
     {
         $this->assertEquals (
-            'public.bugs_bug_id_seq', $this->getDataBaseDrive ()->getSequence ( 'public.bugs', 'bug_id' )
+            'public.bugs_bug_id_seq' , $this->getDataBaseDrive ()
+                                            ->getSequence ( 'public.bugs' , 'bug_id' )
         );
         $this->assertEquals (
-            'products_product_id_seq', $this->getDataBaseDrive ()->getSequence ( 'public.products', 'product_id' )
+            'products_product_id_seq' , $this->getDataBaseDrive ()
+                                             ->getSequence ( 'public.products' , 'product_id' )
         );
     }
 
@@ -144,13 +143,13 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
                 {
                     case "FOREIGN KEY":
                     {
-                        $this->assertEquals ( 'accounts', $contrstrant[ "foreign_table" ] );
-                        $this->assertEquals ( 'account_name', $contrstrant[ "foreign_column" ] );
+                        $this->assertEquals ( 'accounts' , $contrstrant[ "foreign_table" ] );
+                        $this->assertEquals ( 'account_name' , $contrstrant[ "foreign_column" ] );
                         break;
                     }
                     case "PRIMARY KEY":
                     {
-                        $this->assertEquals ( 'bugs', $contrstrant[ "foreign_table" ] );
+                        $this->assertEquals ( 'bugs' , $contrstrant[ "foreign_table" ] );
                     }
 
                 };
@@ -158,7 +157,6 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
         }
 
     }
-
 
     /**
      *
@@ -168,7 +166,7 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue (
             is_array (
                 $this->getDataBaseDrive ()
-                    ->getListNameTable ()
+                     ->getListNameTable ()
             )
         );
         $this->assertTrue (
@@ -191,13 +189,13 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
     public function testGetTables ()
     {
         $this->assertTrue (
-            $this->getDataBaseDrive ()->getTable ( "public.accounts", "public" )
+            $this->getDataBaseDrive ()->getTable ( "accounts" , "public" )
             instanceof
             \Classes\Db\DbTable
         );
         $arrTables = $this->getDataBaseDrive ()->getTables ( 'public' );
         $this->assertTrue (
-            $arrTables[ "public.accounts" ] instanceof
+            $arrTables[ "accounts" ] instanceof
             \Classes\Db\DbTable
         );
     }

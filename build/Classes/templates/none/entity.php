@@ -1,5 +1,5 @@
 <?="<?php\n"?>
-<?php $className = $objTables->getNamespace(). '_Entity_' . $this->getClassName ( $objTables->getName () )?>
+<?php $className = $objTables->getNamespace(). '_Entity_' . \Classes\Maker\Template::getClassName ( $objTables->getName () )?>
 
 /**
  * Application Entity
@@ -38,7 +38,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     * @var string
     * @access protected
     */
-    protected $_tableClass = '<?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTables->getName () )?>';
+    protected $_tableClass = '<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?>';
 
     /**
      * @see <?=$this->config->namespace?>Model_EntityAbstract::$_filters
@@ -119,16 +119,16 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 
 <?php foreach ($parents as $parent): ?>
     /**
-    * Parent relation <?=$this->getClassName($parent['column']) . "\n"?>
+    * Parent relation <?=\Classes\Maker\Template::getClassName($parent['column']) . "\n"?>
     *
     * @var <?=$parent['class'] . "\n"?>
     */
-    protected $_<?=$this->getClassName($parent['column'])?>;
+    protected $_<?=\Classes\Maker\Template::getClassName($parent['column'])?>;
 
 <?php endforeach;?>
 <?php foreach ($depends as $depend): ?>
     /**
-     * Parent relation <?=$this->getClassName($depend['column']) . "\n"?>
+     * Parent relation <?=\Classes\Maker\Template::getClassName($depend['column']) . "\n"?>
      *
      * @var <?=$depend['class'] . "\n"?>
      */
@@ -149,7 +149,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php endif; ?>
     * @return <?=$className . "\n"?>
     */
-    public function set<?=$this->getClassName($column->getName())?>($<?=$column->getName()?>)
+    public function set<?=\Classes\Maker\Template::getClassName($column->getName())?>($<?=$column->getName()?>)
     {
 <?php switch ( $column->getType () ):
         case 'date': ?>
@@ -197,7 +197,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     * @return <?=$column->getType() . "\n"?>
 <?php endif; ?>
     */
-    public function get<?=$this->getClassName($column->getName())?>(<?php if ($column->getType()=='date'): ?>$returnZendDate = false <?php endif;?>)
+    public function get<?=\Classes\Maker\Template::getClassName($column->getName())?>(<?php if ($column->getType()=='date'): ?>$returnZendDate = false <?php endif;?>)
     {
 <?php if ($column->getType()=='date'): ?>
         if ($returnZendDate)
@@ -217,7 +217,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php endforeach; ?>
 <?php foreach ($parents as $parent): ?>
     /**
-    * Gets parent <?=$this->getClassName($parent['column']) . "\n"?>
+    * Gets parent <?=\Classes\Maker\Template::getClassName($parent['column']) . "\n"?>
     *
     * @return <?=$parent['class'] . "\n"?>
     */
@@ -225,7 +225,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     {
         if ($this->_<?=$parent['column']?> === null)
         {
-            $this->_<?=$parent['column']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName($parent['table'])?>', '<?=$this->getClassName($parent['column'])?>');
+            $this->_<?=$parent['column']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName($parent['table'])?>', '<?=\Classes\Maker\Template::getClassName($parent['column'])?>');
         }
 
         return $this->_<?=$parent['column']?>;
@@ -234,7 +234,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php endforeach; ?>
 <?php foreach ($depends as $value): ?>
     /**
-    * Gets dependent <?=$this->getClassName($depend['column']) . "\n"?>
+    * Gets dependent <?=\Classes\Maker\Template::getClassName($depend['column']) . "\n"?>
     *
     * @return <?=$depend['class'] . "\n"?>
     */
@@ -242,7 +242,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     {
         if ($this->_<?=$depend['column']?> === null)
         {
-            $this->_<?=$depend['column']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName($depend['table'])?>', '<?=$this->getClassName($depend['column'])?>');
+            $this->_<?=$depend['column']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName($depend['table'])?>', '<?=\Classes\Maker\Template::getClassName($depend['column'])?>');
         }
 
       return $this->_<?=$depend['column']?>;
@@ -252,12 +252,12 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     /**
     * Retorna a Dbtable da class model
     *
-    * @return <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTables->getName () ).'\n'?>
+    * @return <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () ).'\n'?>
     */
     public function getTable()
     {
         if ($this->_table === null) {
-            $this->setTable(new <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTables->getName () )?>());
+            $this->setTable(new <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?>());
         }
 
         return $this->_table;

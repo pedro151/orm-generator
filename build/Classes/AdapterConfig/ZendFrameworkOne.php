@@ -61,7 +61,7 @@ class ZendFrameworkOne extends AbstractAdapter
 
         $frameworkIni = $this->getFrameworkIni ();
 
-        include_once 'Zend\Config\Ini.php';
+        require_once  'Zend/Config/Ini.php';
 
         $objConfig = new \Zend_Config_Ini(
             realpath ( $frameworkIni ), $this->getEnvironment ()

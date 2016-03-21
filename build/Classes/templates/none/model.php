@@ -6,7 +6,7 @@
  * <?=$this->config->last_modify."\n"?>
  *
  * @package <?=$objTables->getNamespace()?>
- * @see  <?=$objTables->getNamespace()?>_Entity_<?=$this->getClassName ( $objTables->getName () )?>. "\n"?>
+ * @see  <?=$objTables->getNamespace()?>_Entity_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?>. "\n"?>
  *
  * @author    <?=$this->config->author."\n"?>
  *
@@ -15,7 +15,7 @@
  * @link      <?=$this->config->link."\n"?>
  */
 
-class  <?=$objTables->getNamespace()?>_<?=$this->getClassName ( $objTables->getName () )?> extends <?=$objTables->getNamespace()?>_Entity_<?=$this->getClassName ( $objTables->getName () ). "\n"?>
+class  <?=$objTables->getNamespace()?>_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?> extends <?=$objTables->getNamespace()?>_Entity_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () ). "\n"?>
 {
     /* Codifique aqui */
 }

@@ -123,9 +123,7 @@ abstract class <?=$this->config->namespace?>Model_TableAbstract extends Zend_Db_
         }
 
 
-        $row = $this->getAdapter ()->query ( $query )->fetch ();
-
-        return $row[ 'all_count' ];
+        return $this->getAdapter ()->query ( $query )->fetchColumn ();
     }
 
 }

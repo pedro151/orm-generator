@@ -16,7 +16,7 @@
  * @link      <?=$this->config->link."\n"?>
  */
 
-class <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTables->getName () )?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
+class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
 {
     /**
      * Nome da tabela do banco de dados
@@ -42,7 +42,7 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTable
      * @var string
      * @access protected
      */
-    protected $_rowClass = '<?=$objTables->getNamespace()?>_<?=$this->getClassName ( $objTables->getName () )?>';
+    protected $_rowClass = '<?=$objTables->getNamespace()?>_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?>';
 
 	/**
      * Nome da Primary Key
@@ -62,11 +62,11 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=$this->getClassName ( $objTable
      *
      * @var mixed
      */
-<?php if( count ($objTables->getSequences()) ) : ?>
-	protected $_sequence = array(
-<?php foreach( $objTables->getSequences() as $seq ): ?>
-        '<?=$seq ?>',
-<?php endforeach; ?>
+<?php if( $objTables->hasSequences() ) : ?>
+    protected $_sequence = array(
+    <?php foreach( $objTables->getSequences() as $seq ): ?>
+        '<?=$seq->getSequence() ?>',
+    <?php endforeach; ?>
     );
 <?php else: ?>
     protected $_sequence = false;

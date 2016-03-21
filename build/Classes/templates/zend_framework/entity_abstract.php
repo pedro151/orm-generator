@@ -218,7 +218,7 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
 
 	    if ( in_array ( $method, $methods ) )
 	    {
-		$this->$method ( $value );
+		    $this->$method ( $value );
 	    }
 	}
 	return $this;

@@ -1,9 +1,8 @@
-;=====================LEIA-ME!!!================================
+;=====================READ ME!================================
 ;
-;   Configurações padrão caso nao seja especificado nenhuma no
-;   Terminal.
+;   default settings if not specified in any Terminal.
 ;
-;=============CONFIGURAÇÕES DEFAULT DE AMBIENTE==================
+;=============SETTING ENVIRONMENT OF DEFAULT==================
 
 [main]
 
@@ -35,7 +34,7 @@ framework-path-library = ""
 
 namespace = ''
 
-;=============TODO==============
+;=============TODO============================================
 ; table name (parameter can be used more then once)
 ;tables=""
 ; create classes for all the scripts in the database
@@ -43,11 +42,11 @@ namespace = ''
 ;
 
 
-;=====================LEIA-ME!!!================================
+;=====================READ ME!================================
 ;
-;   Configuracoes se o framework for 'none' (nenhum)
+; Configurations if the framework is 'none'
 ;
-;===============================================================
+;=============================================================
 [none : main]
 
 host = localhost
@@ -59,5 +58,5 @@ password = 123
 
 [zend_framework : main]
 
-framework-ini = "C:\Apache24\htdocs\newsabido\application\configs\application.ini"
-framework-path-library = "C:\Apache24\htdocs\newsabido\library"
+framework-ini = "/var/www/newsabido/application/configs/application.ini"
+framework-path-library = "/var/www/newsabido/library"
