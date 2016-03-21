@@ -99,22 +99,19 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php endforeach; ?>
     );
 
-
+<?php if( $objTables->hasPrimaryKey() ):?>
     /**
     * Nome da Primary Key
     *
     * @var string
     * @access protected
     */
-<?php if(count($objTables->getPrimarykeys())>1):?>
+
     protected $_primary = array(
     <?php foreach($objTables->getPrimarykeys() as $pks) : ?>
-            '<?=$pks->getName()?>',
+        '<?=$pks->getName()?>',
     <?php endforeach ?>
     );
-<?php elseif(count($objTables->getPrimarykeys())==1): ?>
-<?php $pk = $objTables->getPrimarykeys() ?>
-    protected $_primary = '<?=$pk[0]->getName()?>';
 <?php endif ?>
 
 <?php foreach ($parents as $parent): ?>
@@ -123,7 +120,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     *
     * @var <?=$parent['name'] . "\n"?>
     */
-    protected $_<?=$parent['name']?>;
+    protected $_parent_<?=$parent['name']?>;
 
 <?php endforeach;?>
 <?php foreach ($depends as $depend): ?>
@@ -132,7 +129,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
      *
      * @var <?=$depend['class'] . "\n"?>
      */
-     protected $_<?=$depend['name']?>;
+     protected $_depend_<?=$depend['name']?>;
 
 <?php endforeach;?>
 <?php foreach ($objTables->getColumns() as $column): ?>
@@ -223,12 +220,12 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     */
     public function get<?=$parent['function']?>()
     {
-        if ($this->_<?=$parent['name']?> === null)
+        if ($this->_parent_<?=$parent['name']?> === null)
         {
-            $this->_<?=$parent['name']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName($parent['table'])?>', '<?=\Classes\Maker\Template::getClassName($parent['name'])?>');
+            $this->_parent_<?=$parent['name']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName ($parent['table'])?>', '<?=\Classes\Maker\Template::getClassName($parent['name'])?>');
         }
 
-        return $this->_<?=$parent['name']?>;
+        return $this->_parent_<?=$parent['name']?>;
     }
 
 <?php endforeach; ?>
@@ -242,12 +239,12 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     */
     public function get<?=$depend['function']?>()
     {
-        if ($this->_<?=$depend['name']?> === null)
+        if ($this->_depend_<?=$depend['name']?> === null)
         {
-            $this->_<?=$depend['name']?> = $this->findDependentRowset('<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName($depend['table'])?>');
+            $this->_depend_<?=$depend['name']?> = $this->findDependentRowset('<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName ($depend['table'])?>');
         }
 
-      return $this->_<?=$depend['name']?>;
+      return $this->_depend_<?=$depend['name']?>;
     }
 
 <?php endforeach; ?>

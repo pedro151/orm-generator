@@ -44,6 +44,7 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getCla
      */
     protected $_rowClass = '<?=$objTables->getNamespace()?>_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?>';
 
+<?php if( $objTables->hasPrimaryKey() ):?>
 	/**
      * Nome da Primary Key
      *
@@ -55,7 +56,7 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getCla
         '<?=$pks->getName()?>',
 <?php endforeach; ?>
     );
-
+<?php endif ?>
 	/**
      * Definir a lógica para os novos valores na chave primária.
      * Pode ser uma string, boolean true ou false booleano.

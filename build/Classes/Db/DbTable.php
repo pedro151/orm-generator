@@ -33,7 +33,7 @@ class DbTable
     /**
      * @var \Classes\Db\Column[]
      */
-    private $columns;
+    private $columns = array ();
 
     /**
      * @var string
@@ -102,6 +102,19 @@ class DbTable
         }
 
         return $this->primarykeys;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasPrimaryKey ()
+    {
+        if ( empty ( $this->sequence ) )
+        {
+            $this->getPrimaryKeys ();
+        }
+
+        return ! empty ( $this->sequence );
     }
 
     /**
