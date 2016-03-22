@@ -6,7 +6,7 @@ require_once 'Classes/AdaptersDriver/AbsractAdapter.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link https://github.com/pedro151/DAO-Generator
+ * @link   https://github.com/pedro151/DAO-Generator
  */
 class Mysql extends AbsractAdapter
 {
@@ -19,7 +19,7 @@ class Mysql extends AbsractAdapter
     /**
      * @inheritDoc
      */
-    protected function parseForeignKeys()
+    protected function parseForeignKeys ()
     {
         // TODO: implement here
     }
@@ -27,7 +27,7 @@ class Mysql extends AbsractAdapter
     /**
      * @inheritDoc
      */
-    protected function parseTables()
+    protected function parseTables ()
     {
         // TODO: implement here
     }
@@ -36,41 +36,52 @@ class Mysql extends AbsractAdapter
      * @inheritDoc
      * @return string
      */
-    public function getPDOString()
+    public function getPDOString ()
     {
-        // TODO: implement here
-        return "";
+        return sprintf (
+            "mysql:host=%s;port=%s;dbname=%s" ,
+            $this->host ,
+            $this->port ,
+            $this->database
+
+        );
     }
 
     /**
      * @inheritDoc
      * @return string
      */
-    public function getPDOSocketString()
+    public function getPDOSocketString ()
     {
-        // TODO: implement here
-        return "";
+        return sprintf (
+            "mysql:unix_socket=%s;dbname=%s" ,
+            $this->socket ,
+            $this->database
+
+        );
     }
 
     /**
      * @inheritDoc
+     *
      * @param string $databaseName
+     *
      * @return \Classes\Db\DbTable[]
      */
-    public function getTables($schema = 0)
+    public function getTables ( $schema = 0 )
     {
         // TODO: implement here
-        return array();
+        return array ();
     }
 
     /**
      * @inheritDoc
      * @return string[]
      */
-    public function getListNameTable()
+    public function getListNameTable ()
     {
         // TODO: implement here
-        return array();
+        return array ();
     }
 
     /**
@@ -80,7 +91,20 @@ class Mysql extends AbsractAdapter
      */
     public function getListColumns ()
     {
-        // TODO: Implement getListColumns() method.
+        $strSchema = implode ( "', '" , $this->schema );
+
+        return $this->getPDO ()->query (
+            "select
+                table_schema,
+                table_name,
+                column_name ,
+                data_type,
+                is_nullable,
+                character_maximum_length AS max_length
+            from information_schema.columns
+            where table_schema IN ('$strSchema')
+            order by table_name,ordinal_position"
+        )->fetchAll ( \PDO::FETCH_ASSOC );
     }
 
     /**
@@ -92,4 +116,16 @@ class Mysql extends AbsractAdapter
     {
         // TODO: Implement totalTables() method.
     }
+
+    /**
+     * @inheritDoc
+     *
+     * @param $table
+     * @param $column
+     */
+    public function getSequence ( $table , $column )
+    {
+        // TODO: Implement getSequence() method.
+    }
+
 }

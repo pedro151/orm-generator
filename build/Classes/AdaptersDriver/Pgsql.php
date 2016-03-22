@@ -235,6 +235,14 @@ class Pgsql extends AbsractAdapter
         }
     }
 
+    /**
+     * Retorna o Nome da Sequence da tabela
+     *
+     * @param $table
+     * @param $column
+     *
+     * @return string
+     */
     public function getSequence ( $table , $column )
     {
         $pdo = $this->getPDO ();

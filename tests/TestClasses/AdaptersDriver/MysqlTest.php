@@ -9,14 +9,14 @@
 namespace TestClasses\AdaptersDriver;
 
 use Classes\AdapterConfig\None;
-use Classes\AdaptersDriver\Pgsql;
+use Classes\AdaptersDriver\Mysql;
 
 /**
  * Class PgsqlTest
  *
  * @package TestClasses\AdaptersDriver
  */
-class PgsqlTest extends \PHPUnit_Framework_TestCase
+class MysqlTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @type Pgsql
@@ -28,39 +28,44 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp ()
     {
-        $this->pdo = new \PDO( $GLOBALS[ 'pgsql_dsn' ] , $GLOBALS[ 'pgsql_username' ] , $GLOBALS[ 'pgsql_password' ] );
+        $this->pdo = new \PDO( $GLOBALS[ 'mysql_dsn' ] , $GLOBALS[ 'mysql_username' ] , $GLOBALS[ 'mysql_password' ] );
         $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE , \PDO::ERRMODE_EXCEPTION );
         $this->tearDown ();
 
         $this->pdo->exec (
-            "
-            CREATE TABLE accounts (
-              account_name      VARCHAR(100) NOT NULL PRIMARY KEY
-            );
+            "CREATE TABLE accounts (
+       account_name      VARCHAR(100) NOT NULL PRIMARY KEY
+);
 
-            CREATE TABLE products (
-                  product_id        INTEGER NOT NULL PRIMARY KEY,
-                  product_name      VARCHAR(100)
-                );
+CREATE TABLE products (
+      product_id        INTEGER NOT NULL PRIMARY KEY,
+      product_name      VARCHAR(100)
+);
 
-              CREATE TABLE bugs (
-                  bug_id            SERIAL NOT NULL PRIMARY KEY,
-                  bug_description   VARCHAR(100),
-                  bug_status        VARCHAR(20),
-                  reported_by       VARCHAR(100) REFERENCES accounts(account_name),
-                  assigned_to       VARCHAR(100) REFERENCES accounts(account_name),
-                  verified_by       VARCHAR(100) REFERENCES accounts(account_name)
-                );
+CREATE TABLE bugs (
+    bug_id            INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    bug_description   VARCHAR(100),
+    bug_status        VARCHAR(20),
+    reported_by       VARCHAR(100),
+    assigned_to       VARCHAR(100),
+    verified_by       VARCHAR(100),
+  FOREIGN KEY (reported_by)
+	REFERENCES accounts(account_name),
+  FOREIGN KEY (assigned_to)
+	REFERENCES accounts(account_name),
+  FOREIGN KEY (verified_by)
+	REFERENCES accounts(account_name)
+);
 
-            CREATE TABLE bugs_products (
-              bug_id            INTEGER NOT NULL REFERENCES bugs,
-              product_id        INTEGER NOT NULL REFERENCES products,
-              PRIMARY KEY       (bug_id, product_id)
-            );
-
-            CREATE SEQUENCE products_product_id_seq;
-            ALTER TABLE products ALTER COLUMN product_id SET DEFAULT NEXTVAL(  'public.products_product_id_seq'::regclass );"
-        );
+CREATE TABLE bugs_products (
+    bug_id            INTEGER NOT NULL ,
+    product_id        INTEGER NOT NULL,
+    PRIMARY KEY       (bug_id, product_id),
+    FOREIGN KEY (bug_id)
+		REFERENCES bugs(bug_id),
+	FOREIGN KEY (product_id)
+		REFERENCES products(product_id)
+);");
     }
 
     /**
@@ -72,29 +77,28 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
             "DROP TABLE IF EXISTS bugs_products;
              DROP TABLE IF EXISTS  bugs;
              DROP TABLE IF EXISTS  products;
-             DROP TABLE IF EXISTS  accounts;
-             DROP SEQUENCE IF EXISTS products_product_id_seq;"
+             DROP TABLE IF EXISTS  accounts;"
         );
     }
 
     /**
-     * @return \Classes\AdaptersDriver\Pgsql
+     * @return \Classes\AdaptersDriver\Mysql
      */
     protected function getDataBaseDrive ()
     {
         if ( ! $this->objDriver )
         {
             $arrConfig = array (
-                'driver'    => 'pdo_pgsql' ,
+                'driver'    => 'pdo_mysql' ,
                 'host'      => 'localhost' ,
                 'database'  => 'dao_generator' ,
-                'username'  => 'postgres' ,
+                'username'  => 'root' ,
                 'socket'    => null ,
                 'password'  => '123' ,
                 'namespace' => ''
             );
 
-            $this->objDriver = new Pgsql( new None( $arrConfig ) );
+            $this->objDriver = new Mysql( new None( $arrConfig ) );
             $this->objDriver->runDatabase ();
         }
 

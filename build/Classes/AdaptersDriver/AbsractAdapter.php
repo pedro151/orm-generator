@@ -86,6 +86,16 @@ abstract class AbsractAdapter
     public abstract function getTotalTables ();
 
     /**
+     * Retorna o Nome da Sequence da tabela
+     *
+     * @param $table
+     * @param $column
+     *
+     * @return string
+     */
+    public abstract function getSequence ( $table , $column );
+
+    /**
      * @param string $str
      *
      * @return string
@@ -117,7 +127,7 @@ abstract class AbsractAdapter
      */
     public function getTables ( $schema = 0 )
     {
-        if ( !isset( $this->objDbTables[ $schema ] ) )
+        if ( ! isset( $this->objDbTables[ $schema ] ) )
         {
             return array ();
         }
@@ -132,7 +142,7 @@ abstract class AbsractAdapter
      *
      * @return \Classes\Db\DbTable|null
      */
-    public function getTable ( $nameTable, $schema = 0 )
+    public function getTable ( $nameTable , $schema = 0 )
     {
         if ( isset( $this->objDbTables[ $schema ][ trim ( $nameTable ) ] ) )
         {
@@ -189,11 +199,10 @@ abstract class AbsractAdapter
     {
         if ( is_null ( $this->_pdo ) )
         {
-            if ( !empty( $this->socket ) )
+            if ( ! empty( $this->socket ) )
             {
                 $pdoString = $this->getPDOSocketString ();
-            }
-            else
+            } else
             {
                 $pdoString = $this->getPDOString ();
             }
@@ -201,10 +210,9 @@ abstract class AbsractAdapter
             try
             {
                 $this->_pdo = new \PDO (
-                    $pdoString, $this->username, $this->password
+                    $pdoString , $this->username , $this->password
                 );
-            }
-            catch ( \Exception $e )
+            } catch ( \Exception $e )
             {
                 die ( "pdo error: " . $e->getMessage () . "\n" );
             }

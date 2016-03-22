@@ -12,7 +12,7 @@ class ZendFrameworkOneTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp ()
     {
-        $this->pdo = new \PDO($GLOBALS['db_dsn'], $GLOBALS['db_username'], $GLOBALS['db_password']);
+        $this->pdo = new \PDO($GLOBALS['pgsql_dsn'], $GLOBALS['pgsql_username'], $GLOBALS['pgsql_password']);
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $this->pdo->query("CREATE TABLE dao (test VARCHAR(50) NOT NULL)");
     }

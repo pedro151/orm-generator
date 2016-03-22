@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="./tests/bootstrap.php" colors="true">
     <php>
-        <var name="db_dsn" value="pgsql:host=localhost;port=5432;dbname=dao_generator"/>
-        <var name="db_username" value="postgres"/>
-        <var name="db_password" value="123"/>
+        <var name="pgsql_dsn" value="pgsql:host=localhost;port=5432;dbname=dao_generator"/>
+        <var name="pgsql_username" value="postgres"/>
+        <var name="pgsql_password" value="123"/>
+
+        <var name="mysql_dsn" value="mysql:host=localhost;port=5432;dbname=dao_generator"/>
+        <var name="mysql_username" value="root"/>
+        <var name="mysql_password" value="123"/>
         <var name="base_path" value="__FILE__" />
     </php>
 
