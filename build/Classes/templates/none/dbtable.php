@@ -16,7 +16,7 @@
  * @link      <?=$this->config->link."\n"?>
  */
 
-class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
+class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
 {
     /**
      * Nome da tabela do banco de dados
@@ -42,8 +42,9 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getCla
      * @var string
      * @access protected
      */
-    protected $_rowClass = '<?=$objTables->getNamespace()?>_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?>';
+    protected $_rowClass = '<?=$objTables->getNamespace()?>_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>';
 
+<?php if( $objTables->hasPrimaryKey() ):?>
 	/**
      * Nome da Primary Key
      *
@@ -55,7 +56,7 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getCla
         '<?=$pks->getName()?>',
 <?php endforeach; ?>
     );
-
+<?php endif ?>
 	/**
      * Definir a lógica para os novos valores na chave primária.
      * Pode ser uma string, boolean true ou false booleano.
@@ -63,10 +64,10 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getCla
      * @var mixed
      */
 <?php if( $objTables->hasSequences() ) : ?>
-    protected $_sequence = array(
-    <?php foreach( $objTables->getSequences() as $seq ): ?>
+	protected $_sequence = array(
+<?php foreach( $objTables->getSequences() as $seq ): ?>
         '<?=$seq->getSequence() ?>',
-    <?php endforeach; ?>
+<?php endforeach; ?>
     );
 <?php else: ?>
     protected $_sequence = false;

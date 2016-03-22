@@ -4,7 +4,7 @@ namespace Classes\AdapterMakerFile\ZendFrameworkOne;
 
 use Classes\AdapterMakerFile\AbstractAdapter;
 use Classes\AdapterConfig\ZendFrameworkOne;
-use Classes\Maker\Template;
+use Classes\Maker\AbstractMaker;
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -40,7 +40,7 @@ class Entity extends AbstractAdapter
             $name =
                 'Parent'
                 . ZendFrameworkOne::SEPARETOR
-                . Template::getClassName ( $constrant->getTable () )
+                . AbstractMaker::getClassName ( $constrant->getTable () )
                 . ZendFrameworkOne::SEPARETOR
                 . 'By'
                 . ZendFrameworkOne::SEPARETOR
@@ -50,8 +50,8 @@ class Entity extends AbstractAdapter
                 'class'    => $makerFile->getConfig ()
                         ->createClassNamespace ( $constrant )
                     . ZendFrameworkOne::SEPARETOR
-                    . Template::getClassName ( $constrant->getTable () ),
-                'function' => Template::getClassName ( $name ),
+                    . AbstractMaker::getClassName ( $constrant->getTable () ),
+                'function' => AbstractMaker::getClassName ( $name ),
                 'table'    => $constrant->getTable (),
                 'column'   => $fks->getName (),
                 'name'     => $constrant->getNameConstrant (),
@@ -66,7 +66,7 @@ class Entity extends AbstractAdapter
                 $name =
                     'Depend'
                     . ZendFrameworkOne::SEPARETOR
-                    . Template::getClassName ( $dependence->getTable () )
+                    . AbstractMaker::getClassName ( $dependence->getTable () )
                     . ZendFrameworkOne::SEPARETOR
                     . 'By'
                     . ZendFrameworkOne::SEPARETOR
@@ -79,8 +79,8 @@ class Entity extends AbstractAdapter
                         'class'    => $makerFile->getConfig ()
                                 ->createClassNamespace ( $dependence )
                             . ZendFrameworkOne::SEPARETOR
-                            . Template::getClassName ( $dependence->getTable () ),
-                        'function' => Template::getClassName ( $name ),
+                            . AbstractMaker::getClassName ( $dependence->getTable () ),
+                        'function' => AbstractMaker::getClassName ( $name ),
                         'table'    => $dependence->getTable (),
                         'column'   => $dependence->getColumn (),
                         'name'     => $dependence->getNameConstrant ()

@@ -52,20 +52,10 @@ set_include_path (
 
 require_once 'Classes/MakerFile.php';
 require_once 'Classes/Config.php';
+require_once 'Classes/MakerConfigFile.php';
 
 try
 {
-    $arrValid = array (
-        'help' ,
-        'status' ,
-        'config-ini:' ,
-        'database:' ,
-        'schema:' ,
-        'driver:' ,
-        'framework:' ,
-        'path:'
-    );
-
     $_path = realpath (
         str_replace (
             'phar://'
@@ -73,7 +63,30 @@ try
         )
     );
 
-    $maker = new \Classes\MakerFile( new \Classes\Config( getopt ( null , $arrValid ) , $_path ) );
+    $arrValid = array (
+        'version',
+        'help',
+        'status',
+        'init',
+        'config-ini:',
+        'database:',
+        'schema:',
+        'driver:',
+        'framework:',
+        'path:'
+    );
+
+    $argv = getopt ( null, $arrValid );
+
+    if ( array_key_exists ( 'init', $argv ) )
+    {
+        $maker = new \Classes\MakerConfigFile( $argv, $_path );
+    }
+    else
+    {
+        $maker = new \Classes\MakerFile( new \Classes\Config( $argv, $_path ) );
+    }
+
     $maker->run ();
 
 } catch ( \Exception $e )

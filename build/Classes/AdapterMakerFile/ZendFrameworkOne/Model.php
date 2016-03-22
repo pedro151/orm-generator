@@ -19,6 +19,6 @@ class Model extends AbstractAdapter
 
     public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {
-        // TODO: Implement parseRelation() method.
+       return array();
     }
 }

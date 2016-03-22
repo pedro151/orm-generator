@@ -8,19 +8,19 @@
 
 ; name framework used, which has the contents of the database configurations
 ; and framework template
-framework = "none"
+framework = "<?=$framework?>"<?="\n"?>
 ; configuration environment you want to generate
-environment = dev
+environment = <?=$environment?><?="\n"?>
 ; database driver name (Ex.: pgsql)
-driver = 'pgsql'
+driver = '<?=$driver?>'<?="\n"?>
 ; database name
-;database = "dao_generator"
+database = "<?=$database?>"<?="\n"?>
 ; database schema name (one or more than one)
 ;schema = public
 ; database user
-username = postgres
+username = <?=$username?><?="\n"?>
 ; database password
-password = 123
+password = <?=$password?><?="\n"?>
 ; show status of implementation carried out after completing the process
 status = false
 ; specify where to create the files (default is current directory)
@@ -47,16 +47,9 @@ namespace = ''
 ; Configurations if the framework is 'none'
 ;
 ;=============================================================
-[none : main]
+[<?=$framework?> : main]
 
-host = localhost
-port = 5432
-database = "dao_generator"
-schema = teste_dao
-username = postgres
-password = 123
-
-[zend_framework : main]
-
-framework-ini = "/var/www/newsabido/application/configs/application.ini"
-framework-path-library = "/var/www/newsabido/library"
+;.ini file the framework configuration
+framework-ini = ""
+;the path to the directory of the framework library
+framework-path-library = ""

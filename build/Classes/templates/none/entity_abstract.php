@@ -218,7 +218,7 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
 
 	    if ( in_array ( $method, $methods ) )
 	    {
-		$this->$method ( $value );
+		    $this->$method ( $value );
 	    }
 	}
 	return $this;
@@ -237,67 +237,23 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
     }
 
     /**
-     * Retorna um array associativo de pares de valores de colunas se a
-     * primary key é um array de valores, ou o valor da primary key se não for array
-     *
-     * @return any|array
-     */
-    public function getPrimaryKey()
-    {
-        $primary_key = $this->getPrimaryKeyName();
-
-        if (is_array($primary_key)) {
-            $result = array();
-            foreach ($primary_key as $key) {
-                $result[$key] = $this->$key;
-            }
-
-            return $result;
-        } else {
-            return $this->$primary_key;
-        }
-
-    }
-
-    /**
      * Retorna o objeto pela primary key
      *
      * @param int|array $primary_key
      * @return <?=$this->config->namespace?>Model__ModelAbstract
      */
-public function find ( $primary_key )
-	{
-		$primary_key	 = (array) $primary_key;
-		$primary_keyIn	 = $this->getPrimaryKeyName ();
 
-		$where = array();
-		foreach ( $primary_key as $key => $PK_Value )
-		{
-			if ( is_int ( $key ) && count ( $primary_key ) === 1 )
-			{
-				$where[$primary_keyIn[1] . '=?'] = $PK_Value;
-			}
-			elseif ( is_string ( $key ) && in_array ( $key, $primary_keyIn ) )
-			{
-				$where[$key . '=?'] = $PK_Value;
-			}
-			else
-			{
-				throw new Exception ( "verifique o valor e o campo da primary key da tabela " . get_class ( $this ) . " o nome ou os campo esta incorreto.\n" );
-			}
-		}
+      /**
+       * Retorna o objeto pela primary key
+       *
+       * @param int|array $primary_key
+       * @return <?=$this->config->namespace?>Model_EntityAbstract
+       */
+      public function find ( $primary_key )
+      {
+        return  $this->getTable()->find($primary_key)->current();
+      }
 
-		if ( count ( $where ) > 0 )
-		{
-			$dados = $this->getTable ()->fetchRow ( $where );
-			if ( !empty ( $dados ) )
-			{
-				$this->_data = $dados->toArray ();
-			}
-		}
-		return $this;
-	}
-	
 	/**
 	 * insere os dados independente se possui primary key ou nao
 	 * 
@@ -335,6 +291,31 @@ public function find ( $primary_key )
         if(count($this->_modifiedFields) > 0 ){
 			return parent::save ();
 		}
+    }
+
+    /**
+    * @see Zend_Db_Adapter::fetchAll
+    */
+    public static function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
+    {
+        $name =  get_called_class();
+        $InstanceObject = new $name();
+        return $InstanceObject->getTable()->fetchAll ( $where , $order , $count , $offset );
+    }
+
+    /**
+     * Retorna a Dbtable da class model
+     *
+     * @return null|Zend_Db_Table_Abstract
+     * @throws Zend_Db_Table_Row_Exception
+     */
+    public function getTable()
+    {
+        if ($this->_table === null) {
+            $this->setTable(new $this->_tableClass());
+        }
+
+        return $this->_table;
     }
 
 }

@@ -1,5 +1,5 @@
 <?="<?php\n"?>
-<?php $className = $objTables->getNamespace(). '_Entity_' . \Classes\Maker\Template::getClassName ( $objTables->getName () )?>
+<?php $className = $objTables->getNamespace(). '_Entity_' . \Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>
 
 /**
  * Application Entity
@@ -38,7 +38,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     * @var string
     * @access protected
     */
-    protected $_tableClass = '<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?>';
+    protected $_tableClass = '<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>';
 
     /**
      * @see <?=$this->config->namespace?>Model_EntityAbstract::$_filters
@@ -99,40 +99,37 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php endforeach; ?>
     );
 
-
+<?php if( $objTables->hasPrimaryKey() ):?>
     /**
     * Nome da Primary Key
     *
     * @var string
     * @access protected
     */
-<?php if(count($objTables->getPrimarykeys())>1):?>
+
     protected $_primary = array(
     <?php foreach($objTables->getPrimarykeys() as $pks) : ?>
-            '<?=$pks->getName()?>',
+        '<?=$pks->getName()?>',
     <?php endforeach ?>
     );
-<?php elseif(count($objTables->getPrimarykeys())==1): ?>
-<?php $pk = $objTables->getPrimarykeys() ?>
-    protected $_primary = '<?=$pk[0]->getName()?>';
 <?php endif ?>
 
 <?php foreach ($parents as $parent): ?>
     /**
-    * Parent relation <?=\Classes\Maker\Template::getClassName($parent['column']) . "\n"?>
+    * Parent relation <?=\Classes\Maker\AbstractMaker::getClassName($parent['table']) . "\n"?>
     *
-    * @var <?=$parent['class'] . "\n"?>
+    * @var <?=$parent['name'] . "\n"?>
     */
-    protected $_<?=\Classes\Maker\Template::getClassName($parent['column'])?>;
+    protected $_parent_<?=$parent['name']?>;
 
 <?php endforeach;?>
 <?php foreach ($depends as $depend): ?>
     /**
-     * Parent relation <?=\Classes\Maker\Template::getClassName($depend['column']) . "\n"?>
+     * Depends relation <?=\Classes\Maker\AbstractMaker::getClassName($depend['table']) . "\n"?>
      *
      * @var <?=$depend['class'] . "\n"?>
      */
-     protected $_<?=$depend['column']?>;
+     protected $_depend_<?=$depend['name']?>;
 
 <?php endforeach;?>
 <?php foreach ($objTables->getColumns() as $column): ?>
@@ -149,7 +146,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php endif; ?>
     * @return <?=$className . "\n"?>
     */
-    public function set<?=\Classes\Maker\Template::getClassName($column->getName())?>($<?=$column->getName()?>)
+    public function set<?=\Classes\Maker\AbstractMaker::getClassName($column->getName())?>($<?=$column->getName()?>)
     {
 <?php switch ( $column->getType () ):
         case 'date': ?>
@@ -197,7 +194,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     * @return <?=$column->getType() . "\n"?>
 <?php endif; ?>
     */
-    public function get<?=\Classes\Maker\Template::getClassName($column->getName())?>(<?php if ($column->getType()=='date'): ?>$returnZendDate = false <?php endif;?>)
+    public function get<?=\Classes\Maker\AbstractMaker::getClassName($column->getName())?>(<?php if ($column->getType()=='date'): ?>$returnZendDate = false <?php endif;?>)
     {
 <?php if ($column->getType()=='date'): ?>
         if ($returnZendDate)
@@ -217,59 +214,39 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php endforeach; ?>
 <?php foreach ($parents as $parent): ?>
     /**
-    * Gets parent <?=\Classes\Maker\Template::getClassName($parent['column']) . "\n"?>
+    * Gets parent <?=$parent['table'] . "\n"?>
     *
     * @return <?=$parent['class'] . "\n"?>
     */
     public function get<?=$parent['function']?>()
     {
-        if ($this->_<?=$parent['column']?> === null)
+        if ($this->_parent_<?=$parent['name']?> === null)
         {
-            $this->_<?=$parent['column']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName($parent['table'])?>', '<?=\Classes\Maker\Template::getClassName($parent['column'])?>');
+            $this->_parent_<?=$parent['name']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::getClassName ($parent['table'])?>', '<?=\Classes\Maker\AbstractMaker::getClassName($parent['name'])?>');
         }
 
-        return $this->_<?=$parent['column']?>;
+        return $this->_parent_<?=$parent['name']?>;
     }
 
 <?php endforeach; ?>
-<?php foreach ($depends as $value): ?>
+
+
+<?php foreach ($depends as $depend): ?>
     /**
-    * Gets dependent <?=\Classes\Maker\Template::getClassName($depend['column']) . "\n"?>
+    * Gets dependent <?=$depend['table'] . "\n"?>
     *
     * @return <?=$depend['class'] . "\n"?>
     */
     public function get<?=$depend['function']?>()
     {
-        if ($this->_<?=$depend['column']?> === null)
+        if ($this->_depend_<?=$depend['name']?> === null)
         {
-            $this->_<?=$depend['column']?> = $this->findParentRow('<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName($depend['table'])?>', '<?=\Classes\Maker\Template::getClassName($depend['column'])?>');
+            $this->_depend_<?=$depend['name']?> = $this->findDependentRowset('<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::getClassName ($depend['table'])?>');
         }
 
-      return $this->_<?=$depend['column']?>;
+      return $this->_depend_<?=$depend['name']?>;
     }
 
 <?php endforeach; ?>
-    /**
-    * Retorna a Dbtable da class model
-    *
-    * @return <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () ).'\n'?>
-    */
-    public function getTable()
-    {
-        if ($this->_table === null) {
-            $this->setTable(new <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?>());
-        }
 
-        return $this->_table;
-    }
-
-    /**
-    * @see Zend_Db_Adapter::fetchAll
-    */
-    public static function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
-    {
-        $name = __CLASS__;
-        $InstanceObject = new $name();
-        return $InstanceObject->getTable()->fetchAll ( $where , $order , $count , $offset );
-    }
 }

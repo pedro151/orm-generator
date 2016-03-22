@@ -16,7 +16,7 @@
  * @link      <?=$this->config->link."\n"?>
  */
 
-class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
+class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
 {
     /**
      * Nome da tabela do banco de dados
@@ -42,7 +42,7 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\Template::getCla
      * @var string
      * @access protected
      */
-    protected $_rowClass = '<?=$objTables->getNamespace()?>_<?=\Classes\Maker\Template::getClassName ( $objTables->getName () )?>';
+    protected $_rowClass = '<?=$objTables->getNamespace()?>_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>';
 
 <?php if( $objTables->hasPrimaryKey() ):?>
 	/**

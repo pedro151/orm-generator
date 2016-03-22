@@ -1,72 +1,79 @@
 <?php
 namespace Classes;
 
-use Classes\Maker\Template;
 
-require_once 'Maker/Template.php';
+use Classes\Maker\AbstractMaker;
+
+require_once 'Maker/AbstractMaker.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
  * @link   https://github.com/pedro151/DAO-Generator
  */
-class MakerConfigFile
+class MakerConfigFile extends AbstractMaker
 {
 
-    private $_basePath;
+    /**
+     * caminho de pastas Base
+     *
+     * @type string
+     */
+    private $baseLocation = '';
+
+    private $template = 'Classes\templates\file_configs\ini.php';
 
     private $configs = array (
-        'name'       => 'config' ,
-        'framework'  => 'none' ,
-        'driver'     => 'pgsql' ,
-        'enviroment' => 'dev' ,
-        'host'       => 'localhost' ,
-        'database'   => null ,
-        'schema'     => null ,
-        'username'   => null ,
-        'password'   => null
+        'name'        => 'config',
+        'framework'   => 'none',
+        'driver'      => 'pgsql',
+        'environment' => 'dev',
+        'host'        => 'localhost',
+        'database'    => null,
+        //'schema'     => null,
+        'username'    => null,
+        'password'    => null
     );
 
-    public function __construct ( $argv , $basePath )
+    public function __construct ( $argv, $basePath )
     {
-        if ( array_key_exists ( 'help' , $argv ) )
-        {
-            die ( $this->getUsage () );
-        }
-        if ( array_key_exists ( 'status' , $argv ) )
-        {
-            $argv[ 'status' ] = true;
-        }
-
-        $this->argv = $this->parseConfig ( $basePath , $argv );
+        $this->argv = $this->parseConfig ( $basePath, $argv );
     }
 
     /**
      * Analisa e estrutura a Configuracao do generate
      *
      * @param string $_path
-     * @param array  $argv
+     * @param array $argv
      *
      * @return array
      * @throws \Exception
      */
-    private function parseConfig ( $basePath , $argv )
+    private function parseConfig ( $basePath, $argv )
     {
-        $this->_basePath = dirname ( $basePath );
+        $this->baseLocation = dirname ( $basePath );
 
-        if ( ! isset( $argv[ 'framework' ] )
-        )
+        $arrayIO = array_diff_key ( $this->configs, $argv );
+        foreach ( $arrayIO as $index => $config )
         {
-            echo "configure which framework you want to use! \n";
+            echo "Please enter the value for {$index} [{$config}]: ";
+            $line = trim ( fgets ( STDIN ) );
+            if ( !empty( $line ) )
+            {
+                $this->configs[ $index ] = strtolower ( $line );
+            }
         }
-
 
         return $argv + array_filter ( $this->configs );
     }
 
-    public function init ()
+    public function run ()
     {
-        Template::makeDir ( $this->_basePath . DIRECTORY_SEPARATOR . "configs" );
-        Template::makeSourcer ();
+        $path = $this->baseLocation . DIRECTORY_SEPARATOR . "configs";
+        self::makeDir ( $path );
+        self::makeSourcer (
+            $path . DIRECTORY_SEPARATOR . $this->argv[ 'name' ] . '.ini',
+            $this->getParsedTplContents ( $this->template, $this->argv )
+        );
 
     }
 }

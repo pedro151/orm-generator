@@ -1,7 +1,7 @@
 <?php
 namespace Classes\Maker;
 
-class Template
+abstract class AbstractMaker
 {
     const SEPARETOR = '_';
 
@@ -12,9 +12,9 @@ class Template
      */
     public static function makeDir ( $dir )
     {
-        if ( ! is_dir ( $dir ) )
+        if ( !is_dir ( $dir ) )
         {
-            if ( ! @mkdir ( $dir , 0755 , true ) )
+            if ( !@mkdir ( $dir, 0755, true ) )
             {
                 die( "error: could not create directory $dir\n" );
             }
@@ -23,13 +23,13 @@ class Template
 
     /**
      * @param $nameFile nome do arquivo a ser criado
-     * @param $tplFile  Template
+     * @param $tplContent  Conteudo do Template
      */
-    public static function makeSourcer ( $nameFile , $tplFile )
+    public static function makeSourcer ( $nameFile, $tplContent )
     {
-        if ( ! is_file ( $nameFile ) )
+        if ( !is_file ( $nameFile ) )
         {
-            if ( ! file_put_contents ( $nameFile , $tplFile ) )
+            if ( !file_put_contents ( $nameFile, $tplContent ) )
             {
                 die( "Error: could not write model file $nameFile." );
             }
@@ -45,12 +45,23 @@ class Template
     public static function getClassName ( $str )
     {
         $temp = '';
-        foreach ( explode ( self::SEPARETOR , $str ) as $part )
+        foreach ( explode ( self::SEPARETOR, $str ) as $part )
         {
             $temp .= ucfirst ( $part );
         }
 
         return $temp;
+    }
+
+    protected function getParsedTplContents ( $filePath, $vars = array () )
+    {
+        extract ( $vars );
+        ob_start ();
+        require $filePath;
+        $data = ob_get_contents ();
+        ob_end_clean ();
+
+        return $data;
     }
 
 }
