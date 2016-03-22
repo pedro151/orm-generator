@@ -14,7 +14,7 @@ namespace Classes\AdapterConfig;
  */
 class Exception extends \Exception
 {
-    private $msg = "As configurações a seguir são obrigatorias: %value%";
+    private $msg = "As configuracoes a seguir sao obrigatorias: \033[0;31m%value%";
 
     public function __construct ( $array , $code = 0 )
     {

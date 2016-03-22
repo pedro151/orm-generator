@@ -68,16 +68,18 @@ Configurations optionals
 ------------------------
 | Command        | description       |
 |----------------|------------------|
-|--init          | Creates the necessary configuration file to start using the DAO-Generator. |
-|--version       | shows the version of DAO-Generator. |
-|--help          | help command explaining all the options and manner of use. |
-|--status        | show status of implementation carried out after completing the process. |
-|--config-ini    | reference to another .ini file configuration (relative path). |
-|--database      | database name     |
-|--schema        | database schema name (one or more than one).    |
-|--driver        | database driver name (Ex.: pgsql).|
-|--framework     | name framework used, which has the contents of the database configurations and framework template. |
-|--path          | specify where to create the files (default is current directory).|
+| --init         | Creates the necessary configuration file to start using the DAO-Generator. |
+| --config-ini   | reference to another .ini file configuration (relative path). |
+| --config-env   | DAO-Generator configuration environment. |
+| --framework    | name framework used, which has the contents of the database configurations and framework template. |
+| --driver       | database driver name (Ex.: pgsql). |
+| --database     | database name. |
+| --schema       | database schema name (one or more than one). |
+| --status       | show status of implementation carried out after completing the process. |
+| --version      | shows the version of DAO-Generator. |
+| --help         | help command explaining all the options and manner of use. |
+| --path         | specify where to create the files (default is current directory). |
+
 
 ##### example:
 

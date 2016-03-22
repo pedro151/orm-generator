@@ -6,12 +6,12 @@
  * @author Pedro Alarcao <phacl151@gmail.com>
  */
 
-if ( !ini_get ( 'short_open_tag' ) )
+if ( ! ini_get ( 'short_open_tag' ) )
 {
     die( "please enable short_open_tag directive in php.ini\n" );
 }
 
-if ( !ini_get ( 'register_argc_argv' ) )
+if ( ! ini_get ( 'register_argc_argv' ) )
 {
     die( "please enable register_argc_argv directive in php.ini\n" );
 }
@@ -19,11 +19,11 @@ if ( !ini_get ( 'register_argc_argv' ) )
 
 if ( function_exists ( 'ini_set' ) )
 {
-    @ini_set ( 'display_errors', 1 );
+    @ini_set ( 'display_errors' , 1 );
 
     $memoryInBytes = function ( $value )
     {
-        $unit = strtolower ( substr ( $value, -1, 1 ) );
+        $unit = strtolower ( substr ( $value , - 1 , 1 ) );
         $value = (int) $value;
         switch ( $unit )
         {
@@ -42,19 +42,19 @@ if ( function_exists ( 'ini_set' ) )
 
     $memoryLimit = trim ( ini_get ( 'memory_limit' ) );
     // Increase memory_limit if it is lower than 1GB
-    if ( $memoryLimit != -1 && $memoryInBytes( $memoryLimit ) < 1024 * 1024 * 1024 )
+    if ( $memoryLimit != - 1 && $memoryInBytes( $memoryLimit ) < 1024 * 1024 * 1024 )
     {
-        @ini_set ( 'memory_limit', '1G' );
+        @ini_set ( 'memory_limit' , '1G' );
     }
-    unset( $memoryInBytes, $memoryLimit );
+    unset( $memoryInBytes , $memoryLimit );
 }
 
 set_include_path (
     implode (
-        PATH_SEPARATOR,
+        PATH_SEPARATOR ,
         array (
-            realpath ( dirname ( __FILE__ ) . "/build/" ),
-            get_include_path (),
+            realpath ( dirname ( __FILE__ ) . "/build/" ) ,
+            get_include_path () ,
         )
     )
 );
@@ -66,34 +66,33 @@ require_once 'Classes/MakerConfigFile.php';
 try
 {
     $arrValid = array (
-        'version',
-        'help',
-        'status',
-        'init',
-        'config-ini:',
-        'database:',
-        'schema:',
-        'driver:',
-        'framework:',
+        'version' ,
+        'help' ,
+        'status' ,
+        'init' ,
+        'config-env:' ,
+        'config-ini:' ,
+        'database:' ,
+        'schema:' ,
+        'driver:' ,
+        'framework:' ,
         'path:'
     );
 
     $_path = realpath ( __FILE__ );
-    $argv = getopt ( null, $arrValid );
+    $argv = getopt ( null , $arrValid );
 
-    if ( array_key_exists ( 'init', $argv ) )
+    if ( array_key_exists ( 'init' , $argv ) )
     {
-        $maker = new \Classes\MakerConfigFile( $argv, $_path );
-    }
-    else
+        $maker = new \Classes\MakerConfigFile( $argv , $_path );
+    } else
     {
-        $maker = new \Classes\MakerFile( new \Classes\Config( $argv, $_path ) );
+        $maker = new \Classes\MakerFile( new \Classes\Config( $argv , $_path ) );
     }
 
     $maker->run ();
 
-}
-catch ( \Exception $e )
+} catch ( \Exception $e )
 {
     die( $e->getMessage () );
 }

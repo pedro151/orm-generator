@@ -2,6 +2,8 @@
 
 namespace Classes\AdapterConfig;
 
+require_once 'Exception.php';
+
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
  * @link   https://github.com/pedro151
@@ -12,60 +14,60 @@ abstract class AbstractAdapter
     protected $arrConfig = array (
         ############################# DATABASE
         //Driver do banco de dados
-        'driver'   => null,
+        'driver'   => null ,
         //Nome do banco de dados
-        'database' => null,
+        'database' => null ,
         //Host do banco
-        'host'     => 'localhost',
+        'host'     => 'localhost' ,
         //Port do banco
-        'port'     => '',
+        'port'     => '' ,
         //usuario do banco
-        'username' => null,
+        'username' => null ,
         //senha do banco
-        'password' => null,
+        'password' => null ,
         // lista de schemas do banco de dados
-        'schema'   => array (),
+        'schema'   => array () ,
 
-        'socket'          => null,
+        'socket'          => null ,
 
         ########################### DOCS
         // autor que gerou o script
-        'author'          => "Pedro",
-        'license'         => "New BSD License",
-        'copyright'       => "DAO Generator-Pedro151",
-        'link'            => 'https://github.com/pedro151',
+        'author'          => "Pedro" ,
+        'license'         => "New BSD License" ,
+        'copyright'       => "DAO Generator-Pedro151" ,
+        'link'            => 'https://github.com/pedro151' ,
         // data que foi gerado o script
-        'last_modify'     => null,
+        'last_modify'     => null ,
 
         ########################## Ambiente/Arquivos
 
         // Nome do framework para o adapter
-        'framework'       => null,
+        'framework'       => null ,
         // namespace das classes
-        'namespace'       => "",
+        'namespace'       => "" ,
         // caminho onde os arquivos devem ser criados
-        'path'            => 'models',
+        'path'            => 'models' ,
         // flag para gerar pasta com o nome do driver do banco de dados
-        'folder-database' => 0,
+        'folder-database' => 0 ,
 
         ############################## Comandos adicionais
         //flag para mostrar o status da execução ao termino do processo
-        'status'          => false,
+        'status'          => false ,
         // flags para criar todas as tabelas ou nao
-        'allTables'       => true,
+        'allTables'       => true ,
         //Lista de tabelas a serem ignoradas
-        'ignoreTable'     => array (),
+        'ignoreTable'     => array () ,
     );
 
     /**
      * @var string[] um array com todos os campos obrigatorios
      */
     protected $attRequered = array (
-        'driver'   => true,
-        'database' => true,
-        'host'     => true,
-        'username' => true,
-        'password' => true,
+        'driver'   => true ,
+        'database' => true ,
+        'host'     => true ,
+        'username' => true ,
+        'password' => true ,
         'path'     => true
     );
 
@@ -80,7 +82,7 @@ abstract class AbstractAdapter
      */
     protected function checkConfig ()
     {
-        if ( array_diff_key ( $this->attRequered, array_filter ( $this->arrConfig ) ) )
+        if ( array_diff_key ( $this->attRequered , array_filter ( $this->arrConfig ) ) )
         {
             return false;
         }
@@ -121,7 +123,7 @@ abstract class AbstractAdapter
     public function __construct ( $array )
     {
         $array += array (
-            'author'      => ucfirst ( get_current_user () ),
+            'author'      => ucfirst ( get_current_user () ) ,
             'last_modify' => date ( "d-m-Y H:i:s." )
         );
 
@@ -130,9 +132,9 @@ abstract class AbstractAdapter
         $this->setParams ( $this->getParams () );
         $this->setParams ( $array );
         $this->init ();
-        if ( !$this->isValid () )
+        if ( ! $this->isValid () )
         {
-            $var = array_diff_key ( $this->attRequered, array_filter ( $this->arrConfig ) );
+            $var = array_diff_key ( $this->attRequered , array_filter ( $this->arrConfig ) );
             throw new Exception( $var );
         }
     }
@@ -144,25 +146,28 @@ abstract class AbstractAdapter
      */
     public function setFrameworkFiles ( $array )
     {
-        $this->framworkFiles[ 'library' ] = isset( $array[ 'framework-path-library' ] ) ? $array[ 'framework-path-library' ]
+        $this->framworkFiles[ 'library' ] = isset( $array[ 'framework-path-library' ] )
+            ? $array[ 'framework-path-library' ]
             : null;
 
-        $this->framworkFiles[ 'ini' ] = isset( $array[ 'framework-ini' ] ) ? $array[ 'framework-ini' ]
+        $this->framworkFiles[ 'ini' ] = isset( $array[ 'framework-ini' ] )
+            ? $array[ 'framework-ini' ]
             : null;
 
-        $this->framworkFiles[ 'environment' ] = isset( $array[ 'environment' ] ) ? $array[ 'environment' ]
-            : null;
+        $this->framworkFiles[ 'environment' ] = isset( $array[ 'environment' ] )
+            ? $array[ 'environment' ]
+            : 'production';
 
     }
 
     protected function isValidFrameworkFiles ()
     {
-        if ( !is_file ( $this->framworkFiles[ 'ini' ] ) )
+        if ( ! is_file ( $this->framworkFiles[ 'ini' ] ) )
         {
             throw new \Exception( "inform the .ini file in the 'framework-ini' existing configuration." );
         }
 
-        if ( !is_dir ( $this->framworkFiles[ 'library' ] ) )
+        if ( ! is_dir ( $this->framworkFiles[ 'library' ] ) )
         {
             throw new \Exception(
                 "inform the library diretory in the 'framework-path-library' existing configuration."
@@ -170,7 +175,9 @@ abstract class AbstractAdapter
         }
 
 
-        if ( !isset ( $this->framworkFiles[ 'environment' ] ) or empty( $this->framworkFiles[ 'environment' ] ) )
+        if ( ! isset ( $this->framworkFiles[ 'environment' ] )
+             or empty( $this->framworkFiles[ 'environment' ] )
+        )
         {
             throw new \Exception(
                 "inform the framework of the 'environment' to be configured."
@@ -178,10 +185,10 @@ abstract class AbstractAdapter
         }
         set_include_path (
             implode (
-                PATH_SEPARATOR,
+                PATH_SEPARATOR ,
                 array (
-                    realpath ( $this->framworkFiles[ 'library' ] ),
-                    get_include_path (),
+                    realpath ( $this->framworkFiles[ 'library' ] ) ,
+                    get_include_path () ,
                 )
             )
         );
@@ -226,7 +233,7 @@ abstract class AbstractAdapter
      */
     public function hasSchemas ()
     {
-        return !empty ( $this->arrConfig[ 'schema' ] );
+        return ! empty ( $this->arrConfig[ 'schema' ] );
     }
 
     /**
@@ -268,7 +275,7 @@ abstract class AbstractAdapter
      */
     public function hasPort ()
     {
-        return !empty( $this->arrConfig[ 'port' ] );
+        return ! empty( $this->arrConfig[ 'port' ] );
     }
 
     /**
@@ -311,18 +318,18 @@ abstract class AbstractAdapter
     public function __get ( $str )
     {
         $arr = array (
-            'namespace',
-            'framework',
-            'author',
-            'license',
-            'copyright',
-            'link',
-            'last_modify',
-            'path',
+            'namespace' ,
+            'framework' ,
+            'author' ,
+            'license' ,
+            'copyright' ,
+            'link' ,
+            'last_modify' ,
+            'path' ,
             'folder-database'
         );
 
-        if ( in_array ( $str, $arr ) )
+        if ( in_array ( $str , $arr ) )
         {
             return $this->arrConfig[ strtolower ( $str ) ];
         }

@@ -10,13 +10,13 @@ use Classes\AdaptersDriver\Mysql;
 use Classes\AdaptersDriver\Pgsql;
 use Classes\AdaptersDriver\Sqlsrv;
 
-require_once 'Classes/AdapterConfig/None.php';
-require_once 'Classes/AdapterConfig/ZendFrameworkOne.php';
-require_once 'Classes/AdaptersDriver/Dblib.php';
-require_once 'Classes/AdaptersDriver/Mssql.php';
-require_once 'Classes/AdaptersDriver/Mysql.php';
-require_once 'Classes/AdaptersDriver/Pgsql.php';
-require_once 'Classes/AdaptersDriver/Sqlsrv.php';
+require_once 'AdapterConfig/None.php';
+require_once 'AdapterConfig/ZendFrameworkOne.php';
+require_once 'AdaptersDriver/Dblib.php';
+require_once 'AdaptersDriver/Mssql.php';
+require_once 'AdaptersDriver/Mysql.php';
+require_once 'AdaptersDriver/Pgsql.php';
+require_once 'AdaptersDriver/Sqlsrv.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -61,22 +61,18 @@ class Config
      */
     private $adapterDriver;
 
-    public function __construct ( $argv, $basePath )
+    public function __construct ( $argv , $basePath )
     {
-        if ( array_key_exists ( 'help', $argv ) )
+        if ( array_key_exists ( 'help' , $argv ) )
         {
             die ( $this->getUsage () );
         }
-        if ( array_key_exists ( 'version', $argv ) )
-        {
-            die ( $this->getVersion() );
-        }
-        if ( array_key_exists ( 'status', $argv ) )
+        if ( array_key_exists ( 'status' , $argv ) )
         {
             $argv[ 'status' ] = true;
         }
 
-        $this->argv = $this->parseConfig ( $basePath, $argv );
+        $this->argv = $this->parseConfig ( $basePath , $argv );
     }
 
     /**
@@ -89,17 +85,17 @@ class Config
         return <<<USAGE
 parameters:
 
+    --init                : Creates the necessary configuration file to start using the DAO-Generator.
+    --config-ini          : reference to another .ini file configuration (relative path).
+    --config-env          : DAO-Generator configuration environment.
+    --framework           : name framework used, which has the contents of the database configurations and framework template.
+    --driver              : database driver name (Ex.: pgsql).
+    --database            : database name.
+ *  --schema              : database schema name (one or more than one).
+    --status              : show status of implementation carried out after completing the process.
     --version             : shows the version of DAO-Generator.
     --help                : help command explaining all the options and manner of use.
-    --init                : Creates the necessary configuration file to start using the DAO-Generator.
-    --status              : show status of implementation carried out after completing the process.
-    --database            : database name.
-    --config-ini          : reference to another .ini file configuration (relative path).
- *  --schema              : database schema name (one or more than one).
-    --driver              : database driver name (Ex.: pgsql).
-    --framework           : name framework used, which has the contents of the database configurations
-                            and framework template.
-    --path                : specify where to create the files (default is current directory).
+    --path                  specify where to create the files (default is current directory).
 
  example: php generate.php --framework=zend_framework --database=foo --table=foobar --status
 
@@ -115,13 +111,13 @@ USAGE;
     /**
      * Analisa e estrutura a Configuracao do generate
      *
-     * @param string $_path
-     * @param array $argv
+     * @param  string $basePath
+     * @param array   $argv
      *
      * @return array
      * @throws \Exception
      */
-    private function parseConfig ( $basePath, $argv )
+    private function parseConfig ( $basePath , $argv )
     {
         $this->_basePath = dirname ( $basePath );
 
@@ -129,34 +125,51 @@ USAGE;
             : $this->_basePath . $this->configIniDefault;
 
         $configTemp = $this->loadIniFile ( realpath ( $configIni ) );
+        $configCurrent = $this->parseConfigEnv ( $configTemp , $argv );
 
-        if ( !isset( $configTemp[ key ( $configTemp ) ][ 'framework' ] )
-            && !isset( $argv[ 'framework' ] )
-        )
+        if ( ! isset( $configCurrent[ 'framework' ] ) )
         {
             throw new \Exception( "configure which framework you want to use! \n" );
-        }
-        $thisSection = isset( $argv[ 'framework' ] )
-            ?
-            $argv[ 'framework' ]
-            :
-            $configTemp[ key ( $configTemp ) ][ 'framework' ];
-
-        $configCurrent = $configTemp[ key ( $configTemp ) ];
-        if ( isset( $configTemp[ $thisSection ][ 'extends' ] ) )
-        {
-            $configCurrent = $configTemp[ $thisSection ]
-                + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
         }
 
         return $argv + array_filter ( $configCurrent );
     }
 
     /**
+     *
+     * @param $configTemp
+     * @param $argv
+     *
+     * @return string
+     */
+    public function parseConfigEnv ( $configTemp , $argv )
+    {
+        if ( isset( $configTemp[ key ( $configTemp ) ][ 'config-env' ] )
+             or isset( $argv[ 'config-env' ] )
+        )
+        {
+            $thisSection = isset( $argv[ 'config-env' ] )
+                ?
+                $argv[ 'config-env' ]
+                :
+                $configTemp[ key ( $configTemp ) ][ 'config-env' ];
+
+
+            if ( isset( $configTemp[ $thisSection ][ 'extends' ] ) )
+            {
+                return $configTemp[ $thisSection ]
+                       + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
+            }
+        }
+
+        return $configTemp[ key ( $configTemp ) ];
+    }
+
+    /**
      * Carregar o arquivo ini e pré-processa o separador de seção ':'
      * no nome da seção (que é usado para a extensão seção) de modo a que a
      * matriz resultante tem os nomes de seção corretos e as informações de
-     * extensão é armazenado em uma sub-chave
+     * extensão é armazenado em uma sub-ch ve
      *
      * @param string $filename
      *
@@ -165,16 +178,16 @@ USAGE;
      */
     protected function loadIniFile ( $filename )
     {
-        if ( !is_file ( $filename ) )
+        if ( ! is_file ( $filename ) )
         {
             throw new \Exception( "configuration file does not exist! \n" );
         }
 
-        $loaded = parse_ini_file ( $filename, true );
+        $loaded = parse_ini_file ( $filename , true );
         $iniArray = array ();
         foreach ( $loaded as $key => $data )
         {
-            $pieces = explode ( $this->sectionSeparator, $key );
+            $pieces = explode ( $this->sectionSeparator , $key );
             $thisSection = trim ( $pieces[ 0 ] );
             switch ( count ( $pieces ) )
             {
@@ -184,7 +197,7 @@ USAGE;
 
                 case 2:
                     $extendedSection = trim ( $pieces[ 1 ] );
-                    $iniArray[ $thisSection ] = array_merge ( array ( 'extends' => $extendedSection ), $data );
+                    $iniArray[ $thisSection ] = array_merge ( array ( 'extends' => $extendedSection ) , $data );
                     break;
 
                 default:
@@ -193,14 +206,6 @@ USAGE;
         }
 
         return $iniArray;
-    }
-
-    /**
-     *
-     */
-    private function compileListParamTables ()
-    {
-        // TODO: implement here
     }
 
     /**
@@ -255,7 +260,7 @@ USAGE;
      */
     public function getAdapterConfig ()
     {
-        if ( !$this->adapterConfig )
+        if ( ! $this->adapterConfig )
         {
             $this->factoryConfig ();
         }
@@ -268,7 +273,7 @@ USAGE;
      */
     public function getAdapterDriver ()
     {
-        if ( !$this->adapterDriver )
+        if ( ! $this->adapterDriver )
         {
             $this->factoryDriver ();
         }

@@ -14,13 +14,13 @@ environment = <?=$environment?><?="\n"?>
 ; database driver name (Ex.: pgsql)
 driver = '<?=$driver?>'<?="\n"?>
 ; database name
-database = "<?=$database?>"<?="\n"?>
+database = "<?=isset($database)?$database:''?>"<?="\n"?>
 ; database schema name (one or more than one)
 ;schema = public
 ; database user
-username = <?=$username?><?="\n"?>
+username = <?=isset($username)?$username:''?><?="\n"?>
 ; database password
-password = <?=$password?><?="\n"?>
+password = <?=isset($password)?$password:''?><?="\n"?>
 ; show status of implementation carried out after completing the process
 status = false
 ; specify where to create the files (default is current directory)
@@ -44,12 +44,12 @@ namespace = ''
 
 ;=====================READ ME!================================
 ;
-; Configurations if the framework is 'none'
+; Configurations 'none'
 ;
 ;=============================================================
-[<?=$framework?> : main]
-
+;[none : main]
+;
 ;.ini file the framework configuration
-framework-ini = ""
+;framework-ini = ""
 ;the path to the directory of the framework library
-framework-path-library = ""
+;framework-path-library = ""
