@@ -8,19 +8,21 @@
 
 ; name framework used, which has the contents of the database configurations
 ; and framework template
-framework = "<?=$framework?>"<?="\n"?>
+framework = "<?= $framework ?>"<?= "\n" ?>
 ; configuration environment you want to generate
-environment = <?=$environment?><?="\n"?>
+environment = <?= $environment ?><?= "\n" ?>
 ; database driver name (Ex.: pgsql)
-driver = '<?=$driver?>'<?="\n"?>
+driver = '<?= $driver ?>'<?= "\n" ?>
+; database host
+host = <?= $host ?><?= "\n" ?>
 ; database name
-database = "<?=isset($database)?$database:''?>"<?="\n"?>
+database = "<?= isset( $database ) ? $database : '' ?>"<?= "\n" ?>
 ; database schema name (one or more than one)
-;schema = public
+<?= isset( $schema ) ? 'schema = ' . $schema : ';schema = public' ?><?= "\n" ?>
 ; database user
-username = <?=isset($username)?$username:''?><?="\n"?>
+username = <?= isset( $username ) ? $username : '' ?><?= "\n" ?>
 ; database password
-password = <?=isset($password)?$password:''?><?="\n"?>
+password = <?= isset( $password ) ? $password : '' ?><?= "\n" ?>
 ; show status of implementation carried out after completing the process
 status = false
 ; specify where to create the files (default is current directory)

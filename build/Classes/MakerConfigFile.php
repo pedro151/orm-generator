@@ -31,7 +31,7 @@ class MakerConfigFile extends AbstractMaker
         'environment' => 'dev' ,
         'host'        => 'localhost' ,
         'database'    => null ,
-        //'schema'     => null,
+        'schema'      => null ,
         'username'    => null ,
         'password'    => null
     );
@@ -77,6 +77,6 @@ class MakerConfigFile extends AbstractMaker
             $path . DIRECTORY_SEPARATOR . $this->argv[ 'config-env' ] . '.ini' ,
             $this->getParsedTplContents ( $this->template , $this->argv )
         );
-        echo "\n\033[1;32mSuccessfully process finished!\n";
+        echo "\n\033[1;32mSuccessfully process finished!\n\033[1;37m";
     }
 }
