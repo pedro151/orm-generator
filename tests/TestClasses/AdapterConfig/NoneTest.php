@@ -56,7 +56,7 @@ class NoneTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException (
             'Classes\AdapterConfig\Exception' ,
-            'As configurações a seguir são obrigatorias: driver, database, username, password'
+            ''
         );
 
         $obj = $this->getMockBuilder ( '\Classes\AdapterConfig\None' )
