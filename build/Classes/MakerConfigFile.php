@@ -22,7 +22,7 @@ class MakerConfigFile extends AbstractMaker
 
     private $template = 'Classes/templates/file_configs/ini.php';
 
-    private $msg = "\033[1;37mPlease enter the value for %index% \033[1;33m[%config%]: ";
+    private $msg = "\033[0mPlease enter the value for %index% \033[1;33m[%config%]: ";
 
     private $configs = array (
         'config-env'  => 'config' ,
@@ -77,6 +77,6 @@ class MakerConfigFile extends AbstractMaker
             $path . DIRECTORY_SEPARATOR . $this->argv[ 'config-env' ] . '.ini' ,
             $this->getParsedTplContents ( $this->template , $this->argv )
         );
-        echo "\n\033[1;32mSuccessfully process finished!\n\033[1;37m";
+        echo "\n\033[1;32mSuccessfully process finished!\n\033[0m";
     }
 }

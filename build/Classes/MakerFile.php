@@ -160,7 +160,7 @@ class MakerFile extends AbstractMaker
         }
 
         $this->reportProcess ( $cur );
-        echo "\n\033[1;32mSuccessfully process finished!\n\033[1;37m";
+        echo "\n\033[1;32mSuccessfully process finished!\n\033[0m";
     }
 
     private function reportProcess ( $countFiles )
