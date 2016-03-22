@@ -64,15 +64,16 @@ try
     );
 
     $arrValid = array (
-        'version',
-        'help',
-        'status',
-        'init',
-        'config-ini:',
-        'database:',
-        'schema:',
-        'driver:',
-        'framework:',
+        'version' ,
+        'help' ,
+        'status' ,
+        'init' ,
+        'config-env:' ,
+        'config-ini:' ,
+        'database:' ,
+        'schema:' ,
+        'driver:' ,
+        'framework:' ,
         'path:'
     );
 
