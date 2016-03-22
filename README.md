@@ -22,6 +22,17 @@ $ composer install`
 - bin\dao-generator.phar
 
 
+Creating config file
+--------------------
+use the following command to create the configuration file needed to get started:
+
+```cmd
+$ php dao-generate.phar --init
+```
+OR
+```cmd
+$ php generator.php --init
+```
 
 Configuration
 -------------
@@ -57,9 +68,9 @@ Configurations optionals
 ------------------------
 | Command        | description       |
 |----------------|------------------|
+|--init          | Creates the necessary configuration file to start using the DAO-Generator. |
 |--version       | shows the version of DAO-Generator. |
 |--help          | help command explaining all the options and manner of use. |
-|--init          | Creates the necessary configuration file to start using the DAO-Generator. |
 |--status        | show status of implementation carried out after completing the process. |
 |--config-ini    | reference to another .ini file configuration (relative path). |
 |--database      | database name     |
