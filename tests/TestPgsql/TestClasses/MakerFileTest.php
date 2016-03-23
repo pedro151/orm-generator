@@ -23,7 +23,6 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         $this->basePath = dirname ( $GLOBALS[ 'base_path' ] );
     }
 
-
     private function rrmdir ( $dir )
     {
         if ( is_dir ( $dir ) )
@@ -36,8 +35,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                     if ( is_dir ( $dir . "/" . $object ) )
                     {
                         $this->rrmdir ( $dir . "/" . $object );
-                    }
-                    else
+                    } else
                     {
                         unlink ( $dir . "/" . $object );
                     }
@@ -50,8 +48,8 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
     public function testFactory ()
     {
         $names = array (
-            'DbTable',
-            'Entity',
+            'DbTable' ,
+            'Entity' ,
             ''
         );
 
@@ -59,10 +57,10 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
             new Config(
                 array (
                     'schema' => array (
-                        'public',
+                        'public' ,
                         'quiz'
                     )
-                ),
+                ) ,
                 $this->basePath
             )
         );
@@ -77,20 +75,20 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         $maker = new MakerFile(
             new Config(
                 array (
-                    'folder-database' => true,
-                    'driver'          => 'pgsql',
+                    'folder-database' => true ,
+                    'driver'          => 'pgsql' ,
                     'schema'          => array (
-                        'public',
-                        'quiz',
+                        'public' ,
+                        'quiz' ,
                     )
-                ),
+                ) ,
                 $this->basePath
             )
         );
 
         $arrBase = array (
-            $this->basePath,
-            'models',
+            $this->basePath ,
+            'models' ,
             'Pgsql'
         );
 
@@ -98,39 +96,38 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         {
             $arrBaseFinal = $arrBase;
             $arrBaseFinal[] = ucfirst ( $index );
-            $location = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrBaseFinal ) );
+            $location = implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrBaseFinal ) );
             $this->assertTrue ( $item == $location );
             unset( $arrBaseFinal );
         }
     }
-
 
     public function testLocationDatabaseFalse ()
     {
         $maker = new MakerFile(
             new Config(
                 array (
-                    'folder-database' => false,
-                    'driver'          => 'pgsql',
+                    'folder-database' => false ,
+                    'driver'          => 'pgsql' ,
                     'schema'          => array (
-                        'public',
-                        'quiz',
+                        'public' ,
+                        'quiz' ,
                     )
-                ),
+                ) ,
                 $this->basePath
             )
         );
 
         $arrBase = array (
-            $this->basePath,
+            $this->basePath ,
             'models'
         );
 
         foreach ( $maker->location as $index => $item )
         {
             $arrBaseFinal = $arrBase;
-            $arrBaseFinal[] = ucfirst ( $index );
-            $location = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrBaseFinal ) );
+            $arrBaseFinal[] = MakerFile::getClassName( $index );
+            $location = implode ( DIRECTORY_SEPARATOR , array_filter ( $arrBaseFinal ) );
             $this->assertTrue ( $item == $location );
             unset( $arrBaseFinal );
         }
@@ -141,21 +138,27 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         $maker = new MakerFile(
             new Config(
                 array (
-                    'folder-database' => false,
-                    'driver'          => 'pgsql',
+                    'folder-database' => false ,
+                    'database'        => 'dao_generator',
+                    'driver'          => 'pgsql' ,
                     'schema'          => array ()
-                ),
+                ) ,
                 $this->basePath
             )
         );
 
+
+        $db = MakerFile::getClassName( $maker->getConfig()->getDatabase());
+
         $arrBase = array (
-            $this->basePath,
-            'models'
+            $this->basePath ,
+            'models',
+            $db
         );
+
         foreach ( $maker->location as $index => $item )
         {
-            $location = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrBase ) );
+            $location = implode ( DIRECTORY_SEPARATOR , array_filter ( $arrBase ) );
             $this->assertTrue ( $item == $location );
         }
 

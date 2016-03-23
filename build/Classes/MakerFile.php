@@ -55,7 +55,7 @@ class MakerFile extends AbstractMaker
             $this->config->path
         );
 
-        $this->baseLocation = implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrBase ) );
+        $this->baseLocation = implode ( DIRECTORY_SEPARATOR , array_filter ( $arrBase ) );
 
         # pasta com nome do driver do banco
         $driverBase = '';
@@ -71,21 +71,26 @@ class MakerFile extends AbstractMaker
             $schemas = $this->config->getSchemas ();
             foreach ( $schemas as $schema )
             {
-                $this->location[ $schema ] = implode (
-                    DIRECTORY_SEPARATOR , filter_var_array ( array (
-                        $this->baseLocation ,
-                        $driverBase ,
-                        $this->getClassName ( $schema )
-                    ) ) );
+                $arrUrl = array (
+                    $this->baseLocation ,
+                    $driverBase ,
+                    $this->getClassName ( $schema )
+                );
+
+                $this->location[ $schema ] = implode ( DIRECTORY_SEPARATOR , array_filter ( $arrUrl ) );
+                unset( $arrUrl );
             }
+
 
         } else
         {
             $baseLocation = implode (
-                DIRECTORY_SEPARATOR ,filter_var_array( array (
-                    $this->baseLocation ,
-                    $driverBase ,
-                    $this->getClassName ( $this->config->getDatabase () ) ) )
+                DIRECTORY_SEPARATOR , array_filter ( array (
+                        $this->baseLocation ,
+                        $driverBase ,
+                        $this->getClassName ( $this->getConfig()->getDatabase () )
+                    )
+                )
             );
             $this->location = array ( $baseLocation );
         }
