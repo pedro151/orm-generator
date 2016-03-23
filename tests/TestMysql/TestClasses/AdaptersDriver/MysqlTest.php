@@ -38,7 +38,7 @@ class MysqlTest extends \PHPUnit_Framework_TestCase
 );
 
 CREATE TABLE products (
-      product_id        INTEGER NOT NULL PRIMARY KEY,
+      product_id        INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
       product_name      VARCHAR(100)
 );
 
@@ -120,26 +120,15 @@ CREATE TABLE bugs_products (
         $this->assertEquals ( $daoClone , $this->getDataBaseDrive () );
     }
 
-    public function testSQLSequence ()
-    {
-        $this->assertEquals (
-            'public.bugs_bug_id_seq' , $this->getDataBaseDrive ()
-                                            ->getSequence ( 'public.bugs' , 'bug_id' )
-        );
-        $this->assertEquals (
-            'products_product_id_seq' , $this->getDataBaseDrive ()
-                                             ->getSequence ( 'public.products' , 'product_id' )
-        );
-    }
-
     /**
      *
      */
     public function testSQLConstrants ()
     {
-        $arrConrstrants = $this->getDataBaseDrive ()->getListConstrant ();
+        $arrConstrants = $this->getDataBaseDrive ()->getListConstrant ();
 
-        foreach ( $arrConrstrants as $index => $contrstrant )
+
+        foreach ( $arrConstrants as $index => $contrstrant )
         {
             if ( $contrstrant[ 'table_name' ] == 'bugs' )
             {
@@ -153,7 +142,7 @@ CREATE TABLE bugs_products (
                     }
                     case "PRIMARY KEY":
                     {
-                        $this->assertEquals ( 'bugs' , $contrstrant[ "foreign_table" ] );
+                        $this->assertEquals ( 'bug_id' , $contrstrant[ "column_name" ] );
                     }
 
                 };
@@ -187,17 +176,30 @@ CREATE TABLE bugs_products (
         $this->assertTrue ( is_array ( $this->getDataBaseDrive ()->getListColumns () ) );
     }
 
+
+    public function testSQLSequence ()
+    {
+        $this->assertEquals (
+            'bugs_bug_id_seq' , $this->getDataBaseDrive ()
+                                            ->getSequence ( 'bugs' , 'bug_id' )
+        );
+        $this->assertEquals (
+            'products_product_id_seq' , $this->getDataBaseDrive ()
+                                             ->getSequence ( 'products' , 'product_id' )
+        );
+    }
+
     /**
      *
      */
     public function testGetTables ()
     {
         $this->assertTrue (
-            $this->getDataBaseDrive ()->getTable ( "accounts" , "public" )
+            $this->getDataBaseDrive ()->getTable ( "accounts" )
             instanceof
             \Classes\Db\DbTable
         );
-        $arrTables = $this->getDataBaseDrive ()->getTables ( 'public' );
+        $arrTables = $this->getDataBaseDrive ()->getTables ();
         $this->assertTrue (
             $arrTables[ "accounts" ] instanceof
             \Classes\Db\DbTable

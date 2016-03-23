@@ -54,7 +54,7 @@ abstract class AbsractAdapter
     protected $socket;
 
     /**
-     * @type \Classes\Db\DbTable[]
+     * @type \Classes\Db\DbTable[][]
      */
     protected $objDbTables = array ();
 
@@ -94,6 +94,11 @@ abstract class AbsractAdapter
      * @return string
      */
     public abstract function getSequence ( $table , $column );
+
+    /**
+     * @return array
+     */
+    public abstract function getListConstrant ();
 
     /**
      * @param string $str

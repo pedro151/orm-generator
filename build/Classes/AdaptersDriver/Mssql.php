@@ -98,4 +98,9 @@ class Mssql extends AbsractAdapter
         // TODO: Implement getSequence() method.
     }
 
+    public function getListConstrant ()
+    {
+        // TODO: Implement getListConstrant() method.
+    }
+
 }

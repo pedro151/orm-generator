@@ -47,8 +47,11 @@ class Constrant
 
     public function populate ( $array )
     {
+        if(isset($array[ 'schema' ])){
+            $this->schema = $array[ 'schema' ];
+        }
+
         $this->constrant = $array[ 'constrant' ];
-        $this->schema = $array[ 'schema' ];
         $this->table = $array[ 'table' ];
         $this->column = $array[ 'column' ];
     }
