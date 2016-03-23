@@ -26,7 +26,7 @@ env:
 # optionally set up exclutions and allowed failures in the matrix
 matrix:
   exclude:
-      env: DB=pgsql  # PDO driver for pgsql
+      # env: DB=pgsql  # PDO driver for pgsql
   allow_failures:
     - php: 7.0
 
