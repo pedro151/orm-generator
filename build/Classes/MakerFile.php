@@ -51,36 +51,43 @@ class MakerFile extends AbstractMaker
     {
 
         $arrBase = array (
-            $basePath,
+            $basePath ,
             $this->config->path
         );
 
+        $this->baseLocation = implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrBase ) );
+
         # pasta com nome do driver do banco
+        $driverBase = '';
         if ( $this->config->{"folder-database"} )
         {
-            $classDriver = explode ( '\\', get_class ( $this->driver ) );
-            $arrBase[] = end ( $classDriver );
+            $classDriver = explode ( '\\' , get_class ( $this->driver ) );
+            $driverBase = end ( $classDriver );
         }
-
-        $this->baseLocation = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrBase ) );
 
         if ( $this->config->hasSchemas () )
         {
+
             $schemas = $this->config->getSchemas ();
             foreach ( $schemas as $schema )
             {
                 $this->location[ $schema ] = implode (
-                    DIRECTORY_SEPARATOR, array (
-                                           $this->baseLocation,
-                                           ucfirst ( $schema )
-                                       )
-                );
+                    DIRECTORY_SEPARATOR , filter_var_array ( array (
+                        $this->baseLocation ,
+                        $driverBase ,
+                        $this->getClassName ( $schema )
+                    ) ) );
             }
 
-        }
-        else
+        } else
         {
-            $this->location = array ( $this->baseLocation );
+            $baseLocation = implode (
+                DIRECTORY_SEPARATOR ,filter_var_array( array (
+                    $this->baseLocation ,
+                    $driverBase ,
+                    $this->getClassName ( $this->config->getDatabase () ) ) )
+            );
+            $this->location = array ( $baseLocation );
         }
     }
 
@@ -101,7 +108,7 @@ class MakerFile extends AbstractMaker
 
     private function getRunTime ()
     {
-        return round ( ( microtime ( true ) - $this->startTime ), 3 );
+        return round ( ( microtime ( true ) - $this->startTime ) , 3 );
     }
 
     /**
@@ -125,12 +132,12 @@ class MakerFile extends AbstractMaker
                 if ( $objMakeFile->getParentFileTpl () != '' )
                 {
                     $fileAbstract = $this->baseLocation
-                        . DIRECTORY_SEPARATOR
-                        . $objMakeFile->getParentClass () . '.php';
+                                    . DIRECTORY_SEPARATOR
+                                    . $objMakeFile->getParentClass () . '.php';
 
                     $tplAbstract = $this->getParsedTplContents ( $objMakeFile->getParentFileTpl () );
-                    self::makeSourcer ( $fileAbstract, $tplAbstract );
-                    unset( $fileAbstract, $tplAbstract );
+                    self::makeSourcer ( $fileAbstract , $tplAbstract );
+                    unset( $fileAbstract , $tplAbstract );
                 }
 
                 foreach (
@@ -138,22 +145,22 @@ class MakerFile extends AbstractMaker
                 )
                 {
                     $total = ( $cur / $max * 100 );
-                    printf ( "\r Creating: %6.2f%%", ceil ( $total ) );
-                    $cur++;
+                    printf ( "\r Creating: %6.2f%%" , ceil ( $total ) );
+                    $cur ++;
 
                     $file = $path
-                        . DIRECTORY_SEPARATOR
-                        . self::getClassName ( $objTables->getName () )
-                        . '.php';
+                            . DIRECTORY_SEPARATOR
+                            . self::getClassName ( $objTables->getName () )
+                            . '.php';
 
 
                     $tpl = $this->getParsedTplContents (
-                        $objMakeFile->getFileTpl (),
-                        $objMakeFile->parseRelation ( $this, $objTables )
-                        , $objTables, $objMakeFile
+                        $objMakeFile->getFileTpl () ,
+                        $objMakeFile->parseRelation ( $this , $objTables )
+                        , $objTables , $objMakeFile
 
                     );
-                    self::makeSourcer ( $file, $tpl );
+                    self::makeSourcer ( $file , $tpl );
                 }
 
             }
@@ -171,10 +178,10 @@ class MakerFile extends AbstractMaker
             $countDir = $this->countDiretory ();
             $totalTable = $this->driver->getTotalTables ();
             echo "\n------";
-            printf ( "\n\r-Files generated:%s", $countFiles );
-            printf ( "\n\r-Diretory generated:%s", $databases * $countDir );
-            printf ( "\n\r-Scanned tables:%s", $totalTable );
-            printf ( "\n\r-Execution time: %ssec", $this->getRunTime () );
+            printf ( "\n\r-Files generated:%s" , $countFiles );
+            printf ( "\n\r-Diretory generated:%s" , $databases * $countDir );
+            printf ( "\n\r-Scanned tables:%s" , $totalTable );
+            printf ( "\n\r-Execution time: %ssec" , $this->getRunTime () );
             echo "\n------";
         }
     }
@@ -201,7 +208,7 @@ class MakerFile extends AbstractMaker
         {
             if ( $abstractAdapter->hasDiretory () )
             {
-                $dir++;
+                $dir ++;
             }
         }
 
@@ -216,17 +223,17 @@ class MakerFile extends AbstractMaker
      *
      * @return String
      */
-    protected function getParsedTplContents ( $tplFile, $vars = array (), \Classes\Db\DbTable $objTables = null, $objMakeFile = null )
+    protected function getParsedTplContents ( $tplFile , $vars = array () , \Classes\Db\DbTable $objTables = null , $objMakeFile = null )
     {
 
         $arrUrl = array (
-            __DIR__,
-            'templates',
-            $this->config->framework,
+            __DIR__ ,
+            'templates' ,
+            $this->config->framework ,
             $tplFile
         );
 
-        $filePath = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrUrl ) );
+        $filePath = implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrUrl ) );
 
         extract ( $vars );
         ob_start ();

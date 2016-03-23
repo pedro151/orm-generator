@@ -93,7 +93,7 @@ Support Database
 ----------------
 
 - [x] Postgres
-- [ ] Mysql
+- [x] Mysql
 - [ ] Dblib
 - [ ] Mssql
 - [ ] Sqlserver

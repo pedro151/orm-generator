@@ -57,7 +57,7 @@ class Mysql extends AbsractAdapter
      */
     protected function parseForeignKeys ()
     {
-        $schema = 0;
+        $schema=0;
         foreach ( $this->getListConstrant () as $constrant )
         {
 
@@ -129,6 +129,8 @@ class Mysql extends AbsractAdapter
                 }
                 unset( $key , $column );
             }
+
+
         }
     }
 
@@ -298,6 +300,11 @@ order by k.table_schema, k.table_name;"
         $return = $this->getPDO ()
                        ->query ( "select * from information_schema.columns where extra like '%auto_increment%' and  TABLE_SCHEMA='{$this->database}' AND TABLE_NAME='{$table}' AND COLUMN_NAME='{$column}';" )
                        ->fetch ( \PDO::FETCH_ASSOC );
+
+        if ( ! $return )
+        {
+            return;
+        }
 
         return "{$return['TABLE_NAME']}_{$return['COLUMN_NAME']}_seq";
     }

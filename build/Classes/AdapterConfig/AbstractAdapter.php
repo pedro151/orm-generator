@@ -164,14 +164,12 @@ abstract class AbstractAdapter
     {
         if ( ! is_file ( $this->framworkFiles[ 'ini' ] ) )
         {
-            throw new \Exception( "inform the .ini file in the 'framework-ini' existing configuration." );
+            return false;
         }
 
         if ( ! is_dir ( $this->framworkFiles[ 'library' ] ) )
         {
-            throw new \Exception(
-                "inform the library diretory in the 'framework-path-library' existing configuration."
-            );
+            return false;
         }
 
 
@@ -179,9 +177,7 @@ abstract class AbstractAdapter
              or empty( $this->framworkFiles[ 'environment' ] )
         )
         {
-            throw new \Exception(
-                "inform the framework of the 'environment' to be configured."
-            );
+            return false;
         }
         set_include_path (
             implode (
@@ -192,6 +188,8 @@ abstract class AbstractAdapter
                 )
             )
         );
+
+        return true;
     }
 
     protected function getFrameworkIni ()

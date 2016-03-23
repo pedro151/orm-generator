@@ -56,6 +56,8 @@ class Constrant
         $this->column = $array[ 'column' ];
     }
 
+    public function getDatabase(){}
+
     /**
      * @return string
      */

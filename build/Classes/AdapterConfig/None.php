@@ -5,7 +5,9 @@ namespace Classes\AdapterConfig;
 use Classes\AdapterMakerFile\ZendFrameworkOne\DbTable;
 use Classes\AdapterMakerFile\ZendFrameworkOne\Entity;
 use Classes\AdapterMakerFile\ZendFrameworkOne\Model;
+use Classes\Maker\AbstractMaker;
 
+require_once "Classes/Maker/AbstractMaker.php";
 require_once "Classes/AdapterConfig/AbstractAdapter.php";
 require_once "Classes/AdapterMakerFile/ZendFrameworkOne/DbTable.php";
 require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Entity.php";
@@ -47,7 +49,10 @@ class None extends AbstractAdapter
         );
         if ( $table->hasSchema () )
         {
-            $arrNames[] = ucfirst ( $table->getSchema () );
+            $arrNames[] = AbstractMaker::getClassName ( $table->getSchema () );
+        } else
+        {
+            $arrNames[] = AbstractMaker::getClassName ( $table->getDatabase() );
         }
 
         return implode ( '_', array_filter ( $arrNames ) );
