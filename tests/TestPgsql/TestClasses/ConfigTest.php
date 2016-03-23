@@ -6,7 +6,7 @@
  * Time: 02:35
  */
 
-namespace TestClasses;
+namespace TestPgsql\TestClasses;
 
 
 use Classes\AdaptersDriver\Pgsql;
@@ -17,6 +17,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     protected function setUp ()
     {
         $this->basePath =  dirname($GLOBALS[ 'base_path' ]);
+
     }
 
 

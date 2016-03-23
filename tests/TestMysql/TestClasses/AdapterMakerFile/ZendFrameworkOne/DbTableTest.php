@@ -6,7 +6,7 @@
  * Time: 18:56
  */
 
-namespace TestClasses\AdapterMakerFile\ZendFrameworkOne;
+namespace TestMysql\TestClasses\AdapterMakerFile\ZendFrameworkOne;
 
 use Classes\AdapterConfig\None;
 use Classes\AdaptersDriver\Pgsql;
@@ -25,7 +25,7 @@ class DbTableTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp ()
     {
-        $this->pdo = new \PDO( $GLOBALS[ 'pgsql_dsn' ] , $GLOBALS[ 'pgsql_username' ] , $GLOBALS[ 'pgsql_password' ] );
+        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ] , $GLOBALS[ 'db_username' ] , $GLOBALS[ 'db_password' ] );
         $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE , \PDO::ERRMODE_EXCEPTION );
         $this->tearDown ();
 

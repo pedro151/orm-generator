@@ -6,7 +6,7 @@
  * Time: 17:47
  */
 
-namespace TestClasses\AdapterMakerFile\ZendFrameworkOne;
+namespace TestMysql\TestClasses\AdapterMakerFile\ZendFrameworkOne;
 
 
 class ModelTest extends \PHPUnit_Framework_TestCase

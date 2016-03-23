@@ -6,7 +6,7 @@
  * Time: 11:33
  */
 
-namespace TestClasses\AdaptersDriver;
+namespace TestPgsql\TestClasses\AdaptersDriver;
 
 use Classes\AdapterConfig\None;
 use Classes\AdaptersDriver\Pgsql;
@@ -28,7 +28,7 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp ()
     {
-        $this->pdo = new \PDO( $GLOBALS[ 'pgsql_dsn' ] , $GLOBALS[ 'pgsql_username' ] , $GLOBALS[ 'pgsql_password' ] );
+        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ] , $GLOBALS[ 'db_username' ] , $GLOBALS[ 'db_password' ] );
         $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE , \PDO::ERRMODE_EXCEPTION );
         $this->tearDown ();
 

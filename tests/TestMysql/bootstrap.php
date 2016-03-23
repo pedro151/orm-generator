@@ -5,10 +5,10 @@ set_include_path (
         PATH_SEPARATOR ,
         array (
             realpath ( __DIR__ ) ,
-            realpath ( __DIR__ ).'/../build/' ,
+            realpath ( __DIR__ ) . '/../../build/' ,
             get_include_path () ,
         )
     )
 );
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';

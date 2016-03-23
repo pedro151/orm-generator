@@ -6,7 +6,7 @@
  * Time: 11:33
  */
 
-namespace TestClasses\AdaptersDriver;
+namespace TestMysql\TestClasses\AdaptersDriver;
 
 use Classes\AdapterConfig\None;
 use Classes\AdaptersDriver\Mysql;
@@ -28,7 +28,7 @@ class MysqlTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp ()
     {
-        $this->pdo = new \PDO( $GLOBALS[ 'mysql_dsn' ] , $GLOBALS[ 'mysql_username' ] , $GLOBALS[ 'mysql_password' ] );
+        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ] , $GLOBALS[ 'db_username' ] , $GLOBALS[ 'db_password' ] );
         $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE , \PDO::ERRMODE_EXCEPTION );
         $this->tearDown ();
 

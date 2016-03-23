@@ -6,7 +6,7 @@
  * Time: 15:29
  */
 
-namespace TestClasses;
+namespace TestPgsql\TestClasses;
 
 
 use Classes\Config;
