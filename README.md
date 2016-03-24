@@ -18,7 +18,6 @@ $ composer install`
 
 #####Download directories:
 
-- bin\configs\config.ini
 - bin\dao-generator.phar
 
 
