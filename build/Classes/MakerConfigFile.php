@@ -22,7 +22,7 @@ class MakerConfigFile extends AbstractMaker
 
     private $template = 'Classes/templates/file_configs/ini.php';
 
-    private $msg = "\033[0mPlease enter the value for %index% \033[1;33m[%config%]: ";
+    private $msg = "\033[0mPlease enter the value for %index% \033[1;33m[%config%]:\033[0m ";
 
     private $configs = array (
         'config-env'  => 'config' ,
