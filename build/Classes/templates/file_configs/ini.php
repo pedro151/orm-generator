@@ -1,7 +1,10 @@
 ;=====================READ ME!================================
 ;
-;   default settings if not specified in any Terminal.
+; Default settings if not specified in any Terminal.
 ;
+; @copyright DAO Generator-Pedro151
+; @license   New BSD License
+; @link      https://github.com/pedro151/DAO-Generator
 ;=============SETTING ENVIRONMENT OF DEFAULT==================
 
 [main]
