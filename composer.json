@@ -17,7 +17,8 @@
       },
       "autoload-dev" : {
         "psr-4" : {
-          "TestClasses\\" : "tests"
+          "TestMysql\\" : "TestMysql",
+          "TestPgsql\\" : "TestPgsql"
         }
       },
     "require" : {
