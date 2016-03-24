@@ -100,7 +100,7 @@ Support Database
 Framework Class Generator DAO
 -----------------------------
 
-| Frameworks    | Generate Classes |
-|---------------|--------------|
-|Zend Framework | DbTable, Entity, Model  |
+| Frameworks    | Config Name | Generate Classes |
+|---------------|-------------|-------------|
+|Zend Framework | zend_framework |DbTable, Entity, Model  |
 

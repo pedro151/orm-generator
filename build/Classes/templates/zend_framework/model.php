@@ -6,7 +6,7 @@
  * <?=$this->config->last_modify."\n"?>
  *
  * @package <?=$objTables->getNamespace()?>
- * @see  <?=$objTables->getNamespace()?>_Entity_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>. "\n"?>
+ * @see  <?=$objTables->getNamespace()?>_Entity_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>. <?="\n"?>
  *
  * @author    <?=$this->config->author."\n"?>
  *

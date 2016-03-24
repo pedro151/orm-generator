@@ -7,7 +7,7 @@
  *
  * Tabela definida por 'tablename'
  *
- * @package   <?=$objTables->getNamespace()?>
+ * @package   <?=$objTables->getNamespace()?><?="\n"?>
  * @subpackage DbTable
  * @author    <?=$this->config->author."\n"?>
  *

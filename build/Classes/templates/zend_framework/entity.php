@@ -19,7 +19,6 @@
 /**
  * Abstract class for entity
  */
-require_once dirname(__FILE__) . '/../../EntityAbstract.php';
 
 abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
 {
