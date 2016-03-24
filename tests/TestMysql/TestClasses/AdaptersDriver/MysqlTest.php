@@ -94,7 +94,7 @@ CREATE TABLE bugs_products (
                 'database'  => 'dao_generator' ,
                 'username'  => 'root' ,
                 'socket'    => null ,
-                'password'  => '123' ,
+                'password'  => '' ,
                 'namespace' => ''
             );
 
