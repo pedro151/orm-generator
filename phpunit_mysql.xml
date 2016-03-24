@@ -3,7 +3,7 @@
     <php>
         <var name="db_dsn" value="mysql:host=localhost;port=3306;dbname=dao_generator"/>
         <var name="db_username" value="root"/>
-        <var name="db_password" value="123"/>
+        <var name="db_password" value=""/>
         <var name="base_path" value="__FILE__" />
     </php>
 
