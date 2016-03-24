@@ -28,8 +28,8 @@ class MysqlTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp ()
     {
-        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ] , $GLOBALS[ 'db_username' ] , $GLOBALS[ 'db_password' ] );
-        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE , \PDO::ERRMODE_EXCEPTION );
+        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ], $GLOBALS[ 'db_username' ], $GLOBALS[ 'db_password' ] );
+        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
         $this->tearDown ();
 
         $this->pdo->exec (
@@ -65,7 +65,8 @@ CREATE TABLE bugs_products (
 		REFERENCES bugs(bug_id),
 	FOREIGN KEY (product_id)
 		REFERENCES products(product_id)
-);");
+);"
+        );
     }
 
     /**
@@ -86,15 +87,15 @@ CREATE TABLE bugs_products (
      */
     protected function getDataBaseDrive ()
     {
-        if ( ! $this->objDriver )
+        if ( !$this->objDriver )
         {
             $arrConfig = array (
-                'driver'    => 'pdo_mysql' ,
-                'host'      => 'localhost' ,
-                'database'  => 'dao_generator' ,
-                'username'  => 'root' ,
-                'socket'    => null ,
-                'password'  => '' ,
+                'driver'    => 'pdo_mysql',
+                'host'      => 'localhost',
+                'database'  => $GLOBALS[ 'dbname' ],
+                'username'  => $GLOBALS[ 'db_username' ],
+                'socket'    => null,
+                'password'  => $GLOBALS[ 'db_password' ],
                 'namespace' => ''
             );
 
@@ -117,7 +118,7 @@ CREATE TABLE bugs_products (
     {
         $daoClone = clone $this->getDataBaseDrive ();
         $this->getDataBaseDrive ()->runDatabase ();
-        $this->assertEquals ( $daoClone , $this->getDataBaseDrive () );
+        $this->assertEquals ( $daoClone, $this->getDataBaseDrive () );
     }
 
     /**
@@ -136,13 +137,13 @@ CREATE TABLE bugs_products (
                 {
                     case "FOREIGN KEY":
                     {
-                        $this->assertEquals ( 'accounts' , $contrstrant[ "foreign_table" ] );
-                        $this->assertEquals ( 'account_name' , $contrstrant[ "foreign_column" ] );
+                        $this->assertEquals ( 'accounts', $contrstrant[ "foreign_table" ] );
+                        $this->assertEquals ( 'account_name', $contrstrant[ "foreign_column" ] );
                         break;
                     }
                     case "PRIMARY KEY":
                     {
-                        $this->assertEquals ( 'bug_id' , $contrstrant[ "column_name" ] );
+                        $this->assertEquals ( 'bug_id', $contrstrant[ "column_name" ] );
                     }
 
                 };
@@ -159,7 +160,7 @@ CREATE TABLE bugs_products (
         $this->assertTrue (
             is_array (
                 $this->getDataBaseDrive ()
-                     ->getListNameTable ()
+                    ->getListNameTable ()
             )
         );
         $this->assertTrue (
@@ -180,12 +181,12 @@ CREATE TABLE bugs_products (
     public function testSQLSequence ()
     {
         $this->assertEquals (
-            'bugs_bug_id_seq' , $this->getDataBaseDrive ()
-                                            ->getSequence ( 'bugs' , 'bug_id' )
+            'bugs_bug_id_seq', $this->getDataBaseDrive ()
+            ->getSequence ( 'bugs', 'bug_id' )
         );
         $this->assertEquals (
-            'products_product_id_seq' , $this->getDataBaseDrive ()
-                                             ->getSequence ( 'products' , 'product_id' )
+            'products_product_id_seq', $this->getDataBaseDrive ()
+            ->getSequence ( 'products', 'product_id' )
         );
     }
 

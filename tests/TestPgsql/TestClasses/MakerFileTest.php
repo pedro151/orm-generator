@@ -139,7 +139,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
             new Config(
                 array (
                     'folder-database' => false ,
-                    'database'        => 'dao_generator',
+                    'database'  => $GLOBALS[ 'dbname' ],
                     'driver'          => 'pgsql' ,
                     'schema'          => array ()
                 ) ,

@@ -38,9 +38,9 @@ class NoneTest extends \PHPUnit_Framework_TestCase
         $config = array (
             'driver'   => 'pdo_pgsql' ,
             'host'     => 'localhost' ,
-            'database' => 'dao_generator' ,
-            'username' => 'postgres' ,
-            'password' => '123'
+            'database'  => $GLOBALS[ 'dbname' ],
+            'username'  => $GLOBALS[ 'db_username' ],
+            'password'  => $GLOBALS[ 'db_password' ],
         );
         $obj = new \Classes\AdapterConfig\None( $config );
 

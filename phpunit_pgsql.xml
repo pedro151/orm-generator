@@ -2,6 +2,7 @@
 <phpunit bootstrap="./tests/TestPgsql/bootstrap.php" colors="true">
     <php>
         <var name="db_dsn" value="pgsql:host=localhost;port=5432;dbname=dao_generator"/>
+        <var name="dbname" value="dao_generator" />
         <var name="db_username" value="postgres"/>
         <var name="db_password" value="123"/>
         <var name="base_path" value="__FILE__" />

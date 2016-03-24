@@ -26,7 +26,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $config = new Config(
             array (
                 'framework' => 'none',
-                'database'  => 'dao_generator',
+                'database'  => $GLOBALS[ 'dbname' ],
                 'driver'    => 'pgsql'
             ),
             $this->basePath
@@ -42,7 +42,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $config = new Config(
             array (
-                'database' => 'dao_generator',
+                'database'  => $GLOBALS[ 'dbname' ],
                 'driver'   => 'pgsql'
             ),
             $this->basePath
