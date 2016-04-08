@@ -318,4 +318,18 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
         return $this->_table;
     }
 
+    /**
+     * @return array
+     */
+    public function getValidator(){
+        return $this->_validators;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilters(){
+        return $this->_filters;
+    }
+
 }
