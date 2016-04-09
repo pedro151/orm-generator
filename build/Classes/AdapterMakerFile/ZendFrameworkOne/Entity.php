@@ -20,6 +20,7 @@ class Entity extends AbstractAdapter
     protected $parentClass   = "EntityAbstract";
     protected $parentFileTpl = "entity_abstract.php";
     protected $fileTpl       = "entity.php";
+    protected $overwrite     = true;
 
     protected $validFunc = array ();
 

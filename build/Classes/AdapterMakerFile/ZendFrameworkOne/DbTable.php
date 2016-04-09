@@ -20,7 +20,7 @@ class DbTable extends AbstractAdapter
     protected $parentClass   = "TableAbstract";
     protected $parentFileTpl = "dbtable_abstract.php";
     protected $fileTpl       = "dbtable.php";
-
+    protected $overwrite     = true;
 
     /**
      * @param \Classes\MakerFile $makerFile
@@ -44,7 +44,7 @@ class DbTable extends AbstractAdapter
             'refTableClass' => '%s',
             'refColumns'    =>'%s'
        )",
-                AbstractMaker::getClassName($constrant->getNameConstrant ()),
+                AbstractMaker::getClassName ( $constrant->getNameConstrant () ),
                 $fk->getName (),
                 $makerFile->getConfig ()->createClassNamespace ( $constrant )
                 . ZendFrameworkOne::SEPARETOR

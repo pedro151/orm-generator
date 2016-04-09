@@ -65,13 +65,18 @@ abstract class AbstractAdapter
     protected $pastName;
 
     /**
+     * @var bool
+     */
+    protected $overwrite = false;
+
+    /**
      * verifica se existe diretorio nesta makeFile
      *
      * @return bool
      */
     public function hasDiretory ()
     {
-       return !empty( $this->pastName );
+        return !empty( $this->pastName );
     }
 
     /**
@@ -105,6 +110,14 @@ abstract class AbstractAdapter
     public function getPastName ()
     {
         return $this->pastName;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOverwrite ()
+    {
+       return $this->overwrite;
     }
 
 }

@@ -73,7 +73,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php
     $validators = array ();
 
-    $validators[] = $column->isNullable () ? "'allowEmpty' => true" : "'NotEmpty' => true";
+    $validators[] = $column->isNullable () ? "'allowEmpty' => true" : "'NotEmpty'";
 
     switch ( ucfirst ( $column->getType () ) )
     {
@@ -166,11 +166,11 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
 <?php break ?>
 <?php default: ?>
         $<?=$column->getName()?> = (<?=ucfirst($column->getType())?>) $<?=$column->getName()?> ;
-        $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?=$column->getName()?> '=>$<?=$column->getName()?> ));
-        if(!$input->isValid ('<?=$column->getName()?> '))
+        $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?=$column->getName()?>'=>$<?=$column->getName()?> ));
+        if(!$input->isValid ('<?=$column->getName()?>'))
         {
             $errors =  $input->getMessages ();
-            foreach ( $errors['<?=$column->getName()?> '] as $key => $value )
+            foreach ( $errors['<?=$column->getName()?>'] as $key => $value )
             {
                 throw new Exception ( $value );
             }

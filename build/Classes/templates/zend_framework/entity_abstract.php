@@ -157,17 +157,18 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
             throw new Zend_Db_Table_Row_Exception("Metodo \"{$method}\" não existe na classe.");
         }
 
-        if (!empty($name) && array_key_exists($name, $this->_columnsList)) 
+        if (isset($this->_data[$name]))
 		{
-			if (!isset($this->_data[$name]) || !($this->_data[$name] === $value) )
+			if (!($this->_data[$name] === $value) )
 			{
 				$this->_modifiedFields[$name] = true;
 			}
             $this->_data[$name] = $value;
-        }else{
+        }
+        else
+        {
             $this->$method($value);
         }
-
     }
 
     /**
@@ -190,12 +191,12 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
 			throw new Zend_Db_Table_Row_Exception("Specified column \"{$name}\" is not in the row");
         }
 
-        if (!empty($name) && array_key_exists($name, $this->_columnsList)) {
-            if (!array_key_exists($name, $this->_data)) {
-                return null;
-            }
-        return $this->_data[$name];
-        }else{
+        if ( isset( $this->_data[ $name ] ) )
+        {
+            return $this->_data[$name];
+        }
+        else
+        {
             return $this->$method();
         }
     }
@@ -319,16 +320,31 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
     }
 
     /**
+     * @param string $columnName
+     *
      * @return array
      */
-    public function getValidator(){
+    public function getValidator($columnName = null)
+    {
+        if(isset($this->_validators[$columnName]))
+        {
+            return $this->_validators[$columnName];
+        }
+
         return $this->_validators;
     }
 
     /**
+     * @param string $columnName
+     *
      * @return array
      */
-    public function getFilters(){
+    public function getFilters($columnName = null)
+    {
+        if(isset($this->_filters[$columnName]))
+        {
+            return $this->_filters[$columnName];
+        }
         return $this->_filters;
     }
 

@@ -22,18 +22,22 @@ abstract class AbstractMaker
     }
 
     /**
-     * @param $nameFile nome do arquivo a ser criado
-     * @param $tplContent  Conteudo do Template
+     * @param string $nameFile nome do arquivo a ser criado
+     * @param string $tplContent Conteudo do Template
+     * @param bool $overwrite Sobrescreve o arquivo ja existente
      */
-    public static function makeSourcer ( $nameFile, $tplContent )
+    public static function makeSourcer ( $nameFile, $tplContent, $overwrite = false )
     {
-        if ( !is_file ( $nameFile ) )
+        if ( !$overwrite && is_file ( $nameFile ) )
         {
-            if ( !file_put_contents ( $nameFile, $tplContent ) )
-            {
-                die( "Error: could not write model file $nameFile." );
-            }
+            return;
         }
+
+        if ( !file_put_contents ( $nameFile, $tplContent ) )
+        {
+            die( "Error: could not write model file $nameFile." );
+        }
+
 
     }
 
