@@ -2,8 +2,8 @@
 
 [![Travis build status](https://api.travis-ci.org/pedro151/DAO-Generator.svg?branch=master)](https://travis-ci.org/pedro151/DAO-Generator)
 
-DAO-Generator Creates 'Data Access Object' frameworks as DbTable the ZF1, among others.
-uses various types of databases like Postgres
+DAO-Generator maps the entire database and then creates 'Data Access Object' frameworks as DbTable the ZF1, among others.
+uses various types of databases like Postgres and Mysql.
 
 Install
 -------
