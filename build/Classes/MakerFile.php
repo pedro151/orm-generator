@@ -149,8 +149,8 @@ class MakerFile extends AbstractMaker
                     $this->driver->getTables ( $schema ) as $key => $objTables
                 )
                 {
-                    $total = ( $cur / $max * 100 );
-                    printf ( "\r Creating: %6.2f%%" , ceil ( $total ) );
+                    $total =  ceil ($cur / $max) * 100;
+                    printf ( "\r Creating: %6.2f%%" ,  $total );
                     $cur ++;
 
                     $file = $path
