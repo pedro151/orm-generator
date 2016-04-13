@@ -64,13 +64,18 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::g
      * @var mixed
      */
 <?php if( $objTables->hasSequences() ) : ?>
-	protected $_sequence = array(
-<?php foreach( $objTables->getSequences() as $seq ): ?>
+<?php if( 1 < count( $objTables->getSequences() ) ) : ?>
+    protected $_sequence = array(
+    <?php foreach( $objTables->getSequences() as $seq ): ?>
         '<?=$seq->getSequence() ?>',
-<?php endforeach; ?>
+    <?php endforeach; ?>
     );
+<?php elseif ( 1 ==  count($objTables->getSequences() ) ) : ?>
+<?php $seqs = $objTables->getSequences();reset($seqs);$seq = current($seqs);?>
+    protected $_sequence = '<?=$seq->getSequence() ?>';
 <?php else: ?>
     protected $_sequence = false;
+<?php endif ?>
 <?php endif ?>
 
 <?=$referenceMap?>

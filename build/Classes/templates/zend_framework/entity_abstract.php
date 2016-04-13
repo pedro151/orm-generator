@@ -157,9 +157,9 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
             throw new Zend_Db_Table_Row_Exception("Metodo \"{$method}\" não existe na classe.");
         }
 
-        if (isset($this->_data[$name]))
+        if (in_array($name, $this->getTable()->info('cols')))
 		{
-			if (!($this->_data[$name] === $value) )
+			if (!isset($this->_data[$name]) or !($this->_data[$name] === $value) )
 			{
 				$this->_modifiedFields[$name] = true;
 			}
