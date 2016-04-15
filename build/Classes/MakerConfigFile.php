@@ -65,7 +65,7 @@ class MakerConfigFile extends AbstractMaker
                 $this->configs[ $index ] = strtolower ( $line );
             }
         }
-
+        $this->configs ['version']     = Config::$version;
         return $argv + array_filter ( $this->configs );
     }
 

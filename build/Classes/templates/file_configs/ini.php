@@ -3,8 +3,9 @@
 ; Default settings if not specified in any Terminal.
 ;
 ; @copyright DAO Generator-Pedro151
-; @license   New BSD License
+; @license   The MIT License (MIT)
 ; @link      https://github.com/pedro151/DAO-Generator
+; @version   <?= $version ?><?= "\n" ?>
 ;=============SETTING ENVIRONMENT OF DEFAULT==================
 
 [main]

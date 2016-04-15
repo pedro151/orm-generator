@@ -28,7 +28,7 @@ class Config
     /**
      * @var string
      */
-    private $version = "2.0.0";
+    public static $version = "2.0.1";
 
     /**
      * String that separates the parent section name
@@ -82,7 +82,8 @@ class Config
      */
     public function getUsage ()
     {
-        return <<<USAGE
+        $version = static::$version;
+        return <<<EOF
 parameters:
 
     --init                : Creates the necessary configuration file to start using the DAO-Generator.
@@ -99,13 +100,14 @@ parameters:
 
  example: php generate.php --framework=zend_framework --database=foo --table=foobar --status
 
-Data Access Object DAO-generator By: Pedro Alarcao Version: $this->version
-USAGE;
+Data Access Object DAO-generator By: Pedro Alarcao Version: $version
+EOF;
     }
 
     public function getVersion ()
     {
-        return "Data Access Object DAO-generator By: Pedro Alarcao Version: $this->version";
+        $version = static::$version;
+        return "Data Access Object DAO-generator By: Pedro Alarcao Version: $version";
     }
 
     /**
