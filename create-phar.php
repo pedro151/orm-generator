@@ -1,5 +1,5 @@
 <?php
-define ( 'PREFIX', 'dao-generator' );
+define ( 'PREFIX', 'orm-generator' );
 define ( 'PHAR_FILE', PREFIX . '.phar' );
 define ( 'PHAR_OUTPUT', 'bin' . DIRECTORY_SEPARATOR . PHAR_FILE );
 define ( 'DEFAULT_STUB', 'phar-generate.php' );

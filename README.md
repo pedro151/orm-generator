@@ -1,8 +1,8 @@
 # ORM-Generator
 
-[![Travis build status](https://api.travis-ci.org/pedro151/DAO-Generator.svg?branch=master)](https://travis-ci.org/pedro151/DAO-Generator)
+[![Travis build status](https://api.travis-ci.org/pedro151/ORM-Generator.svg?branch=master)](https://travis-ci.org/pedro151/ORM-Generator)
 
-ORM-Generator maps the entire database and then creates the DAO (Data Access Object) and ORM (Object-relational mapping) of the entire database to facilitate the development
+ORM-Generator maps the entire database and then creates the DAO (Data Access Object) and ORM (Object-relational mapping) of the entire database to facilitate the development.
 
 uses various types of databases like Postgres and Mysql and various types of ORM framework.
 
@@ -13,7 +13,7 @@ install via `composer` or download the contents of the directory `bin`.
 
 #####Install via `composer`:
 ```
-$ composer require pedro151/dao-generator`
+$ composer require pedro151/orm-generator`
 $ composer install`
 ```
 
@@ -68,15 +68,15 @@ Configurations optionals
 ------------------------
 | Command        | description       |
 |----------------|------------------|
-| --init         | Creates the necessary configuration file to start using the DAO-Generator. |
+| --init         | Creates the necessary configuration file to start using the ORM-Generator. |
 | --config-ini   | reference to another .ini file configuration (relative path). |
-| --config-env   | DAO-Generator configuration environment. |
+| --config-env   | ORM-Generator configuration environment. |
 | --framework    | name framework used, which has the contents of the database configurations and framework template. |
 | --driver       | database driver name (Ex.: pgsql). |
 | --database     | database name. |
 | --schema       | database schema name (one or more than one). |
 | --status       | show status of implementation carried out after completing the process. |
-| --version      | shows the version of DAO-Generator. |
+| --version      | shows the version of ORM-Generator. |
 | --help         | help command explaining all the options and manner of use. |
 | --path         | specify where to create the files (default is current directory). |
 

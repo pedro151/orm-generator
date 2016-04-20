@@ -15,7 +15,7 @@ require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Model.php";
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151/DAO-Generator
+ * @link   https://github.com/pedro151/ORM-Generator
  */
 class None extends AbstractAdapter
 {

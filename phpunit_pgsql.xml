@@ -9,7 +9,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="DAO-Generator Test Suite">
+        <testsuite name="ORM-Generator Test Suite">
             <directory>./tests/TestPgsql</directory>
         </testsuite>
     </testsuites>

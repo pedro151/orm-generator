@@ -2,9 +2,9 @@
 ;
 ; Default settings if not specified in any Terminal.
 ;
-; @copyright DAO Generator-Pedro151
+; @copyright ORM Generator-Pedro151
 ; @license   The MIT License (MIT)
-; @link      https://github.com/pedro151/DAO-Generator
+; @link      https://github.com/pedro151/ORM-Generator
 ; @version   <?= $version ?><?= "\n" ?>
 ;=============SETTING ENVIRONMENT OF DEFAULT==================
 

@@ -1,7 +1,7 @@
 {
-    "name": "pedro151/dao-generator",
-    "description": "DAO-generator creates 'Data Access Object' Frameworks as DbTable of ZF1",
-    "keywords": ["orm", "datamapper", "database", "model", "mapper", "entity", "dao", "generator", "dao-generator", "orm-generator", "mysql", "postgres"],
+    "name": "pedro151/ORM-Generator",
+    "description": "ORM-Generator maps the entire database and then creates the DAO (Data Access Object) and ORM (Object-relational mapping) of the entire database to facilitate the development. uses various types of databases like Postgres and Mysql and various types of ORM framework.",
+    "keywords": ["orm", "datamapper", "database", "model", "mapper", "entity", "dao", "generator", "ORM-Generator", "orm-generator", "mysql", "postgres"],
     "license": "MIT",
     "version": "2.0.1",
     "authors": [
