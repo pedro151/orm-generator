@@ -94,9 +94,9 @@ Support Database
 
 - [x] Postgres
 - [x] Mysql
-- [ ] Dblib
-- [ ] Mssql
-- [ ] Sqlserver
+- [ ] Dblib     (todo)
+- [ ] Mssql     (todo)
+- [ ] Sqlserver (todo)
 
 Framework Class Generator ORM
 -----------------------------
