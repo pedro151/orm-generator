@@ -1,9 +1,10 @@
-# DAO-Generator
+# ORM-Generator
 
 [![Travis build status](https://api.travis-ci.org/pedro151/DAO-Generator.svg?branch=master)](https://travis-ci.org/pedro151/DAO-Generator)
 
-DAO-Generator maps the entire database and then creates 'Data Access Object' frameworks as DbTable the ZF1, among others.
-uses various types of databases like Postgres and Mysql.
+ORM-Generator maps the entire database and then creates the DAO (Data Access Object) and ORM (Object-relational mapping) of the entire database to facilitate the development
+
+uses various types of databases like Postgres and Mysql and various types of ORM framework.
 
 Install
 -------
@@ -18,7 +19,7 @@ $ composer install`
 
 #####Download directories:
 
-- bin\dao-generator.phar
+- bin\orm-generator.phar
 
 
 Creating config file
@@ -26,7 +27,7 @@ Creating config file
 use the following command to create the configuration file needed to get started:
 
 ```cmd
-$ php dao-generate.phar --init
+$ php orm-generate.phar --init
 ```
 OR
 ```cmd
@@ -51,7 +52,7 @@ framework-path-library = "C:\Apache24\htdocs\project\library"
 PHP Code Generation
 -------------------
 
-Open the prompt in the directory `DAO-Generator` and write:
+Open the prompt in the directory `ORM-Generator` and write:
 
 ```cmd
 $ php generate.php
@@ -60,7 +61,7 @@ $ php generate.php
 Or Open the prompt in the directory `bin` and write:
 
 ```cmd
-$ php dao-generate.phar
+$ php orm-generate.phar
 ```
 
 Configurations optionals
@@ -97,7 +98,7 @@ Support Database
 - [ ] Mssql
 - [ ] Sqlserver
 
-Framework Class Generator DAO
+Framework Class Generator ORM
 -----------------------------
 
 | Frameworks    | Config Name | Generate Classes |
