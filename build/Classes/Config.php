@@ -28,7 +28,7 @@ class Config
     /**
      * @var string
      */
-    public static $version = "2.0.1";
+    public static $version = "1.2.0";
 
     /**
      * String that separates the parent section name
