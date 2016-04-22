@@ -10,7 +10,7 @@ uses various types of databases like Postgres and Mysql and various types of ORM
 Install
 -------
 
-install via `composer` or download the contents of the directory `bin`.
+install via `composer` or download the file `phar`.
 
 #####Install via `composer`:
 ```
