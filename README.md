@@ -1,6 +1,6 @@
 # ORM-Generator
 
-[![Travis build status](https://api.travis-ci.org/pedro151/ORM-Generator.svg?branch=master)](https://travis-ci.org/pedro151/ORM-Generator)
+[![Travis build status](https://api.travis-ci.org/pedro151/orm-generator.svg?branch=master)](https://travis-ci.org/pedro151/orm-generator)
 
 ORM-Generator maps the entire database and then creates the DAO (Data Access Object) and ORM (Object-relational mapping) of the entire database to facilitate the development.
 
