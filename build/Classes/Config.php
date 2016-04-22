@@ -100,14 +100,14 @@ parameters:
 
  example: php generate.php --framework=zend_framework --database=foo --table=foobar --status
 
-Data Access Object ORM-Generator By: Pedro Alarcao Version: $version
+ORM-Generator By: Pedro Alarcao Version: $version
 EOF;
     }
 
     public function getVersion ()
     {
         $version = static::$version;
-        return "Data Access Object ORM-Generator By: Pedro Alarcao Version: $version";
+        return "ORM-Generator By: Pedro Alarcao Version: $version";
     }
 
     /**
