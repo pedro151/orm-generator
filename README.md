@@ -20,7 +20,7 @@ $ composer install`
 
 #####Download directories:
 
-- [orm-generator.phar](https://github.com/pedro151/orm-generator/blob/master/bin/orm-generator.phar)
+- [orm-generator.phar](https://github.com/pedro151/orm-generator/blob/master/bin/orm-generator.phar?raw=true)
 
 
 Creating config file
