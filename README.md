@@ -1,6 +1,7 @@
 # ORM-Generator
 
 [![Travis build status](https://api.travis-ci.org/pedro151/orm-generator.svg?branch=master)](https://travis-ci.org/pedro151/orm-generator)
+[![Latest Stable Version](https://poser.pugx.org/pedro151/orm-generator/v/stable)](https://packagist.org/packages/pedro151/orm-generator) [![Total Downloads](https://poser.pugx.org/pedro151/orm-generator/downloads)](https://packagist.org/packages/pedro151/orm-generator) [![Latest Unstable Version](https://poser.pugx.org/pedro151/orm-generator/v/unstable)](https://packagist.org/packages/pedro151/orm-generator) [![License](https://poser.pugx.org/pedro151/orm-generator/license)](https://packagist.org/packages/pedro151/orm-generator)
 
 ORM-Generator maps the entire database and then creates the DAO (Data Access Object) and ORM (Object-relational mapping) of the entire database to facilitate the development.
 
