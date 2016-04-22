@@ -18,7 +18,7 @@ $ composer require pedro151/orm-generator`
 $ composer install`
 ```
 
-#####Download directories:
+#####Download phar:
 
 - [orm-generator.phar](https://github.com/pedro151/orm-generator/blob/master/bin/orm-generator.phar?raw=true)
 
