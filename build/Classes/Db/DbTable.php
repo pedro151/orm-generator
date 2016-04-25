@@ -77,6 +77,18 @@ class DbTable
     }
 
     /**
+     * @param $columnName
+     *
+     * @return $this
+     */
+    public function createColumn ( $columnName )
+    {
+        $this->columns[ $columnName ] = new Column();
+
+        return $this;
+    }
+
+    /**
      * @param string $columnName
      *
      * @return \Classes\Db\Column

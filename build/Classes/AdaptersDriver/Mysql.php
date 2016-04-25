@@ -57,18 +57,19 @@ class Mysql extends AbsractAdapter
      */
     protected function parseForeignKeys ()
     {
-        $schema=0;
+        $schema = 0;
         foreach ( $this->getListConstrant () as $constrant )
         {
 
             if ( $constrant[ 'constraint_type' ] == "FOREIGN KEY"
-                 or $constrant[ 'constraint_type' ] == "PRIMARY KEY"
+                 || $constrant[ 'constraint_type' ] == "PRIMARY KEY"
             )
             {
                 $key = $constrant [ 'table_name' ];
-                if ( isset( $this->objDbTables[ $schema ][ $key ] ) )
+                if ( $this->hasTable ( $key , $schema ) )
                 {
-                    $column = $this->objDbTables[ $schema ][ $key ]->getColumn ( $constrant[ "column_name" ] );
+                    $column = $this->getTable ( $key , $schema )
+                                   ->getColumn ( $constrant[ "column_name" ] );
                     if ( $column )
                     {
                         $objConstrant = new Constrant();
@@ -84,12 +85,9 @@ class Mysql extends AbsractAdapter
                         switch ( $constrant[ 'constraint_type' ] )
                         {
                             case "FOREIGN KEY":
-                            {
                                 $column->addRefFk ( $objConstrant );
                                 break;
-                            }
                             case"PRIMARY KEY":
-                            {
                                 $column->setPrimaryKey ( $objConstrant );
                                 $column->setSequence (
                                     $this->getSequence (
@@ -99,7 +97,6 @@ class Mysql extends AbsractAdapter
                                 );
 
                                 break;
-                            }
                         }
                     }
                 }
@@ -109,22 +106,19 @@ class Mysql extends AbsractAdapter
             if ( $constrant[ 'constraint_type' ] == "FOREIGN KEY" )
             {
                 $key = $constrant [ 'foreign_table' ];
-                if ( isset( $this->objDbTables[ $schema ][ $key ] ) )
+                if ( $this->hasTable ( $key , $schema ) )
                 {
-                    $column = $this->objDbTables[ $schema ][ $key ]->getColumn ( $constrant[ "foreign_column" ] );
+                    $column = $this->getTable ( $key , $schema )
+                                   ->getColumn ( $constrant[ "foreign_column" ] );
 
                     if ( $column )
                     {
-                        $objConstrantDependence = new Constrant();
-                        $objConstrantDependence->populate (
-                            array (
-                                'constrant' => $constrant[ 'constraint_name' ] ,
-                                'table'     => $constrant[ 'table_name' ] ,
-                                'column'    => $constrant[ 'column_name' ]
-                            )
+                        $column->createDependece (
+                            $constrant[ 'constraint_name' ] ,
+                            $constrant[ 'table_name' ] ,
+                            $constrant[ 'column_name' ] ,
+                            $constrant[ 'table_schema' ]
                         );
-
-                        $column->addDependece ( $objConstrantDependence );
                     }
                 }
                 unset( $key , $column );
@@ -151,33 +145,27 @@ class Mysql extends AbsractAdapter
         foreach ( $this->getListColumns () as $table )
         {
             $key = $table [ 'table_name' ];
-            if ( ! isset( $this->objDbTables[ $schema ][ $key ] ) )
+            if ( ! $this->hasTable ( $key , $schema ) )
             {
-                $this->objDbTables[ $schema ][ $key ] = new DbTable();
-                $this->objDbTables[ $schema ][ $key ]->populate (
-                    array (
-                        'table'    => $table [ 'table_name' ] ,
-                        'database' => $this->database
-                    )
-                );
+                $this->createTable ( $key , $schema );
             }
 
-            $column = new Column();
-            $column->populate (
-                array (
-                    'name'       => $table [ 'column_name' ] ,
-                    'type'       => $this->convertTypeToPhp ( $table[ 'data_type' ] ) ,
-                    'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ) ,
-                    'max_length' => $table[ 'max_length' ]
-                )
-            );
+            $this->getTable ( $key , $schema )
+                 ->createColumn ( $table [ 'column_name' ] )
+                 ->getColumn ( $table [ 'column_name' ] )
+                 ->populate (
+                     array (
+                         'name'       => $table [ 'column_name' ] ,
+                         'type'       => $this->convertTypeToPhp ( $table[ 'data_type' ] ) ,
+                         'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ) ,
+                         'max_length' => $table[ 'max_length' ]
+                     )
+                 );
 
-            $this->objDbTables[ $schema ][ $key ]->addColumn ( $column );
-            $this->objDbTables[ $schema ][ $key ]->setNamespace (
-                $this->config->createClassNamespace ( $this->objDbTables[ $schema ][ $key ] )
+            $this->getTable ( $key , $schema )->setNamespace (
+                $this->config->createClassNamespace ( $this->getTable ( $key , $schema ) )
             );
         }
-
     }
 
     /**

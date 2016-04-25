@@ -159,6 +159,30 @@ class Column
     }
 
     /**
+     * @param $constraint_name
+     * @param $table_name
+     * @param $column_name
+     *
+     * @return $this
+     */
+    public function createDependece ( $constraint_name , $table_name , $column_name , $schema = null )
+    {
+        $objConstrantDependence = new Constrant();
+        $objConstrantDependence->populate (
+            array (
+                'constrant' => $constraint_name ,
+                'schema'    => $schema ,
+                'table'     => $table_name ,
+                'column'    => $column_name
+            )
+        );
+
+        $this->addDependece ( $objConstrantDependence );
+
+        return $this;
+    }
+
+    /**
      * @param \Classes\Db\Constrant $reference
      */
     public function addRefFk ( Constrant $reference )

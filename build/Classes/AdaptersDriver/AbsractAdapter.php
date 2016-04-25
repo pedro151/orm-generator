@@ -3,6 +3,7 @@
 namespace Classes\AdaptersDriver;
 
 use Classes\AdapterConfig\AbstractAdapter;
+use Classes\Db\DbTable;
 
 /**
  * Adapter com funcoes de analise das consultas
@@ -126,6 +127,26 @@ abstract class AbsractAdapter
     public abstract function getPDOSocketString ();
 
     /**
+     * @param     $nameTable
+     * @param int $schema
+     *
+     * @return \Classes\Db\DbTable
+     */
+    public function createTable ( $nameTable , $schema = 0 )
+    {
+        $this->objDbTables[ $schema ][ trim ( $nameTable ) ] = new DbTable();
+        $this->objDbTables[ $schema ][ trim ( $nameTable ) ]->populate (
+            array (
+                'table'    => $nameTable ,
+                'schema'   => $schema ,
+                'database' => $this->database
+            )
+        );
+
+        return $this;
+    }
+
+    /**
      * Retorna um Array Assoc com a chave com nome da tabela e o valor com objeto tables
      *
      * @return \Classes\Db\DbTable[]
@@ -155,6 +176,22 @@ abstract class AbsractAdapter
         }
 
         return null;
+    }
+
+    /**
+     * @param string     $nameTable
+     * @param int|string $schema
+     *
+     * @return bool
+     */
+    public function hasTable ( $nameTable , $schema = 0 )
+    {
+        if ( isset( $this->objDbTables[ $schema ][ trim ( $nameTable ) ] ) )
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
