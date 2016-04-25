@@ -162,14 +162,14 @@ abstract class AbsractAdapter
     /**
      * cria um Array com nome das tabelas
      */
-    protected abstract function parseTables ();
+    abstract protected function parseTables ();
 
     /**
      * retorna o numero total de tabelas
      *
      * @return int
      */
-    public abstract function getTotalTables ();
+    abstract public function getTotalTables ();
 
     /**
      * Retorna o Nome da Sequence da tabela
@@ -179,12 +179,12 @@ abstract class AbsractAdapter
      *
      * @return string
      */
-    public abstract function getSequence ( $table , $column );
+    abstract public function getSequence ( $table , $column );
 
     /**
      * @return array
      */
-    public abstract function getListConstrant ();
+    abstract public function getListConstrant ();
 
     /**
      * @param string $str
@@ -204,12 +204,12 @@ abstract class AbsractAdapter
     /**
      * @return string
      */
-    public abstract function getPDOString ();
+    abstract public function getPDOString ();
 
     /**
      * @return string
      */
-    public abstract function getPDOSocketString ();
+    abstract public function getPDOSocketString ();
 
     /**
      * @param     $nameTable
@@ -284,14 +284,14 @@ abstract class AbsractAdapter
      *
      * @return array[]
      */
-    public abstract function getListColumns ();
+    abstract public function getListColumns ();
 
     /**
      * Retorna um Array com nome das tabelas
      *
      * @return string[]
      */
-    public abstract function getListNameTable ();
+    abstract public function getListNameTable ();
 
     /**
      * @param \Classes\AdapterConfig\AbstractAdapter $adapterConfig
