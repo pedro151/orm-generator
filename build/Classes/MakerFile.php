@@ -88,7 +88,7 @@ class MakerFile extends AbstractMaker
                 DIRECTORY_SEPARATOR , array_filter ( array (
                         $this->baseLocation ,
                         $driverBase ,
-                        $this->getClassName ( $this->getConfig()->getDatabase () )
+                        $this->getClassName ( $this->getConfig ()->getDatabase () )
                     )
                 )
             );
@@ -141,16 +141,14 @@ class MakerFile extends AbstractMaker
                                     . $objMakeFile->getParentClass () . '.php';
 
                     $tplAbstract = $this->getParsedTplContents ( $objMakeFile->getParentFileTpl () );
-                    self::makeSourcer ( $fileAbstract , $tplAbstract, $objMakeFile->isOverwrite() );
+                    self::makeSourcer ( $fileAbstract , $tplAbstract , $objMakeFile->isOverwrite () );
                     unset( $fileAbstract , $tplAbstract );
                 }
 
-                foreach (
-                    $this->driver->getTables ( $schema ) as $key => $objTables
-                )
+                foreach ( $this->driver->getTables ( $schema ) as $key => $objTables )
                 {
-                    $total =  ceil ($cur / $max) * 100;
-                    printf ( "\r Creating: %6.2f%%" ,  $total );
+                    $total = ceil ( $cur / $max ) * 100;
+                    printf ( "\r Creating: %6.2f%%" , $total );
                     $cur ++;
 
                     $file = $path
@@ -165,7 +163,7 @@ class MakerFile extends AbstractMaker
                         , $objTables , $objMakeFile
 
                     );
-                    self::makeSourcer ( $file , $tpl,  $objMakeFile->isOverwrite() );
+                    self::makeSourcer ( $file , $tpl , $objMakeFile->isOverwrite () );
                 }
 
             }

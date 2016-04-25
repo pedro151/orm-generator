@@ -19,7 +19,7 @@ class Mssql extends AbsractAdapter
     /**
      * @inheritDoc
      */
-    protected function parseForeignKeys()
+    protected function parseConstrants()
     {
         // TODO: implement here
     }

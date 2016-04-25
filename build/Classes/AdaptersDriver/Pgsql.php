@@ -82,11 +82,12 @@ class Pgsql extends AbsractAdapter
             $strSchema = implode ( "', '" , $this->schema );
 
             $this->tableList = $this->getPDO ()->query (
-                "SELECT table_schema,  table_name
+                "SELECT table_schema,
+              table_name
              FROM information_schema.tables
              WHERE
               table_type = 'BASE TABLE'
-              AND table_schema IN ( '" . $strSchema . "' )
+              AND table_schema IN ( '$strSchema' )
               ORDER by
                table_schema,
                table_name
@@ -150,82 +151,6 @@ class Pgsql extends AbsractAdapter
         )->fetchAll ( \PDO::FETCH_ASSOC );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function parseForeignKeys ()
-    {
-        foreach ( $this->getListConstrant () as $constrant )
-        {
-            if ( $constrant[ 'constraint_type' ] == "FOREIGN KEY"
-                 || $constrant[ 'constraint_type' ] == "PRIMARY KEY"
-            )
-            {
-                $schema = $constrant[ 'table_schema' ];
-                $key = $constrant [ 'table_name' ];
-                if ( $this->hasTable ( $key , $schema ) )
-                {
-                    $column = $this->getTable ( $key , $schema )
-                                   ->getColumn ( $constrant[ "column_name" ] );
-                    if ( $column )
-                    {
-                        $objConstrant = new Constrant();
-                        $objConstrant->populate (
-                            array (
-                                'constrant' => $constrant[ 'constraint_name' ] ,
-                                'schema'    => $constrant[ 'foreign_schema' ] ,
-                                'table'     => $constrant[ 'foreign_table' ] ,
-                                'column'    => $constrant[ 'foreign_column' ]
-                            )
-                        );
-
-
-                        switch ( $constrant[ 'constraint_type' ] )
-                        {
-                            case "FOREIGN KEY":
-                                $column->addRefFk ( $objConstrant );
-                                break;
-                            case"PRIMARY KEY":
-                                $column->setPrimaryKey ( $objConstrant );
-                                $column->setSequence (
-                                    $this->getSequence (
-                                        $schema . '.' . $key ,
-                                        $constrant[ "column_name" ]
-                                    )
-                                );
-
-                                break;
-                        }
-                    }
-                }
-                unset( $key , $column );
-            }
-
-            if ( $constrant[ 'constraint_type' ] == "FOREIGN KEY" )
-            {
-                $schema = $constrant[ 'foreign_schema' ];
-                $key = $constrant [ 'foreign_table' ];
-                if ( $this->hasTable ( $key , $schema ) )
-                {
-                    $column = $this->getTable ( $key , $schema )
-                                   ->getColumn ( $constrant[ "foreign_column" ] );
-
-                    if ( $column )
-                    {
-                        $column->createDependece (
-                            $constrant[ 'constraint_name' ] ,
-                            $constrant[ 'table_name' ] ,
-                            $constrant[ 'column_name' ] ,
-                            $constrant[ 'table_schema' ]
-                        );
-                    }
-                }
-                unset( $key , $column );
-            }
-
-
-        }
-    }
 
     /**
      * Retorna o Nome da Sequence da tabela
@@ -279,9 +204,9 @@ class Pgsql extends AbsractAdapter
      */
     public function parseTables ()
     {
-        if ( ! empty( $this->objDbTables ) )
+        if ( $this->hasTables () )
         {
-            return $this->objDbTables;
+            return $this->getAllTables ();
         }
 
         foreach ( $this->getListColumns () as $table )
@@ -293,23 +218,22 @@ class Pgsql extends AbsractAdapter
                 $this->createTable ( $key , $schema );
             }
 
+            $column = Column::getInstance ()
+                            ->populate (
+                                array (
+                                    'name'       => $table [ 'column_name' ] ,
+                                    'type'       => $this->convertTypeToPhp ( $table[ 'data_type' ] ) ,
+                                    'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ) ,
+                                    'max_length' => $table[ 'max_length' ]
+                                )
+                            );
+
             $this->getTable ( $key , $schema )
-                 ->createColumn ( $table [ 'column_name' ] )
-                 ->getColumn ( $table [ 'column_name' ] )
-                 ->populate (
-                     array (
-                         'name'       => $table [ 'column_name' ] ,
-                         'type'       => $this->convertTypeToPhp ( $table[ 'data_type' ] ) ,
-                         'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ) ,
-                         'max_length' => $table[ 'max_length' ]
-                     )
+                 ->addColumn ( $column )
+                 ->setNamespace (
+                     $this->config->createClassNamespace ( $this->getTable ( $key , $schema ) )
                  );
-
-            $this->getTable ( $key , $schema )->setNamespace (
-                $this->config->createClassNamespace ( $this->getTable ( $key , $schema ) )
-            );
         }
-
     }
 
     /**

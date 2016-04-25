@@ -11,8 +11,15 @@ class DbTable
     /**
      * @author Pedro Alarcao <phacl151@gmail.com>
      */
-    public function __construct ()
+    final private function __construct ()
     {
+    }
+
+    /**
+     * @return \Classes\Db\DbTable
+     */
+    public static function getInstance(){
+        return new self();
     }
 
     /**
@@ -67,23 +74,13 @@ class DbTable
     }
 
     /**
+     * adiciona uma coluna
+     *
      * @param \Classes\Db\Column $column
      */
     public function addColumn ( Column $column )
     {
         $this->columns[ $column->getName () ] = $column;
-
-        return $this;
-    }
-
-    /**
-     * @param $columnName
-     *
-     * @return $this
-     */
-    public function createColumn ( $columnName )
-    {
-        $this->columns[ $columnName ] = new Column();
 
         return $this;
     }
@@ -95,12 +92,12 @@ class DbTable
      */
     public function getColumn ( $columnName )
     {
-        if ( isset( $this->columns[ $columnName ] ) )
-        {
-            return $this->columns[ $columnName ];
-        }
+        return $this->columns[ $columnName ];
+    }
 
-        return;
+    public function hasColumn ( $columnName )
+    {
+        return isset( $this->columns[ $columnName ] );
     }
 
     /**

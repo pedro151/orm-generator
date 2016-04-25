@@ -45,7 +45,7 @@ class Entity extends AbstractAdapter
                 . ZendFrameworkOne::SEPARETOR
                 . 'By'
                 . ZendFrameworkOne::SEPARETOR
-                . $constrant->getColumn ();
+                . $fks->getName();
 
             $parents[] = array (
                 'class'    => $makerFile->getConfig ()
@@ -71,7 +71,7 @@ class Entity extends AbstractAdapter
                     . ZendFrameworkOne::SEPARETOR
                     . 'By'
                     . ZendFrameworkOne::SEPARETOR
-                    . $dependence->getColumn ();
+                    . $fks->getName();
 
                 if ( !key_exists ( $name, $this->validFunc ) )
                 {

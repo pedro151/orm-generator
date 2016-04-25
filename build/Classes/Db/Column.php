@@ -16,8 +16,18 @@ class Column
      *
      * @author Pedro Alarcao <phacl151@gmail.com>
      */
-    public function __construct ()
+    final private function __construct ()
     {
+    }
+
+    /**
+     * create instance
+     *
+     * @return \Classes\Db\Column
+     */
+    public static function getInstance ()
+    {
+        return new Column();
     }
 
     /**
@@ -167,15 +177,15 @@ class Column
      */
     public function createDependece ( $constraint_name , $table_name , $column_name , $schema = null )
     {
-        $objConstrantDependence = new Constrant();
-        $objConstrantDependence->populate (
-            array (
-                'constrant' => $constraint_name ,
-                'schema'    => $schema ,
-                'table'     => $table_name ,
-                'column'    => $column_name
-            )
-        );
+        $objConstrantDependence = Constrant::getInstance ()
+                                           ->populate (
+                                               array (
+                                                   'constrant' => $constraint_name ,
+                                                   'schema'    => $schema ,
+                                                   'table'     => $table_name ,
+                                                   'column'    => $column_name
+                                               )
+                                           );
 
         $this->addDependece ( $objConstrantDependence );
 

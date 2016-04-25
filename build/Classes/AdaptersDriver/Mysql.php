@@ -55,90 +55,11 @@ class Mysql extends AbsractAdapter
     /**
      * @inheritDoc
      */
-    protected function parseForeignKeys ()
-    {
-        $schema = 0;
-        foreach ( $this->getListConstrant () as $constrant )
-        {
-
-            if ( $constrant[ 'constraint_type' ] == "FOREIGN KEY"
-                 || $constrant[ 'constraint_type' ] == "PRIMARY KEY"
-            )
-            {
-                $key = $constrant [ 'table_name' ];
-                if ( $this->hasTable ( $key , $schema ) )
-                {
-                    $column = $this->getTable ( $key , $schema )
-                                   ->getColumn ( $constrant[ "column_name" ] );
-                    if ( $column )
-                    {
-                        $objConstrant = new Constrant();
-                        $objConstrant->populate (
-                            array (
-                                'constrant' => $constrant[ 'constraint_name' ] ,
-                                'table'     => $constrant[ 'foreign_table' ] ,
-                                'column'    => $constrant[ 'foreign_column' ]
-                            )
-                        );
-
-
-                        switch ( $constrant[ 'constraint_type' ] )
-                        {
-                            case "FOREIGN KEY":
-                                $column->addRefFk ( $objConstrant );
-                                break;
-                            case"PRIMARY KEY":
-                                $column->setPrimaryKey ( $objConstrant );
-                                $column->setSequence (
-                                    $this->getSequence (
-                                        $key ,
-                                        $constrant[ "column_name" ]
-                                    )
-                                );
-
-                                break;
-                        }
-                    }
-                }
-                unset( $key , $column );
-            }
-
-            if ( $constrant[ 'constraint_type' ] == "FOREIGN KEY" )
-            {
-                $key = $constrant [ 'foreign_table' ];
-                if ( $this->hasTable ( $key , $schema ) )
-                {
-                    $column = $this->getTable ( $key , $schema )
-                                   ->getColumn ( $constrant[ "foreign_column" ] );
-
-                    if ( $column )
-                    {
-                        $column->createDependece (
-                            $constrant[ 'constraint_name' ] ,
-                            $constrant[ 'table_name' ] ,
-                            $constrant[ 'column_name' ] ,
-                            $constrant[ 'table_schema' ]
-                        );
-                    }
-                }
-                unset( $key , $column );
-            }
-
-
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    /**
-     * @inheritDoc
-     */
     public function parseTables ()
     {
-        if ( ! empty( $this->objDbTables ) )
+        if ( $this->hasTables () )
         {
-            return $this->objDbTables;
+            return $this->getAllTables ();
         }
 
         $schema = 0;
@@ -150,21 +71,21 @@ class Mysql extends AbsractAdapter
                 $this->createTable ( $key , $schema );
             }
 
-            $this->getTable ( $key , $schema )
-                 ->createColumn ( $table [ 'column_name' ] )
-                 ->getColumn ( $table [ 'column_name' ] )
-                 ->populate (
-                     array (
-                         'name'       => $table [ 'column_name' ] ,
-                         'type'       => $this->convertTypeToPhp ( $table[ 'data_type' ] ) ,
-                         'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ) ,
-                         'max_length' => $table[ 'max_length' ]
-                     )
-                 );
+            $column = Column::getInstance ()
+                            ->populate (
+                                array (
+                                    'name'       => $table [ 'column_name' ] ,
+                                    'type'       => $this->convertTypeToPhp ( $table[ 'data_type' ] ) ,
+                                    'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ) ,
+                                    'max_length' => $table[ 'max_length' ]
+                                )
+                            );
 
-            $this->getTable ( $key , $schema )->setNamespace (
-                $this->config->createClassNamespace ( $this->getTable ( $key , $schema ) )
-            );
+            $this->getTable ( $key , $schema )
+                 ->addColumn ( $column )
+                 ->setNamespace (
+                     $this->config->createClassNamespace ( $this->getTable ( $key , $schema ) )
+                 );
         }
     }
 
@@ -223,7 +144,7 @@ class Mysql extends AbsractAdapter
 
         return $this->getPDO ()->query (
             "select
-                table_schema,
+                0 AS table_schema,
                 table_name,
                 column_name ,
                 data_type,
@@ -244,7 +165,8 @@ class Mysql extends AbsractAdapter
             "SELECT distinct
      i.constraint_type,
      k.constraint_name,
-     k.table_schema,
+     --k.table_schema,
+     0 AS table_schema,
      k.table_name,
 	 k.column_name,
      k.REFERENCED_TABLE_SCHEMA AS foreign_schema,

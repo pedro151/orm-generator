@@ -21,8 +21,13 @@ class Constrant
      *
      * @author Pedro Alarcao <phacl151@gmail.com>
      */
-    public function __construct ()
+    final private function __construct ()
     {
+    }
+
+    public static function getInstance ()
+    {
+        return new self();
     }
 
     /**
@@ -45,18 +50,26 @@ class Constrant
      */
     protected $column;
 
+    /**
+     * @param $array
+     *
+     * @return Constrant
+     */
     public function populate ( $array )
     {
-        if(isset($array[ 'schema' ])){
+        if ( isset( $array[ 'schema' ] ) )
+        {
             $this->schema = $array[ 'schema' ];
         }
 
         $this->constrant = $array[ 'constrant' ];
         $this->table = $array[ 'table' ];
         $this->column = $array[ 'column' ];
+
+        return $this;
     }
 
-    public function getDatabase(){}
+    public function getDatabase (){ }
 
     /**
      * @return string
