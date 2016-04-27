@@ -234,22 +234,12 @@ EOF;
         switch ( $this->argv[ 'driver' ] )
         {
             case 'pgsql':
-            case 'pdo_pgsql':
-                $this->adapterDriver = new Pgsql( $this->getAdapterConfig () );
-                break;
+            case 'pdo_pgsql': $this->adapterDriver = new Pgsql( $this->getAdapterConfig () ); break;
             case 'mysql':
-            case 'pdo_mysql':
-                $this->adapterDriver = new Mysql( $this->getAdapterConfig () );
-                break;
-            case 'mssql':
-                $this->adapterDriver = new Mssql( $this->getAdapterConfig () );
-                break;
-            case 'dblib':
-                $this->adapterDriver = new Dblib( $this->getAdapterConfig () );
-                break;
-            case 'sqlsrv':
-                $this->adapterDriver = new Sqlsrv( $this->getAdapterConfig () );
-                break;
+            case 'pdo_mysql': $this->adapterDriver = new Mysql( $this->getAdapterConfig () ); break;
+            case 'mssql': $this->adapterDriver = new Mssql( $this->getAdapterConfig () ); break;
+            case 'dblib':$this->adapterDriver = new Dblib( $this->getAdapterConfig () ); break;
+            case 'sqlsrv': $this->adapterDriver = new Sqlsrv( $this->getAdapterConfig () ); break;
         }
 
     }
