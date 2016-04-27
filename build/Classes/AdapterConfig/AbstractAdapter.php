@@ -67,7 +67,6 @@ abstract class AbstractAdapter
         'database' => true ,
         'host'     => true ,
         'username' => true ,
-       // 'password' => true ,
         'path'     => true
     );
 

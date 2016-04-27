@@ -4,6 +4,7 @@ namespace Classes;
 
 use Classes\AdapterConfig\None;
 use Classes\AdapterConfig\ZendFrameworkOne;
+use Classes\AdapterMakerFile\AbstractAdapter;
 use Classes\AdaptersDriver\Dblib;
 use Classes\AdaptersDriver\Mssql;
 use Classes\AdaptersDriver\Mysql;
@@ -211,15 +212,16 @@ EOF;
      * analisa a opção e cria a instancia do Atapter do determinado framework
      *
      * @return \Classes\AdapterConfig\AbstractAdapter
+     *
      */
     private function factoryConfig ()
     {
         switch ( strtolower ( $this->argv[ 'framework' ] ) )
         {
-            case 'none':
-                return new None( $this->argv );
             case 'zend_framework':
                 return new ZendFrameworkOne( $this->argv );
+            default:
+                return new None( $this->argv );
         }
 
     }
@@ -255,7 +257,7 @@ EOF;
      */
     public function getAdapterConfig ()
     {
-        if ( ! $this->adapterConfig )
+        if ( ! $this->adapterConfig instanceof AbstractAdapter )
         {
             $this->adapterConfig = $this->factoryConfig ();
         }
