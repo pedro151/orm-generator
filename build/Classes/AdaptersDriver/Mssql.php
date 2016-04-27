@@ -2,7 +2,7 @@
 
 namespace Classes\AdaptersDriver;
 
-require_once 'Classes/AdaptersDriver/AbsractAdapter.php';
+require_once 'AbsractAdapter.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -20,14 +20,6 @@ class Mssql extends AbsractAdapter
      * @inheritDoc
      */
     protected function parseConstrants()
-    {
-        // TODO: implement here
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function parseTables()
     {
         // TODO: implement here
     }

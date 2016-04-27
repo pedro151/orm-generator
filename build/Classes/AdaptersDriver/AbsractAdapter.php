@@ -3,6 +3,7 @@
 namespace Classes\AdaptersDriver;
 
 use Classes\AdapterConfig\AbstractAdapter;
+use Classes\Db\Column;
 use Classes\Db\Constrant;
 use Classes\Db\DbTable;
 
@@ -162,7 +163,39 @@ abstract class AbsractAdapter
     /**
      * cria um Array com nome das tabelas
      */
-    abstract protected function parseTables ();
+    public function parseTables ()
+    {
+        if ( $this->hasTables () )
+        {
+            return $this->getAllTables ();
+        }
+
+        foreach ( $this->getListColumns () as $table )
+        {
+            $schema = $table[ 'table_schema' ];
+            $key = $table [ 'table_name' ];
+            if ( ! $this->hasTable ( $key , $schema ) )
+            {
+                $this->createTable ( $key , $schema );
+            }
+
+            $column = Column::getInstance ()
+                            ->populate (
+                                array (
+                                    'name'       => $table [ 'column_name' ] ,
+                                    'type'       => $this->convertTypeToPhp ( $table[ 'data_type' ] ) ,
+                                    'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ) ,
+                                    'max_length' => $table[ 'max_length' ]
+                                )
+                            );
+
+            $this->getTable ( $key , $schema )
+                 ->addColumn ( $column )
+                 ->setNamespace (
+                     $this->config->createClassNamespace ( $this->getTable ( $key , $schema ) )
+                 );
+        }
+    }
 
     /**
      * retorna o numero total de tabelas
@@ -259,7 +292,7 @@ abstract class AbsractAdapter
     /**
      * retorna a tabela especifica
      *
-     * @param $nameTable Nome da tabela
+     * @param string $nameTable Nome da tabela
      *
      * @return \Classes\Db\DbTable
      */

@@ -83,6 +83,7 @@ class Config
     public function getUsage ()
     {
         $version = static::$version;
+
         return <<<EOF
 parameters:
 
@@ -107,6 +108,7 @@ EOF;
     public function getVersion ()
     {
         $version = static::$version;
+
         return "ORM-Generator By: Pedro Alarcao Version: $version";
     }
 
@@ -127,7 +129,7 @@ EOF;
             : $this->_basePath . $this->configIniDefault;
 
         $configTemp = $this->loadIniFile ( realpath ( $configIni ) );
-        $configCurrent = $this->parseConfigEnv ( $configTemp , $argv );
+        $configCurrent = self::parseConfigEnv ( $configTemp , $argv );
 
         if ( ! isset( $configCurrent[ 'framework' ] ) )
         {
@@ -144,24 +146,19 @@ EOF;
      *
      * @return string
      */
-    public function parseConfigEnv ( $configTemp , $argv )
+    private static function parseConfigEnv ( $configTemp , $argv )
     {
-        if ( isset( $configTemp[ key ( $configTemp ) ][ 'config-env' ] )
-             or isset( $argv[ 'config-env' ] )
-        )
+        $thisSection = isset( $configTemp[ key ( $configTemp ) ][ 'config-env' ] ) ?
+            $configTemp[ key ( $configTemp ) ][ 'config-env' ] : null;
+
+        $thisSection = isset( $argv[ 'config-env' ] ) ? $argv[ 'config-env' ]
+            : $thisSection;
+
+        if ( isset( $configTemp[ $thisSection ][ 'extends' ] ) )
         {
-            $thisSection = isset( $argv[ 'config-env' ] )
-                ?
-                $argv[ 'config-env' ]
-                :
-                $configTemp[ key ( $configTemp ) ][ 'config-env' ];
-
-
-            if ( isset( $configTemp[ $thisSection ][ 'extends' ] ) )
-            {
-                return $configTemp[ $thisSection ]
-                       + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
-            }
+            #faz marge da config principal com a config extendida
+            return $configTemp[ $thisSection ]
+                   + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
         }
 
         return $configTemp[ key ( $configTemp ) ];

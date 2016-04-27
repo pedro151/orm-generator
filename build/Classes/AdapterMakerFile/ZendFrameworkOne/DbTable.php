@@ -26,7 +26,7 @@ class DbTable extends AbstractAdapter
      * @param \Classes\MakerFile $makerFile
      * @param \Classes\Db\DbTable $dbTable
      *
-     * @return string[]
+     * @return array
      */
     public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {

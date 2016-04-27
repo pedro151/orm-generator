@@ -32,6 +32,7 @@ class Mysql extends AbsractAdapter
      */
     protected function convertTypeToPhp ( $str )
     {
+        $res = '';
         if ( preg_match ( '/(tinyint\(1\)|bit)/' , $str ) )
         {
             $res = 'boolean';
@@ -50,43 +51,6 @@ class Mysql extends AbsractAdapter
         }
 
         return $res;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function parseTables ()
-    {
-        if ( $this->hasTables () )
-        {
-            return $this->getAllTables ();
-        }
-
-        $schema = 0;
-        foreach ( $this->getListColumns () as $table )
-        {
-            $key = $table [ 'table_name' ];
-            if ( ! $this->hasTable ( $key , $schema ) )
-            {
-                $this->createTable ( $key , $schema );
-            }
-
-            $column = Column::getInstance ()
-                            ->populate (
-                                array (
-                                    'name'       => $table [ 'column_name' ] ,
-                                    'type'       => $this->convertTypeToPhp ( $table[ 'data_type' ] ) ,
-                                    'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ) ,
-                                    'max_length' => $table[ 'max_length' ]
-                                )
-                            );
-
-            $this->getTable ( $key , $schema )
-                 ->addColumn ( $column )
-                 ->setNamespace (
-                     $this->config->createClassNamespace ( $this->getTable ( $key , $schema ) )
-                 );
-        }
     }
 
     /**
@@ -204,6 +168,8 @@ order by k.table_schema, k.table_name;"
      *
      * @param $table
      * @param $column
+     *
+     * @return string
      */
     public function getSequence ( $table , $column )
     {
