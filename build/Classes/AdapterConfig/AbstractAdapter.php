@@ -95,30 +95,30 @@ abstract class AbstractAdapter
      *
      * @return array
      */
-    protected abstract function getParams ();
+    abstract protected function getParams ();
 
     /**
      * Popula as config do generater com as configuraçoes do framework
      *
      * @return mixed
      */
-    protected abstract function parseFrameworkConfig ();
+    abstract protected function parseFrameworkConfig ();
 
     /**
      * @param \Classes\Db\DbTable|\Classes\Db\Constrant $table
      *
      * @return mixed
      */
-    public abstract function createClassNamespace ( $table );
+    abstract public function createClassNamespace ( $table );
 
     /**
      * Cria Instancias dos arquivos que devem ser gerados
      *
      * @return \Classes\AdapterMakerFile\AbstractAdapter[]
      */
-    public abstract function getMakeFileInstances ();
+    abstract public function getMakeFileInstances ();
 
-    protected abstract function init ();
+    abstract protected function init ();
 
     public function __construct ( $array )
     {

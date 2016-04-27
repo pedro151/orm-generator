@@ -16,7 +16,7 @@ abstract class AbstractAdapter
     /**
      *
      */
-    private function __construct ()
+    final private function __construct ()
     {
     }
 
@@ -42,7 +42,7 @@ abstract class AbstractAdapter
      *
      * @return array
      */
-    public abstract function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable );
+    abstract public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable );
 
     /**
      * @type string
