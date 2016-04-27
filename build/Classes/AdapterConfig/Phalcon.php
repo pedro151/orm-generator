@@ -53,7 +53,7 @@ class Phalcon extends AbstractAdapter
     /**
      * Cria Instancias dos arquivos que devem ser gerados
      *
-     * @return AbstractAdapter[]
+     * @return \Classes\AdapterMakerFile\AbstractAdapter[]
      */
     public function getMakeFileInstances ()
     {
