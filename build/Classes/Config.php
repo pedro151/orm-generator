@@ -233,23 +233,21 @@ EOF;
      */
     private function factoryDriver ()
     {
-        $config = $this->getAdapterConfig ();
         switch ( $this->argv[ 'driver' ] )
         {
             case 'pgsql':
             case 'pdo_pgsql':
-                return new Pgsql( $config );
+                return new Pgsql( $this->getAdapterConfig () );
             case 'mysql':
             case 'pdo_mysql':
-                return new Mysql( $config );
+                return new Mysql( $this->getAdapterConfig () );
             case 'mssql':
-                return new Mssql( $config );
+                return new Mssql( $this->getAdapterConfig () );
             case 'dblib':
-                return new Dblib( $config );
+                return new Dblib( $this->getAdapterConfig () );
             case 'sqlsrv':
-                return new Sqlsrv( $config );
+                return new Sqlsrv( $this->getAdapterConfig () );
         }
-
     }
 
     /**
