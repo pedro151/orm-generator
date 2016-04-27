@@ -210,17 +210,16 @@ EOF;
     /**
      * analisa a opção e cria a instancia do Atapter do determinado framework
      *
+     * @return \Classes\AdapterConfig\AbstractAdapter
      */
     private function factoryConfig ()
     {
         switch ( strtolower ( $this->argv[ 'framework' ] ) )
         {
             case 'none':
-                $this->adapterConfig = new None( $this->argv );
-                break;
+                return new None( $this->argv );
             case 'zend_framework':
-                $this->adapterConfig = new ZendFrameworkOne( $this->argv );
-                break;
+                return new ZendFrameworkOne( $this->argv );
         }
 
     }
@@ -258,7 +257,7 @@ EOF;
     {
         if ( ! $this->adapterConfig )
         {
-            $this->factoryConfig ();
+            $this->adapterConfig = $this->factoryConfig ();
         }
 
         return $this->adapterConfig;
