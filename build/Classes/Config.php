@@ -228,18 +228,24 @@ EOF;
     /**
      * Analisa a opção e instancia o determinado banco de dados
      *
+     * @return  \Classes\AdapterConfig\AbstractAdapter
      */
     private function factoryDriver ()
     {
         switch ( $this->argv[ 'driver' ] )
         {
             case 'pgsql':
-            case 'pdo_pgsql': $this->adapterDriver = new Pgsql( $this->getAdapterConfig () ); break;
+            case 'pdo_pgsql':
+                return new Pgsql( $this->getAdapterConfig () );
             case 'mysql':
-            case 'pdo_mysql': $this->adapterDriver = new Mysql( $this->getAdapterConfig () ); break;
-            case 'mssql': $this->adapterDriver = new Mssql( $this->getAdapterConfig () ); break;
-            case 'dblib':$this->adapterDriver = new Dblib( $this->getAdapterConfig () ); break;
-            case 'sqlsrv': $this->adapterDriver = new Sqlsrv( $this->getAdapterConfig () ); break;
+            case 'pdo_mysql':
+                return new Mysql( $this->getAdapterConfig () );
+            case 'mssql':
+                return new Mssql( $this->getAdapterConfig () );
+            case 'dblib':
+                return new Dblib( $this->getAdapterConfig () );
+            case 'sqlsrv':
+                return new Sqlsrv( $this->getAdapterConfig () );
         }
 
     }
@@ -264,7 +270,7 @@ EOF;
     {
         if ( ! $this->adapterDriver )
         {
-            $this->factoryDriver ();
+            $this->adapterDriver = $this->factoryDriver ();
         }
 
         return $this->adapterDriver;
