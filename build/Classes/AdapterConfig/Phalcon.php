@@ -15,7 +15,7 @@ class Phalcon extends AbstractAdapter
      */
     protected $framework = "phalcon";
 
-    const SEPARETOR = "_";
+    const SEPARETOR = "/";
 
     protected function init ()
     {
@@ -47,7 +47,7 @@ class Phalcon extends AbstractAdapter
             $arrNames[] = ucfirst ( $table->getSchema () );
         }
 
-        return implode ( '_', array_filter ( $arrNames ) );
+        return implode ( '/', array_filter ( $arrNames ) );
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Classes;
 
 use Classes\AdapterConfig\None;
+use Classes\AdapterConfig\Phalcon;
 use Classes\AdapterConfig\ZendFrameworkOne;
 use Classes\AdapterMakerFile\AbstractAdapter;
 use Classes\AdaptersDriver\Dblib;
@@ -12,6 +13,7 @@ use Classes\AdaptersDriver\Pgsql;
 use Classes\AdaptersDriver\Sqlsrv;
 
 require_once 'AdapterConfig/None.php';
+require_once 'AdapterConfig/Phalcon.php';
 require_once 'AdapterConfig/ZendFrameworkOne.php';
 require_once 'AdaptersDriver/Dblib.php';
 require_once 'AdaptersDriver/Mssql.php';
@@ -29,7 +31,7 @@ class Config
     /**
      * @var string
      */
-    public static $version = "1.2.1";
+    public static $version = "1.3.0";
 
     /**
      * String that separates the parent section name
@@ -220,6 +222,8 @@ EOF;
         {
             case 'zend_framework':
                 return new ZendFrameworkOne( $this->argv );
+            case 'phalcon':
+                return new Phalcon( $this->argv );
             default:
                 return new None( $this->argv );
         }

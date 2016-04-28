@@ -10,16 +10,16 @@ use Classes\Maker\AbstractMaker;
  * @author Pedro Alarcao <phacl151@gmail.com>
  * @link   https://github.com/pedro151/ORM-Generator
  */
-class Entity extends AbstractAdapter
+class Model extends AbstractAdapter
 {
 
     /**
      * @var void
      */
-    public    $pastName      = 'Entity';
-    protected $parentClass   = "EntityAbstract";
-    protected $parentFileTpl = "entity_abstract.php";
-    protected $fileTpl       = "entity.php";
+    public    $pastName      = "";
+    protected $parentClass   = "";
+    protected $parentFileTpl = "";
+    protected $fileTpl       = "model.php";
     protected $overwrite     = true;
 
     protected $validFunc = array ();
@@ -35,9 +35,9 @@ class Entity extends AbstractAdapter
 
         $parents = array ();
         $depends = array ();
-        foreach ( $dbTable->getForeingkeys () as $objColumn )
+        foreach ( $dbTable->getForeingkeys () as $fks )
         {
-            $constrant = $objColumn->getFks ();
+            $constrant = $fks->getFks ();
             $name =
                 'Parent'
                 . ZendFrameworkOne::SEPARETOR
@@ -45,7 +45,7 @@ class Entity extends AbstractAdapter
                 . ZendFrameworkOne::SEPARETOR
                 . 'By'
                 . ZendFrameworkOne::SEPARETOR
-                . $objColumn->getName();
+                . $fks->getName();
 
             $parents[] = array (
                 'class'    => $makerFile->getConfig ()
@@ -54,7 +54,7 @@ class Entity extends AbstractAdapter
                     . AbstractMaker::getClassName ( $constrant->getTable () ),
                 'function' => AbstractMaker::getClassName ( $name ),
                 'table'    => $constrant->getTable (),
-                'column'   => $objColumn->getName (),
+                'column'   => $fks->getName (),
                 'name'     => $constrant->getNameConstrant (),
             );
             unset( $name );
@@ -71,7 +71,7 @@ class Entity extends AbstractAdapter
                     . ZendFrameworkOne::SEPARETOR
                     . 'By'
                     . ZendFrameworkOne::SEPARETOR
-                    . $objColumn->getName();
+                    . $fks->getName();
 
                 if ( !key_exists ( $name, $this->validFunc ) )
                 {

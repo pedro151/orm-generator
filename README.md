@@ -109,4 +109,4 @@ Framework Class Generator ORM
 | Frameworks         | Config Name | Generate Classes |
 |--------------------|-------------|------------------|
 |Zend Framework 1.12 | zend_framework |DbTable, Entity, Model  |
-
+|Phalcon | phalcon | Entity, Model  |
