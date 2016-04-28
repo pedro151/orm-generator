@@ -35,9 +35,9 @@ class Entity extends AbstractAdapter
 
         $parents = array ();
         $depends = array ();
-        foreach ( $dbTable->getForeingkeys () as $fks )
+        foreach ( $dbTable->getForeingkeys () as $objColumn )
         {
-            $constrant = $fks->getFks ();
+            $constrant = $objColumn->getFks ();
             $name =
                 'Parent'
                 . ZendFrameworkOne::SEPARETOR
@@ -45,7 +45,7 @@ class Entity extends AbstractAdapter
                 . ZendFrameworkOne::SEPARETOR
                 . 'By'
                 . ZendFrameworkOne::SEPARETOR
-                . $fks->getName();
+                . $objColumn->getName();
 
             $parents[] = array (
                 'class'    => $makerFile->getConfig ()
@@ -54,7 +54,7 @@ class Entity extends AbstractAdapter
                     . AbstractMaker::getClassName ( $constrant->getTable () ),
                 'function' => AbstractMaker::getClassName ( $name ),
                 'table'    => $constrant->getTable (),
-                'column'   => $fks->getName (),
+                'column'   => $objColumn->getName (),
                 'name'     => $constrant->getNameConstrant (),
             );
             unset( $name );
@@ -71,7 +71,7 @@ class Entity extends AbstractAdapter
                     . ZendFrameworkOne::SEPARETOR
                     . 'By'
                     . ZendFrameworkOne::SEPARETOR
-                    . $fks->getName();
+                    . $objColumn->getName();
 
                 if ( !key_exists ( $name, $this->validFunc ) )
                 {
