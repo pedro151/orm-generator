@@ -39,7 +39,13 @@ if ( $column->getMaxLength () ): ?>
     protected $<?=$column->getName()?>;
 
 <?php endforeach;?>
+<?php if($objTables->hasSchema()): ?>
+    public function getSchema()
+    {
+        return '<?=$objTables->getSchema()?>';
+    }
 
+<?php endif ?>
     public function initialize()
     {
         //$this->hasMany('id', '<?=$objTables->getNamespace()?><?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>', 'robots_id');
