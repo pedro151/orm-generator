@@ -25,6 +25,16 @@ class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>
     /**
     * column <?=$column->getName()."\n"?>
     *
+<?php if($column->isPrimaryKey()):?>
+    * @Primary
+<?php endif ?>
+<?php if($column->hasSequence()):?>
+    * @Identity
+<?php endif ?>
+    * @Column(type="<?=$column->getType()?>", nullable=<?=$column->isNullable () ? "true" : "false"?><?php
+if ( $column->getMaxLength () ): ?>
+, length=<?=$column->getMaxLength ()?>
+<?php endif ?>)
     */
     protected $<?=$column->getName()?>;
 
