@@ -1,12 +1,13 @@
-<?='<?php'?>
+<?="<?php\n"?>
 
 /**
- * Mvc Model
+ * Data Model implementation for this class
  *
  * <?=$this->config->last_modify."\n"?>
  *
- * @package   <?=$this->config->namespace?>Model
- * @subpackage Model
+ * @package <?=$objTables->getNamespace()?>
+ * @see  <?=$objTables->getNamespace()?>/Model/<?=$this->getClassName ( $objTables->getName () )?>. "\n"?>
+ *
  * @author    <?=$this->config->author."\n"?>
  *
  * @copyright <?=$this->config->copyright."\n"?>
@@ -14,39 +15,7 @@
  * @link      <?=$this->config->link."\n"?>
  */
 
-namespace  <?=$objTables->getNamespace()?>;
-
-use Phalcon\Mvc\Model;
-
-class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends Model
+class <?=$this->getClassName ( $objTables->getName () )?> extends <?=$objTables->getNamespace()?>\Entity\<?=$this->getClassName ( $objTables->getName () ). "\n"?>
 {
-
-<?php foreach ($objTables->getColumns() as $column): ?>
-    /**
-    * column <?=$column->getName()."\n"?>
-    *
-    */
-    protected $<?=$column->getName()?>;
-
-<?php endforeach;?>
-
-    public function initialize()
-    {
-        //$this->hasMany('id', '<?=$objTables->getNamespace()?><?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>', 'robots_id');
-    }
-
-<?php if( $objTables->hasSequences() ) : ?>
-    public function getSequenceName()
-    {
-<?php if ( 1 ==  count($objTables->getSequences() ) ) : ?>
-    <?php $seqs = $objTables->getSequences();reset($seqs);$seq = current($seqs);?>
-        return "<?=$seq->getSequence() ?>";
-<?php endif ?>
-    }
-<?php endif ?>
-
-
-
-
-
+    /* Codifique aqui */
 }

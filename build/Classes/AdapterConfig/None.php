@@ -41,23 +41,6 @@ class None extends AbstractAdapter
         // TODO: Implement parseFrameworkConfig() method.
     }
 
-    public function createClassNamespace ( $table )
-    {
-        $arrNames = array (
-            $this->arrConfig[ 'namespace' ],
-            'Model'
-        );
-        if ( $table->hasSchema () )
-        {
-            $arrNames[] = AbstractMaker::getClassName ( $table->getSchema () );
-        } else
-        {
-            $arrNames[] = AbstractMaker::getClassName ( $table->getDatabase() );
-        }
-
-        return implode ( '_', array_filter ( $arrNames ) );
-    }
-
     /**
      * Cria Instancias dos arquivos que devem ser gerados
      *

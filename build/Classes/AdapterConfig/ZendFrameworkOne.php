@@ -35,7 +35,7 @@ class ZendFrameworkOne extends AbstractAdapter
      */
     protected function getParams ()
     {
-        if ( ! $this->config or !$this->isValidFrameworkFiles ())
+        if ( ! $this->config or ! $this->isValidFrameworkFiles () )
         {
             return array ();
         }
@@ -59,7 +59,8 @@ class ZendFrameworkOne extends AbstractAdapter
 
     protected function parseFrameworkConfig ()
     {
-        if(!$this->isValidFrameworkFiles ()){
+        if ( ! $this->isValidFrameworkFiles () )
+        {
             return;
         }
 
@@ -77,31 +78,6 @@ class ZendFrameworkOne extends AbstractAdapter
         {
             $this->config = $arrConfig[ 'resources' ][ 'db' ];
         }
-    }
-
-    public function createClassNamespace ( $table )
-    {
-        $arrNames = array (
-            $this->arrConfig[ 'namespace' ] ,
-            'Model'
-        );
-
-        if ( isset( $this->arrConfig['folder-database'] )
-             && $this->arrConfig['folder-database']
-        )
-        {
-            $arrNames[] = AbstractMaker::getClassName ( $this->arrConfig['driver'] );
-        }
-
-        if ( $table->hasSchema () )
-        {
-            $arrNames[] = AbstractMaker::getClassName ( $table->getSchema () );
-        } else
-        {
-            $arrNames[] = AbstractMaker::getClassName ( $table->getDatabase () );
-        }
-
-        return implode ( self::SEPARETOR , array_filter ( $arrNames ) );
     }
 
     /**
