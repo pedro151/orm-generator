@@ -65,8 +65,7 @@ CREATE TABLE bugs_products (
 		REFERENCES bugs(bug_id),
 	FOREIGN KEY (product_id)
 		REFERENCES products(product_id)
-);"
-        );
+);");
     }
 
     /**
@@ -149,7 +148,12 @@ CREATE TABLE bugs_products (
                 };
             }
         }
+    }
 
+    public function testParseConstrant ()
+    {
+        $objAdapterDriver = $this->getDataBaseDrive();
+       var_dump( $objAdapterDriver->getTables() );
     }
 
     /**

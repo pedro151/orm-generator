@@ -12,9 +12,6 @@ class Entity extends AbstractAdapter
     /**
      * @var void
      */
-    public    $pastName      = "";
-    protected $parentClass   = "";
-    protected $parentFileTpl = "";
     protected $fileTpl       = "model.php";
 
     public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )

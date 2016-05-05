@@ -6,11 +6,12 @@
  * Time: 18:56
  */
 
-namespace TestPgsql\TestClasses\AdapterMakerFile\ZendFrameworkOne;
+namespace TestPgsql\TestClasses\AdapterMakerFile\Phalcon;
 
 use Classes\AdapterConfig\Phalcon;
 use Classes\AdaptersDriver\Pgsql;
 use Classes\Db\Column;
+
 
 class ModelTest extends \PHPUnit_Framework_TestCase
 {
@@ -102,10 +103,10 @@ class ModelTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetInstace ()
     {
-        $instance = \Classes\AdapterMakerFile\ZendFrameworkOne\DbTable::getInstance ();
+        $instance = \Classes\AdapterMakerFile\Phalcon\Model::getInstance();
         $this->assertTrue ( $instance instanceof
-                            \Classes\AdapterMakerFile\ZendFrameworkOne\DbTable );
-        $this->assertTrue ( $instance->getPastName () == "" );
+                            \Classes\AdapterMakerFile\Phalcon\Model );
+        $this->assertTrue ( $instance->getPastName () == "entity" );
         $this->assertTrue ( $instance->getFileTpl () == "entity.php" );
     }
 

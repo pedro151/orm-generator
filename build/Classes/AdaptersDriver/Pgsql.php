@@ -151,7 +151,6 @@ class Pgsql extends AbsractAdapter
         )->fetchAll ( \PDO::FETCH_ASSOC );
     }
 
-
     /**
      * Retorna o Nome da Sequence da tabela
      *
@@ -160,7 +159,7 @@ class Pgsql extends AbsractAdapter
      *
      * @return string
      */
-    public function getSequence ( $table , $column )
+    public function getSequence ( $table , $column , $schema = 0 )
     {
         $pdo = $this->getPDO ();
         $return1 = $pdo->query ( "SELECT pg_get_serial_sequence('$table', '$column');" )
@@ -171,8 +170,6 @@ class Pgsql extends AbsractAdapter
             return $return1;
         }
 
-        $dtbase = explode ( '.' , $table );;
-
         $stmt = $pdo->prepare (
             "SELECT adsrc FROM pg_attrdef AS att
             INNER JOIN pg_class AS c
@@ -181,10 +178,8 @@ class Pgsql extends AbsractAdapter
               ON n.oid = c.relnamespace and n.nspname=?"
         );
 
-        $schema = isset( $dtbase[ 1 ] ) ? $dtbase[ 1 ] : 'public';
-
         $stmt->bindParam ( 1 , $schema );
-        $stmt->bindParam ( 2 , $dtbase[ 0 ] );
+        $stmt->bindParam ( 2 , $table );
         $stmt->execute ();
         $return2 = $stmt->fetchColumn ();
         if ( $return2 )
@@ -198,7 +193,6 @@ class Pgsql extends AbsractAdapter
         }
 
     }
-
 
     /**
      * @inheritDoc

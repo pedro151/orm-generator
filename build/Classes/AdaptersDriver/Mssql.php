@@ -85,7 +85,7 @@ class Mssql extends AbsractAdapter
         // TODO: Implement totalTables() method.
     }
 
-    public function getSequence ( $table , $column )
+    public function getSequence ( $table , $column, $schema=0 )
     {
         // TODO: Implement getSequence() method.
     }

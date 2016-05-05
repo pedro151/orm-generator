@@ -129,7 +129,7 @@ class Mysql extends AbsractAdapter
             "SELECT distinct
      i.constraint_type,
      k.constraint_name,
-     --k.table_schema,
+     -- k.table_schema,
      0 AS table_schema,
      k.table_name,
 	 k.column_name,
@@ -171,7 +171,7 @@ order by k.table_schema, k.table_name;"
      *
      * @return string
      */
-    public function getSequence ( $table , $column )
+    public function getSequence ( $table , $column, $schema=0 )
     {
         $return = $this->getPDO ()
                        ->query ( "select * from information_schema.columns where extra like '%auto_increment%' and  TABLE_SCHEMA='{$this->database}' AND TABLE_NAME='{$table}' AND COLUMN_NAME='{$column}';" )

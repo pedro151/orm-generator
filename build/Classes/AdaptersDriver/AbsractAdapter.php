@@ -127,8 +127,9 @@ abstract class AbsractAdapter
                               ->setPrimaryKey ( $objConstrant )
                               ->setSequence (
                                   $this->getSequence (
-                                      $schema . '.' . $table_name ,
-                                      $constrant[ "column_name" ]
+                                      $table_name ,
+                                      $constrant[ "column_name" ],
+                                      $schema
                                   )
                               );
                         break;
@@ -212,7 +213,7 @@ abstract class AbsractAdapter
      *
      * @return string
      */
-    abstract public function getSequence ( $table , $column );
+    abstract public function getSequence ( $table , $column,  $schema=0 );
 
     /**
      * @return array
