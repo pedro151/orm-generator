@@ -64,9 +64,10 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::g
      * @var mixed
      */
 <?php if( $objTables->hasSequences() ) : ?>
-<?php elseif ( 1 ==  count($objTables->getSequences() ) ) : ?>
+<?php if ( 1 ==  count($objTables->getSequences() ) ) : ?>
 <?php $seqs = $objTables->getSequences();reset($seqs);$seq = current($seqs);?>
     protected $_sequence = '<?=$seq->getSequence() ?>';
+<?php endif ?>
 <?php else: ?>
     protected $_sequence = false;
 <?php endif ?>
