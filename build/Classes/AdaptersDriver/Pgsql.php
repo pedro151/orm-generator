@@ -161,27 +161,37 @@ class Pgsql extends AbsractAdapter
      */
     public function getSequence ( $table , $column , $schema = 0 )
     {
+        $tableTemp=$table;
+        if($schema!=0){
+            $tableTemp = $schema.'.'.$table;
+        }
+
         $pdo = $this->getPDO ();
-        $return1 = $pdo->query ( "SELECT pg_get_serial_sequence('$table', '$column');" )
+        $return1 = $pdo->query ( "SELECT pg_get_serial_sequence('$tableTemp', '$column');" )
                        ->fetchColumn ();
 
-        if ( $return1 )
+        if ( !is_null($return1) )
         {
             return $return1;
         }
 
         $stmt = $pdo->prepare (
-            "SELECT adsrc FROM pg_attrdef AS att
+            "SELECT distinct adsrc FROM pg_attrdef AS att
             INNER JOIN pg_class AS c
-              ON adrelid = c.oid AND att.adnum=1 AND c.relname = ?
+              ON adrelid = c.oid AND c.relname = ?
+            INNER JOIN pg_attribute AS a
+              ON att.adnum=a.attnum AND a.attname=?
             INNER JOIN pg_catalog.pg_namespace n
-              ON n.oid = c.relnamespace and n.nspname=?"
+              ON n.oid = c.relnamespace and n.nspname=?
+              "
         );
 
-        $stmt->bindParam ( 1 , $schema );
-        $stmt->bindParam ( 2 , $table );
+        $stmt->bindParam ( 1 , $table );
+        $stmt->bindParam ( 2 , $column );
+        $stmt->bindParam ( 3 , $schema );
         $stmt->execute ();
         $return2 = $stmt->fetchColumn ();
+
         if ( $return2 )
         {
             return preg_filter (
