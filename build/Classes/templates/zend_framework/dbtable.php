@@ -72,8 +72,8 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::g
     protected $_sequence = false;
 <?php endif ?>
 
-<?=$referenceMap?>
+    <?=$referenceMap?>
 
-<?=$dependentTables?>
+    <?=$dependentTables?>
 
 }
