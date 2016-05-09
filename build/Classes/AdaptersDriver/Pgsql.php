@@ -162,7 +162,7 @@ class Pgsql extends AbsractAdapter
     public function getSequence ( $table , $column , $schema = 0 )
     {
         $tableTemp=$table;
-        if($schema!=0){
+        if(0!==$schema){
             $tableTemp = $schema.'.'.$table;
         }
 
@@ -178,11 +178,11 @@ class Pgsql extends AbsractAdapter
         $stmt = $pdo->prepare (
             "SELECT distinct adsrc FROM pg_attrdef AS att
             INNER JOIN pg_class AS c
-              ON adrelid = c.oid AND c.relname = ?
+              ON adrelid = c.oid AND c.relname = ? --table
             INNER JOIN pg_attribute AS a
-              ON att.adnum=a.attnum AND a.attname=?
+              ON att.adnum=a.attnum AND a.attname=? --column
             INNER JOIN pg_catalog.pg_namespace n
-              ON n.oid = c.relnamespace and n.nspname=?
+              ON n.oid = c.relnamespace and n.nspname=? --schema
               "
         );
 

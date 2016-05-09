@@ -34,9 +34,9 @@ class DbTable extends AbstractAdapter
         $references = array ();
         $dependentTables = '';
         $dependents = array ();
-        foreach ( $dbTable->getForeingkeys () as $fk )
+        foreach ( $dbTable->getForeingkeys () as $objColumn )
         {
-            $constrant = $fk->getFks ();
+            $constrant = $objColumn->getFks ();
             $references[] = sprintf (
                 "
        '%s' => array (
@@ -45,7 +45,7 @@ class DbTable extends AbstractAdapter
             'refColumns'    =>'%s'
        )",
                 AbstractMaker::getClassName ( $constrant->getNameConstrant () ),
-                $fk->getName (),
+                $objColumn->getName (),
                 $makerFile->getConfig ()->createClassNamespace ( $constrant )
                 . ZendFrameworkOne::SEPARETOR
                 . 'DbTable'
