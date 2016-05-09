@@ -9,7 +9,7 @@ require_once 'Exception.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151
+ * @link   https://github.com/pedro151/orm-generator
  */
 abstract class AbstractAdapter
 {
@@ -37,8 +37,8 @@ abstract class AbstractAdapter
         // autor que gerou o script
         'author'          => "Pedro" ,
         'license'         => "New BSD License" ,
-        'copyright'       => "DAO Generator-Pedro151" ,
-        'link'            => 'https://github.com/pedro151' ,
+        'copyright'       => "ORM Generator - Pedro151" ,
+        'link'            => 'https://github.com/pedro151/orm-generator' ,
         // data que foi gerado o script
         'last_modify'     => null ,
 

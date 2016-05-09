@@ -6,7 +6,7 @@ require_once 'AbsractAdapter.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link https://github.com/pedro151/ORM-Generator
+ * @link https://github.com/pedro151/orm-generator
  */
 class Mssql extends AbsractAdapter
 {

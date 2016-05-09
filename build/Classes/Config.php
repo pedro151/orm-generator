@@ -23,7 +23,7 @@ require_once 'AdaptersDriver/Sqlsrv.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151/ORM-Generator
+ * @link   https://github.com/pedro151/orm-generator
  */
 class Config
 {
@@ -85,26 +85,26 @@ class Config
      */
     public function getUsage ()
     {
-        $version = static::$version;
+        $version = $this->getVersion();
 
         return <<<EOF
 parameters:
 
-    --init                : Creates the necessary configuration file to start using the ORM-Generator.
+    --init                : Creates the necessary configuration file to start using the orm-generator.
     --config-ini          : reference to another .ini file configuration (relative path).
-    --config-env          : ORM-Generator configuration environment.
+    --config-env          : orm-generator configuration environment.
     --framework           : name framework used, which has the contents of the database configurations and framework template.
     --driver              : database driver name (Ex.: pgsql).
     --database            : database name.
  *  --schema              : database schema name (one or more than one).
     --status              : show status of implementation carried out after completing the process.
-    --version             : shows the version of ORM-Generator.
+    --version             : shows the version of orm-generator.
     --help                : help command explaining all the options and manner of use.
     --path                  specify where to create the files (default is current directory).
 
  example: php generate.php --framework=zf1 --database=foo --table=foobar --status
 
-ORM-Generator By: Pedro Alarcao Version: $version
+$version
 EOF;
     }
 
@@ -112,7 +112,7 @@ EOF;
     {
         $version = static::$version;
 
-        return "ORM-Generator By: Pedro Alarcao Version: $version";
+        return "ORM Generator By: Pedro Alarcao Version: $version\n";
     }
 
     /**

@@ -9,7 +9,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="ORM-Generator Test Suite">
+        <testsuite name="orm-generator Test Suite">
             <directory>./tests/TestMysql</directory>
         </testsuite>
     </testsuites>

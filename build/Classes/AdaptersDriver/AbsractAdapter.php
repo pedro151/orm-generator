@@ -11,7 +11,7 @@ use Classes\Db\DbTable;
  * Adapter com funcoes de analise das consultas
  *
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151/ORM-Generator
+ * @link   https://github.com/pedro151/orm-generator
  */
 abstract class AbsractAdapter
 {
