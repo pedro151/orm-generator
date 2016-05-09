@@ -106,7 +106,7 @@ Support Database
 Framework Class Generator ORM
 -----------------------------
 
-| Frameworks         | Config Name | Generate Classes |
-|--------------------|-------------|------------------|
-|Zend Framework 1.12 | zend_framework |DbTable, Entity, Model  |
-|Phalcon | phalcon | Entity, Model  |
+| Frameworks         |  Config Name   | Version | Generate Classes |
+|--------------------|----------------|:---------:|------------------|
+|Zend Framework | zf1 | 1.12 |  DbTable, Entity, Model  |
+|Phalcon | phalcon | 2.0.10 | Entity, Model  |

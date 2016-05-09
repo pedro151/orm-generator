@@ -102,7 +102,7 @@ parameters:
     --help                : help command explaining all the options and manner of use.
     --path                  specify where to create the files (default is current directory).
 
- example: php generate.php --framework=zend_framework --database=foo --table=foobar --status
+ example: php generate.php --framework=zf1 --database=foo --table=foobar --status
 
 ORM-Generator By: Pedro Alarcao Version: $version
 EOF;
@@ -220,7 +220,7 @@ EOF;
     {
         switch ( strtolower ( $this->argv[ 'framework' ] ) )
         {
-            case 'zend_framework':
+            case 'zf1':
                 return new ZendFrameworkOne( $this->argv );
             case 'phalcon':
                 return new Phalcon( $this->argv );
