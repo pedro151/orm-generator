@@ -4,7 +4,7 @@
 ;
 ; @copyright ORM Generator-Pedro151
 ; @license   The MIT License (MIT)
-; @link      https://github.com/pedro151/ORM-Generator
+; @link      https://github.com/pedro151/orm-generator
 ; @version   <?= $version ?><?= "\n" ?>
 ;=============SETTING ENVIRONMENT OF DEFAULT==================
 

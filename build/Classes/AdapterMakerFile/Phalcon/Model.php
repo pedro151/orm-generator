@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes\AdapterMakerFile\ZendFrameworkOne;
+namespace Classes\AdapterMakerFile\Phalcon;
 use Classes\AdapterMakerFile\AbstractAdapter;
 
 /**
@@ -12,9 +12,6 @@ class Model extends AbstractAdapter
     /**
      * @var void
      */
-    public    $pastName      = "";
-    protected $parentClass   = "";
-    protected $parentFileTpl = "";
     protected $fileTpl       = "model.php";
 
     public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )

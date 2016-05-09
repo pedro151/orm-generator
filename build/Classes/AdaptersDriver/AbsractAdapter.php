@@ -11,7 +11,7 @@ use Classes\Db\DbTable;
  * Adapter com funcoes de analise das consultas
  *
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151/ORM-Generator
+ * @link   https://github.com/pedro151/orm-generator
  */
 abstract class AbsractAdapter
 {
@@ -127,8 +127,9 @@ abstract class AbsractAdapter
                               ->setPrimaryKey ( $objConstrant )
                               ->setSequence (
                                   $this->getSequence (
-                                      $schema . '.' . $table_name ,
-                                      $constrant[ "column_name" ]
+                                      $table_name ,
+                                      $constrant[ "column_name" ],
+                                      $schema
                                   )
                               );
                         break;
@@ -212,7 +213,7 @@ abstract class AbsractAdapter
      *
      * @return string
      */
-    abstract public function getSequence ( $table , $column );
+    abstract public function getSequence ( $table , $column,  $schema=0 );
 
     /**
      * @return array

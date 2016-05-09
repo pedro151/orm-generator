@@ -5,9 +5,7 @@ namespace Classes\AdapterConfig;
 use Classes\AdapterMakerFile\ZendFrameworkOne\DbTable;
 use Classes\AdapterMakerFile\ZendFrameworkOne\Entity;
 use Classes\AdapterMakerFile\ZendFrameworkOne\Model;
-use Classes\Maker\AbstractMaker;
 
-require_once "Classes/Maker/AbstractMaker.php";
 require_once "Classes/AdapterConfig/AbstractAdapter.php";
 require_once "Classes/AdapterMakerFile/ZendFrameworkOne/DbTable.php";
 require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Entity.php";
@@ -15,7 +13,7 @@ require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Model.php";
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151/ORM-Generator
+ * @link   https://github.com/pedro151/orm-generator
  */
 class ZendFrameworkOne extends AbstractAdapter
 {
@@ -35,7 +33,7 @@ class ZendFrameworkOne extends AbstractAdapter
      */
     protected function getParams ()
     {
-        if ( ! $this->config or !$this->isValidFrameworkFiles ())
+        if ( ! $this->config or ! $this->isValidFrameworkFiles () )
         {
             return array ();
         }
@@ -59,7 +57,8 @@ class ZendFrameworkOne extends AbstractAdapter
 
     protected function parseFrameworkConfig ()
     {
-        if(!$this->isValidFrameworkFiles ()){
+        if ( ! $this->isValidFrameworkFiles () )
+        {
             return;
         }
 
@@ -77,31 +76,6 @@ class ZendFrameworkOne extends AbstractAdapter
         {
             $this->config = $arrConfig[ 'resources' ][ 'db' ];
         }
-    }
-
-    public function createClassNamespace ( $table )
-    {
-        $arrNames = array (
-            $this->arrConfig[ 'namespace' ] ,
-            'Model'
-        );
-
-        if ( isset( $this->arrConfig['folder-database'] )
-             && $this->arrConfig['folder-database']
-        )
-        {
-            $arrNames[] = AbstractMaker::getClassName ( $this->arrConfig['driver'] );
-        }
-
-        if ( $table->hasSchema () )
-        {
-            $arrNames[] = AbstractMaker::getClassName ( $table->getSchema () );
-        } else
-        {
-            $arrNames[] = AbstractMaker::getClassName ( $table->getDatabase () );
-        }
-
-        return implode ( self::SEPARETOR , array_filter ( $arrNames ) );
     }
 
     /**

@@ -8,7 +8,7 @@ use Classes\Maker\AbstractMaker;
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151/ORM-Generator
+ * @link   https://github.com/pedro151/orm-generator
  */
 class DbTable extends AbstractAdapter
 {
@@ -34,9 +34,9 @@ class DbTable extends AbstractAdapter
         $references = array ();
         $dependentTables = '';
         $dependents = array ();
-        foreach ( $dbTable->getForeingkeys () as $fk )
+        foreach ( $dbTable->getForeingkeys () as $objColumn )
         {
-            $constrant = $fk->getFks ();
+            $constrant = $objColumn->getFks ();
             $references[] = sprintf (
                 "
        '%s' => array (
@@ -45,7 +45,7 @@ class DbTable extends AbstractAdapter
             'refColumns'    =>'%s'
        )",
                 AbstractMaker::getClassName ( $constrant->getNameConstrant () ),
-                $fk->getName (),
+                $objColumn->getName (),
                 $makerFile->getConfig ()->createClassNamespace ( $constrant )
                 . ZendFrameworkOne::SEPARETOR
                 . 'DbTable'

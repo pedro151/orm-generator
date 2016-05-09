@@ -1,4 +1,4 @@
-# ORM-Generator
+# orm-generator
 
 [![Travis build status](https://api.travis-ci.org/pedro151/orm-generator.svg?branch=master)](https://travis-ci.org/pedro151/orm-generator)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pedro151/orm-generator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pedro151/orm-generator/?branch=master)
@@ -7,7 +7,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/pedro151/orm-generator/v/unstable)](https://packagist.org/packages/pedro151/orm-generator)
 [![License](https://poser.pugx.org/pedro151/orm-generator/license)](https://packagist.org/packages/pedro151/orm-generator)
 
-ORM-Generator maps the entire database and then creates the DAO (Data Access Object) and ORM (Object-relational mapping) of the entire database to facilitate the development.
+ORM Generator maps the entire database and then creates the DAO (Data Access Object) and ORM (Object-relational mapping) of the entire database to facilitate the development.
 
 uses various types of databases like Postgres and Mysql and various types of ORM framework.
 
@@ -57,7 +57,7 @@ framework-path-library = "C:\Apache24\htdocs\project\library"
 PHP Code Generation
 -------------------
 
-Open the prompt in the directory `ORM-Generator` and write:
+Open the prompt in the directory `orm-generator` and write:
 
 ```cmd
 $ php generate.php
@@ -73,15 +73,15 @@ Configurations optionals
 ------------------------
 | Command        | description       |
 |----------------|------------------|
-| --init         | Creates the necessary configuration file to start using the ORM-Generator. |
+| --init         | Creates the necessary configuration file to start using the ORM Generator. |
 | --config-ini   | reference to another .ini file configuration (relative path). |
-| --config-env   | ORM-Generator configuration environment. |
+| --config-env   | ORM Generator configuration environment. |
 | --framework    | name framework used, which has the contents of the database configurations and framework template. |
 | --driver       | database driver name (Ex.: pgsql). |
 | --database     | database name. |
 | --schema       | database schema name (one or more than one). |
 | --status       | show status of implementation carried out after completing the process. |
-| --version      | shows the version of ORM-Generator. |
+| --version      | shows the version of ORM Generator. |
 | --help         | help command explaining all the options and manner of use. |
 | --path         | specify where to create the files (default is current directory). |
 
@@ -91,7 +91,7 @@ Configurations optionals
 in prompt
 
 ```cmd
-$ php generate.php --framework=zend_framework --database=foo --driver=pgsql --status
+$ php generate.php --framework=zf1 --database=foo --driver=pgsql --status
 ```
 
 Support Database 
@@ -106,7 +106,7 @@ Support Database
 Framework Class Generator ORM
 -----------------------------
 
-| Frameworks         | Config Name | Generate Classes |
-|--------------------|-------------|------------------|
-|Zend Framework 1.12 | zend_framework |DbTable, Entity, Model  |
-
+| Frameworks         |  Config Name   | Version | Generate Classes |
+|--------------------|----------------|:---------:|------------------|
+|Zend Framework | zf1 | 1.12 |  DbTable, Entity, Model  |
+|Phalcon | phalcon | 2.0.10 | Entity, Model  |

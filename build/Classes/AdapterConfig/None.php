@@ -15,7 +15,7 @@ require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Model.php";
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151/ORM-Generator
+ * @link   https://github.com/pedro151/orm-generator
  */
 class None extends AbstractAdapter
 {
@@ -39,23 +39,6 @@ class None extends AbstractAdapter
     protected function parseFrameworkConfig ()
     {
         // TODO: Implement parseFrameworkConfig() method.
-    }
-
-    public function createClassNamespace ( $table )
-    {
-        $arrNames = array (
-            $this->arrConfig[ 'namespace' ],
-            'Model'
-        );
-        if ( $table->hasSchema () )
-        {
-            $arrNames[] = AbstractMaker::getClassName ( $table->getSchema () );
-        } else
-        {
-            $arrNames[] = AbstractMaker::getClassName ( $table->getDatabase() );
-        }
-
-        return implode ( '_', array_filter ( $arrNames ) );
     }
 
     /**

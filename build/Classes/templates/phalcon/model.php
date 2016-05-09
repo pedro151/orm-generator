@@ -15,7 +15,7 @@
  * @link      <?=$this->config->link."\n"?>
  */
 
-class <?=$this->getClassName ( $objTables->getName () )?> extends <?=$objTables->getNamespace()?>/Model/<?=$this->getClassName ( $objTables->getName () ). "\n"?>
+class <?=$this->getClassName ( $objTables->getName () )?> extends <?=$objTables->getNamespace()?>\Entity\<?=$this->getClassName ( $objTables->getName () ). "\n"?>
 {
     /* Codifique aqui */
 }

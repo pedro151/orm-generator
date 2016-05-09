@@ -2,10 +2,16 @@
 
 namespace Classes\AdapterConfig;
 
+use Classes\AdapterMakerFile\Phalcon\Entity;
+use Classes\AdapterMakerFile\Phalcon\Model;
+
+require_once "Classes/AdapterConfig/AbstractAdapter.php";
+require_once "Classes/AdapterMakerFile/Phalcon/Entity.php";
+require_once "Classes/AdapterMakerFile/Phalcon/Model.php";
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151/ORM-Generator
+ * @link   https://github.com/pedro151/orm-generator
  */
 class Phalcon extends AbstractAdapter
 {
@@ -15,7 +21,7 @@ class Phalcon extends AbstractAdapter
      */
     protected $framework = "phalcon";
 
-    const SEPARETOR = "_";
+    const SEPARETOR = "\\";
 
     protected function init ()
     {
@@ -36,20 +42,24 @@ class Phalcon extends AbstractAdapter
         // TODO: Implement parseFrameworkConfig() method.
     }
 
-    public function createClassNamespace ( $table )
+    /**
+     * @inheritdoc
+     */
+    protected function getBaseNamespace ()
     {
-        $arrNames = array (
-            $this->arrConfig[ 'namespace' ],
-            'Model'
-        );
-        if ( $table->hasSchema () )
+        if ( ! $this->arrConfig[ 'namespace' ] )
         {
-            $arrNames[] = ucfirst ( $table->getSchema () );
+            return array (
+                'App' ,
+                'Model'
+            );
         }
 
-        return implode ( '_', array_filter ( $arrNames ) );
+        return array (
+            $this->arrConfig[ 'namespace' ] ,
+            'Model'
+        );
     }
-
     /**
      * Cria Instancias dos arquivos que devem ser gerados
      *
@@ -58,6 +68,8 @@ class Phalcon extends AbstractAdapter
     public function getMakeFileInstances ()
     {
         return array (
+            Entity::getInstance () ,
+            Model::getInstance ()
         );
     }
 

@@ -2,11 +2,14 @@
 
 namespace Classes\AdapterConfig;
 
+use Classes\Maker\AbstractMaker;
+
+require_once "Classes/Maker/AbstractMaker.php";
 require_once 'Exception.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151
+ * @link   https://github.com/pedro151/orm-generator
  */
 abstract class AbstractAdapter
 {
@@ -34,8 +37,8 @@ abstract class AbstractAdapter
         // autor que gerou o script
         'author'          => "Pedro" ,
         'license'         => "New BSD License" ,
-        'copyright'       => "DAO Generator-Pedro151" ,
-        'link'            => 'https://github.com/pedro151' ,
+        'copyright'       => "ORM Generator - Pedro151" ,
+        'link'            => 'https://github.com/pedro151/orm-generator' ,
         // data que foi gerado o script
         'last_modify'     => null ,
 
@@ -74,6 +77,8 @@ abstract class AbstractAdapter
 
     private $framworkFiles = array ();
 
+    const SEPARETOR = "";
+
     /**
      * verifica se todos valores obrigatorios tem valor
      *
@@ -104,13 +109,6 @@ abstract class AbstractAdapter
     abstract protected function parseFrameworkConfig ();
 
     /**
-     * @param \Classes\Db\DbTable|\Classes\Db\Constrant $table
-     *
-     * @return mixed
-     */
-    abstract public function createClassNamespace ( $table );
-
-    /**
      * Cria Instancias dos arquivos que devem ser gerados
      *
      * @return \Classes\AdapterMakerFile\AbstractAdapter[]
@@ -118,6 +116,47 @@ abstract class AbstractAdapter
     abstract public function getMakeFileInstances ();
 
     abstract protected function init ();
+
+    /**
+     * retorna a base do Namespace
+     *
+     * @return array
+     */
+    protected function getBaseNamespace ()
+    {
+        return array (
+            $this->arrConfig[ 'namespace' ] ,
+            'Model'
+        );
+    }
+
+    /**
+     * @param \Classes\Db\DbTable|\Classes\Db\Constrant $table
+     *
+     * @return mixed
+     */
+
+    public function createClassNamespace ( $table )
+    {
+        $arrNames = $this->getBaseNamespace ();
+
+        if ( isset( $this->arrConfig[ 'folder-database' ] )
+             && $this->arrConfig[ 'folder-database' ]
+        )
+        {
+            $arrNames[] = AbstractMaker::getClassName ( $this->arrConfig[ 'driver' ] );
+        }
+
+        if ( $table->hasSchema () )
+        {
+            $arrNames[] = AbstractMaker::getClassName ( $table->getSchema () );
+        } else
+        {
+            $arrNames[] = AbstractMaker::getClassName ( $table->getDatabase () );
+        }
+
+        return implode ( static::SEPARETOR , array_filter ( $arrNames ) );
+    }
 
     public function __construct ( $array )
     {

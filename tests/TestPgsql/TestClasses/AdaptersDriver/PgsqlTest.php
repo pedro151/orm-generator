@@ -119,11 +119,11 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals (
             'public.bugs_bug_id_seq' , $this->getDataBaseDrive ()
-                                            ->getSequence ( 'public.bugs' , 'bug_id' )
+                                            ->getSequence ( 'bugs' , 'bug_id', 'public' )
         );
         $this->assertEquals (
             'products_product_id_seq' , $this->getDataBaseDrive ()
-                                             ->getSequence ( 'public.products' , 'product_id' )
+                                             ->getSequence ( 'products' , 'product_id', 'public' )
         );
     }
 

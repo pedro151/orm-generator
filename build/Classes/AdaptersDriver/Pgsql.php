@@ -14,7 +14,7 @@ require_once 'Classes/Db/DbTable.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
- * @link   https://github.com/pedro151/ORM-Generator
+ * @link   https://github.com/pedro151/orm-generator
  */
 class Pgsql extends AbsractAdapter
 {
@@ -151,7 +151,6 @@ class Pgsql extends AbsractAdapter
         )->fetchAll ( \PDO::FETCH_ASSOC );
     }
 
-
     /**
      * Retorna o Nome da Sequence da tabela
      *
@@ -160,33 +159,39 @@ class Pgsql extends AbsractAdapter
      *
      * @return string
      */
-    public function getSequence ( $table , $column )
+    public function getSequence ( $table , $column , $schema = 0 )
     {
+        $tableTemp=$table;
+        if(0!==$schema){
+            $tableTemp = $schema.'.'.$table;
+        }
+
         $pdo = $this->getPDO ();
-        $return1 = $pdo->query ( "SELECT pg_get_serial_sequence('$table', '$column');" )
+        $return1 = $pdo->query ( "SELECT pg_get_serial_sequence('$tableTemp', '$column');" )
                        ->fetchColumn ();
 
-        if ( $return1 )
+        if ( !is_null($return1) )
         {
             return $return1;
         }
 
-        $dtbase = explode ( '.' , $table );;
-
         $stmt = $pdo->prepare (
-            "SELECT adsrc FROM pg_attrdef AS att
+            "SELECT distinct adsrc FROM pg_attrdef AS att
             INNER JOIN pg_class AS c
-              ON adrelid = c.oid AND att.adnum=1 AND c.relname = ?
+              ON adrelid = c.oid AND c.relname = ? --table
+            INNER JOIN pg_attribute AS a
+              ON att.adnum=a.attnum AND a.attname=? --column
             INNER JOIN pg_catalog.pg_namespace n
-              ON n.oid = c.relnamespace and n.nspname=?"
+              ON n.oid = c.relnamespace and n.nspname=? --schema
+              "
         );
 
-        $schema = isset( $dtbase[ 1 ] ) ? $dtbase[ 1 ] : 'public';
-
-        $stmt->bindParam ( 1 , $schema );
-        $stmt->bindParam ( 2 , $dtbase[ 0 ] );
+        $stmt->bindParam ( 1 , $table );
+        $stmt->bindParam ( 2 , $column );
+        $stmt->bindParam ( 3 , $schema );
         $stmt->execute ();
         $return2 = $stmt->fetchColumn ();
+
         if ( $return2 )
         {
             return preg_filter (
@@ -198,7 +203,6 @@ class Pgsql extends AbsractAdapter
         }
 
     }
-
 
     /**
      * @inheritDoc
