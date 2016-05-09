@@ -91,7 +91,7 @@ Configurations optionals
 in prompt
 
 ```cmd
-$ php generate.php --framework=zend_framework --database=foo --driver=pgsql --status
+$ php generate.php --framework=zf1 --database=foo --driver=pgsql --status
 ```
 
 Support Database 
