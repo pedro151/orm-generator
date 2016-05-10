@@ -50,7 +50,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         $names = array (
             'DbTable' ,
             'Entity' ,
-            ''
+            NULL
         );
 
         $maker = new MakerFile(
@@ -66,9 +66,10 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         );
 
         $factoryFile = $maker->factoryMakerFile ();
-        $this->assertTrue ( $factoryFile[0]->getPastName () == $names[ 0 ] );
-        $this->assertTrue ( $factoryFile[1]->getPastName () == $names[ 1 ] );
-        $this->assertTrue ( $factoryFile[2]->getPastName () == $names[ 2 ] );
+        var_dump($factoryFile);
+        $this->assertTrue ( $factoryFile[0]->getPastName () === $names[ 0 ] );
+        $this->assertTrue ( $factoryFile[1]->getPastName () === $names[ 1 ] );
+        $this->assertTrue ( $factoryFile[2]->getPastName () === $names[ 2 ] );
     }
 
     public function testLocationDatabaseTrue ()
