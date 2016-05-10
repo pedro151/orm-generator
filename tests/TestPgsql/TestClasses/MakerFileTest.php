@@ -50,26 +50,26 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         $names = array (
             'DbTable' ,
             'Entity' ,
-            NULL
+            null
         );
 
         $maker = new MakerFile(
             new Config(
                 array (
-                    'schema' => array (
+                    'schema'    => array (
                         'public' ,
                         'quiz'
-                    )
+                    ) ,
+                    'framework' => 'zf1'
                 ) ,
                 $this->basePath
             )
         );
 
         $factoryFile = $maker->factoryMakerFile ();
-        var_dump($factoryFile);
-        $this->assertTrue ( $factoryFile[0]->getPastName () === $names[ 0 ] );
-        $this->assertTrue ( $factoryFile[1]->getPastName () === $names[ 1 ] );
-        $this->assertTrue ( $factoryFile[2]->getPastName () === $names[ 2 ] );
+        $this->assertTrue ( $factoryFile[ 0 ]->getPastName () === $names[ 0 ] );
+        $this->assertTrue ( $factoryFile[ 1 ]->getPastName () === $names[ 1 ] );
+        $this->assertTrue ( $factoryFile[ 2 ]->getPastName () === $names[ 2 ] );
     }
 
     public function testLocationDatabaseTrue ()
@@ -79,6 +79,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                 array (
                     'folder-database' => true ,
                     'driver'          => 'pgsql' ,
+                    'framework'       => 'zf1' ,
                     'schema'          => array (
                         'public' ,
                         'quiz' ,
@@ -111,6 +112,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                 array (
                     'folder-database' => false ,
                     'driver'          => 'pgsql' ,
+                    'framework'       => 'zf1' ,
                     'schema'          => array (
                         'public' ,
                         'quiz' ,
@@ -128,7 +130,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         foreach ( $maker->location as $index => $item )
         {
             $arrBaseFinal = $arrBase;
-            $arrBaseFinal[] = MakerFile::getClassName( $index );
+            $arrBaseFinal[] = MakerFile::getClassName ( $index );
             $location = implode ( DIRECTORY_SEPARATOR , array_filter ( $arrBaseFinal ) );
             $this->assertTrue ( $item == $location );
             unset( $arrBaseFinal );
@@ -141,7 +143,8 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
             new Config(
                 array (
                     'folder-database' => false ,
-                    'database'  => $GLOBALS[ 'dbname' ],
+                    'database'        => $GLOBALS[ 'dbname' ] ,
+                    'framework'       => 'zf1' ,
                     'driver'          => 'pgsql' ,
                     'schema'          => array ()
                 ) ,
@@ -150,11 +153,11 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
         );
 
 
-        $db = MakerFile::getClassName( $maker->getConfig()->getDatabase());
+        $db = MakerFile::getClassName ( $maker->getConfig ()->getDatabase () );
 
         $arrBase = array (
             $this->basePath ,
-            'models',
+            'models' ,
             $db
         );
 
