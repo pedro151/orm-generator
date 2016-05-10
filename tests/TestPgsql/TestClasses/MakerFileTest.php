@@ -64,10 +64,11 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                 $this->basePath
             )
         );
-        foreach ( $maker->factoryMakerFile () as $key => $obj )
-        {
-            $this->assertTrue ( $obj->getPastName () == $names[ $key ] );
-        }
+
+        $factoryFile = $maker->factoryMakerFile ();
+        $this->assertTrue ( $factoryFile[0]->getPastName () == $names[ 0 ] );
+        $this->assertTrue ( $factoryFile[1]->getPastName () == $names[ 1 ] );
+        $this->assertTrue ( $factoryFile[2]->getPastName () == $names[ 2 ] );
     }
 
     public function testLocationDatabaseTrue ()
