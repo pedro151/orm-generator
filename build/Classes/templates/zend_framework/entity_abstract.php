@@ -295,7 +295,7 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
     }
 
     /**
-    * @see Zend_Db_Adapter::fetchAll
+    * @see Zend_Db_Adapter_Abstract::fetchAll
     */
     public static function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
     {
