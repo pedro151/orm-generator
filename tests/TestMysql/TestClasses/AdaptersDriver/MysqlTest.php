@@ -153,7 +153,6 @@ CREATE TABLE bugs_products (
     public function testParseConstrant ()
     {
         $objAdapterDriver = $this->getDataBaseDrive();
-       var_dump( $objAdapterDriver->getTables() );
     }
 
     /**

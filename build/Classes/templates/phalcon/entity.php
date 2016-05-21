@@ -49,7 +49,8 @@ if ( $column->getMaxLength () ): ?>
     public function initialize()
     {
         parent::initialize();
-        //$this->hasMany('id', '<?=$objTables->getNamespace()?><?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>', 'robots_id');
+        <?=$mapParents."\n"?>
+        <?=$mapDependents."\n"?>
     }
 
 <?php if( $objTables->hasSequences() ) : ?>
