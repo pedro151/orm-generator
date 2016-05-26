@@ -111,7 +111,7 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
         if (preg_match('/^find(One)?By(\w+)?$/', $method, $matches)) {
             $name =  get_called_class();
             $InstanceObject = new $name();
-            $methods = get_class_methods($this);
+            $methods = get_class_methods($InstanceObject);
             $check = 'set' . $matches[2];
 
             $fieldName = $InstanceObject->varNameToColumn($matches[2]);
