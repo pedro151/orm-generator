@@ -62,6 +62,7 @@ class Constrant
             $this->schema = $array[ 'schema' ];
         }
 
+        $this->database = $array[ 'database' ];
         $this->constrant = $array[ 'constrant' ];
         $this->table = $array[ 'table' ];
         $this->column = $array[ 'column' ];
@@ -69,7 +70,9 @@ class Constrant
         return $this;
     }
 
-    public function getDatabase (){ }
+    public function getDatabase (){
+        return $this->database;
+    }
 
     /**
      * @return string

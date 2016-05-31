@@ -59,11 +59,14 @@ class Entity extends AbstractAdapter
                 . ZendFrameworkOne::SEPARETOR
                 . $objColumn->getName ();
 
+            $arrClass = array (
+                $makerFile->getConfig ()->createClassNamespace ( $constrant ),
+                AbstractMaker::getClassName ( $constrant->getTable () )
+            );
+            $class = implode ( ZendFrameworkOne::SEPARETOR , array_filter ( $arrClass ) );
+
             $parents[] = array (
-                'class'    => $makerFile->getConfig ()
-                                        ->createClassNamespace ( $constrant )
-                              . ZendFrameworkOne::SEPARETOR
-                              . AbstractMaker::getClassName ( $constrant->getTable () ) ,
+                'class'    => $class ,
                 'function' => AbstractMaker::getClassName ( $name ) ,
                 'table'    => $constrant->getTable () ,
                 'column'   => $objColumn->getName () ,
@@ -99,12 +102,15 @@ class Entity extends AbstractAdapter
 
                 if ( ! key_exists ( $name , $this->validFunc ) )
                 {
+                    $arrClass = array (
+                        $makerFile->getConfig ()->createClassNamespace ( $dependence ),
+                        AbstractMaker::getClassName ( $dependence->getTable () )
+                    );
+                    $class = implode ( ZendFrameworkOne::SEPARETOR , array_filter ( $arrClass ) );
+
                     $this->validFunc[ $name ] = true;
                     $depends[] = array (
-                        'class'    => $makerFile->getConfig ()
-                                                ->createClassNamespace ( $dependence )
-                                      . ZendFrameworkOne::SEPARETOR
-                                      . AbstractMaker::getClassName ( $dependence->getTable () ) ,
+                        'class'    =>  $class,
                         'function' => AbstractMaker::getClassName ( $name ) ,
                         'table'    => $dependence->getTable () ,
                         'column'   => $dependence->getColumn () ,

@@ -37,6 +37,14 @@ class DbTable extends AbstractAdapter
         foreach ( $dbTable->getForeingkeys () as $objColumn )
         {
             $constrant = $objColumn->getFks ();
+
+            $arrClass = array (
+                $makerFile->getConfig ()->createClassNamespace ( $constrant ),
+                'DbTable',
+                AbstractMaker::getClassName ( $constrant->getTable () )
+            );
+            $class = implode ( ZendFrameworkOne::SEPARETOR , array_filter ( $arrClass ) );
+
             $references[] = sprintf (
                 "
        '%s' => array (
@@ -46,11 +54,7 @@ class DbTable extends AbstractAdapter
        )",
                 AbstractMaker::getClassName ( $constrant->getNameConstrant () ),
                 $objColumn->getName (),
-                $makerFile->getConfig ()->createClassNamespace ( $constrant )
-                . ZendFrameworkOne::SEPARETOR
-                . 'DbTable'
-                . ZendFrameworkOne::SEPARETOR
-                . AbstractMaker::getClassName ( $constrant->getTable () ),
+                $class,
                 $constrant->getColumn ()
 
             );
@@ -66,11 +70,14 @@ class DbTable extends AbstractAdapter
         {
             foreach ( $objColumn->getDependences () as $dependence )
             {
-                $dependents[] = $makerFile->getConfig ()->createClassNamespace ( $dependence )
-                    . ZendFrameworkOne::SEPARETOR
-                    . 'DbTable'
-                    . ZendFrameworkOne::SEPARETOR
-                    . AbstractMaker::getClassName ( $dependence->getTable () );
+                $arrClass = array (
+                    $makerFile->getConfig ()->createClassNamespace ( $dependence ),
+                    'DbTable',
+                    AbstractMaker::getClassName ( $dependence->getTable () )
+                );
+                $class = implode ( ZendFrameworkOne::SEPARETOR , array_filter ( $arrClass ) );
+
+                $dependents[] = $class;
             }
         }
 
