@@ -73,12 +73,13 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
     }
 
     /**
+    * @param array $data
     * @return <?=$this->config->namespace?>Model_EntityAbstract
     */
-    public static function getIntance()
+    public static function getIntance($data = array())
     {
         $name =  get_called_class();
-        return new $name();
+        return new $name( $data );
     }
 
     /**
