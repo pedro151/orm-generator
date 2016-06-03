@@ -72,6 +72,14 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
         return null;
     }
 
+    /**
+    * @return <?=$this->config->namespace?>Model_EntityAbstract
+    */
+    public static function getIntance()
+    {
+        $name =  get_called_class();
+        return new $name();
+    }
 
     /**
      * Filtra o nome das colunas para gerar os getters/setters
@@ -109,8 +117,7 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
         $result = null;
 
         if (preg_match('/^find(One)?By(\w+)?$/', $method, $matches)) {
-            $name =  get_called_class();
-            $InstanceObject = new $name();
+            $InstanceObject = self::getIntance();
             $methods = get_class_methods($InstanceObject);
             $check = 'set' . $matches[2];
 
@@ -247,9 +254,7 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
     */
     public static function find ( $primary_key )
     {
-        $name =  get_called_class();
-        $InstanceObject = new $name();
-        return  $InstanceObject->getTable()->find($primary_key)->current();
+        return  self::getIntance()->getTable()->find($primary_key)->current();
     }
 
 	/**
@@ -296,9 +301,7 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
     */
     public static function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
     {
-        $name =  get_called_class();
-        $InstanceObject = new $name();
-        return $InstanceObject->getTable()->fetchAll ( $where , $order , $count , $offset );
+        return self::getIntance()->getTable()->fetchAll ( $where , $order , $count , $offset );
     }
 
     /**
