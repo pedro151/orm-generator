@@ -201,13 +201,14 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
 			throw new Zend_Db_Table_Row_Exception("Specified column \"{$name}\" is not in the row");
         }
 
-        if ( isset( $this->_data[ $name ] ) )
-        {
-            return $this->_data[$name];
+        if ( in_array ( $name, $this->getTable ()->info ( 'cols' ) ) ) {
+            return isset( $this->_data[ $name ] ) ? $this->_data[ $name ] : null;
         }
-        else
-        {
+        elseif ( method_exists ( $this, $method ) ) {
             return $this->$method();
+        }
+        else {
+            return null;
         }
     }
 
