@@ -39,6 +39,15 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
     */
     protected $_tableClass = '<?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>';
 
+/**
+* @see <?=$this->config->namespace?>Model_EntityAbstract::$_columnsList
+*/
+    protected $_columnsList = array(
+<?php foreach ($objTables->getColumns() as $column): ?>
+        self::<?=strtoupper($column->getName())?> => '<?=strtolower(\Classes\Maker\AbstractMaker::getClassName($column->getName()))?>',
+<?php endforeach;?>
+    );
+
     /**
      * @see <?=$this->config->namespace?>Model_EntityAbstract::$_filters
      */
