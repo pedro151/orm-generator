@@ -57,6 +57,21 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::g
 <?php endforeach; ?>
     );
 <?php endif ?>
+<?php if($this->config->{'folder-name'}):?>
+    /**
+    * Initialize database adapter.
+    *
+    * @return void
+    * @see Zend_Db_Table_Abstract::_setupDatabaseAdapter
+    * @throws Zend_Db_Table_Exception
+    * @throws Zend_Exception
+    */
+    protected function _setupDatabaseAdapter()
+    {
+        $this->_db = Zend_Registry::get( '<?=($this->config->{'folder-name'})?>');
+        parent::_setupDatabaseAdapter();
+    }
+<?php endif ?>
 <?php if( $objTables->hasSequences() ) : ?>
 
 	/**
@@ -65,7 +80,6 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::g
      *
      * @var mixed
      */
-
 <?php if ( 1 ==  count($objTables->getSequences() ) ) : ?>
 <?php if(strpos($this->config->driver, 'pgsql')): ?>
 <?php $seqs = $objTables->getSequences();reset($seqs);$seq = current($seqs);?>
