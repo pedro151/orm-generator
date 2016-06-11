@@ -64,6 +64,11 @@ class MakerFile extends AbstractMaker
             $classDriver = explode ( '\\' , get_class ( $this->driver ) );
             $driverBase = end ( $classDriver );
         }
+        $folderName = '';
+        if ( $this->config->{"folder-name"} )
+        {
+            $folderName = $this->getClassName ( trim ( $this->config->{"folder-name"} ) );
+        }
 
         if ( $this->config->hasSchemas () )
         {
@@ -72,8 +77,9 @@ class MakerFile extends AbstractMaker
             foreach ( $schemas as $schema )
             {
                 $arrUrl = array (
-                    $this->baseLocation ,
-                    $driverBase ,
+                    $this->baseLocation,
+                    $driverBase,
+                    $folderName,
                     $this->getClassName ( $schema )
                 );
 
@@ -88,6 +94,7 @@ class MakerFile extends AbstractMaker
                 DIRECTORY_SEPARATOR , array_filter ( array (
                         $this->baseLocation ,
                         $driverBase ,
+                        $folderName ,
                         $this->getClassName ( $this->getConfig ()->getDatabase () )
                     )
                 )

@@ -85,7 +85,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $param1 = array (
             'main'    => array (
-                "framework"  => "zend_framework" ,
+                "framework"  => "zf1" ,
                 "database"   => "main" ,
                 "config-env" => "config2"
             ) ,
@@ -102,7 +102,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $expectedConfig1 = array (
             "extends"    => "main" ,
-            "framework"  => "zend_framework" ,
+            "framework"  => "zf1" ,
             "config-env" => "config2" ,
             "database"   => "config1"
         );
@@ -111,7 +111,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $expectedConfig2 = array (
             "extends"    => "main" ,
-            "framework"  => "zend_framework" ,
+            "framework"  => "zf1" ,
             "config-env" => "config2" ,
             "database"   => "config2"
         );
