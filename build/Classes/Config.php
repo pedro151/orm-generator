@@ -65,7 +65,7 @@ class Config
     private $adapterDriver;
 
     private $frameworkList  = array (
-            'zf1', 'phalcon'
+           'none', 'zf1', 'phalcon'
         );
 
     public function __construct ( $argv, $basePath )

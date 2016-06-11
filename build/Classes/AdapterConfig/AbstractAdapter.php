@@ -51,7 +51,9 @@ abstract class AbstractAdapter
         // caminho onde os arquivos devem ser criados
         'path'            => 'models' ,
         // flag para gerar pasta com o nome do driver do banco de dados
-        'folder-database' => 0 ,
+        'folder-database' => 0,
+        // string com o nome da pastar personalizada
+        'folder-name' => '',
 
         ############################## Comandos adicionais
         //flag para mostrar o status da execução ao termino do processo
