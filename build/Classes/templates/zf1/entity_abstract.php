@@ -24,18 +24,18 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
     * @access protected
     */
     protected $_tableClass;
-        
+
     /**
      * Cria os Filtros para inserir  dados nos sets
-     * 
+     *
      * @var array
      * @access protected
      */
     protected $_filters=array();
-    
+
     /**
      * Cria as validações para inserir dados nos sets
-     * 
+     *
      * @var array
      * @access protected
      */
@@ -72,6 +72,15 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
         return null;
     }
 
+    /**
+    * @param array $data
+    * @return <?=$this->config->namespace?>Model_EntityAbstract
+    */
+    public static function getIntance($data = array())
+    {
+        $name =  get_called_class();
+        return new $name( $data );
+    }
 
     /**
      * Filtra o nome das colunas para gerar os getters/setters
@@ -103,16 +112,17 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
      * @throws Exception se o metodo nao existir
      * @param array $args
      */
-    public function __call($method, array $args)
+    public static function __callStatic($method, array $args)
     {
         $matches = array();
         $result = null;
 
         if (preg_match('/^find(One)?By(\w+)?$/', $method, $matches)) {
-            $methods = get_class_methods($this);
+            $InstanceObject = self::getIntance();
+            $methods = get_class_methods($InstanceObject);
             $check = 'set' . $matches[2];
 
-            $fieldName = $this->varNameToColumn($matches[2]);
+            $fieldName = $InstanceObject->varNameToColumn($matches[2]);
 
             if (! in_array($check, $methods)) {
                 throw new Exception(
@@ -121,13 +131,13 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
             }
 
             if ($matches[1] != '') {
-                $dados = $this->getTable()->fetchRow(array($fieldName.'=?'=> $args[0]));
+                $dados = $InstanceObject->getTable()->fetchRow(array($fieldName.'=?'=> $args[0]));
                 if(!empty($dados)){
-                    $this->_data = $dados->toArray();
+                    $InstanceObject->_data = $dados->toArray();
                 }
-                $result = $this;
+                $result = $InstanceObject;
             } else {
-                $result = $this->getTable()->fetchAll(array($fieldName.'=?'=> $args[0]));
+                $result = $InstanceObject->getTable()->fetchAll(array($fieldName.'=?'=> $args[0]));
             }
 
             return $result;
@@ -191,13 +201,14 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
 			throw new Zend_Db_Table_Row_Exception("Specified column \"{$name}\" is not in the row");
         }
 
-        if ( isset( $this->_data[ $name ] ) )
-        {
-            return $this->_data[$name];
+        if ( in_array ( $name, $this->getTable ()->info ( 'cols' ) ) ) {
+            return isset( $this->_data[ $name ] ) ? $this->_data[ $name ] : null;
         }
-        else
-        {
+        elseif ( method_exists ( $this, $method ) ) {
             return $this->$method();
+        }
+        else {
+            return null;
         }
     }
 
@@ -238,33 +249,26 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
     }
 
     /**
-     * Retorna o objeto pela primary key
-     *
-     * @param int|array $primary_key
-     * @return <?=$this->config->namespace?>Model__ModelAbstract
-     */
-
-      /**
-       * Retorna o objeto pela primary key
-       *
-       * @param int|array $primary_key
-       * @return <?=$this->config->namespace?>Model_EntityAbstract
-       */
-      public function find ( $primary_key )
-      {
-        return  $this->getTable()->find($primary_key)->current();
-      }
+    * Retorna o objeto pela primary key
+    *
+    * @param int|array $primary_key
+    * @return <?=$this->config->namespace?>Model_EntityAbstract
+    */
+    public static function find ( $primary_key )
+    {
+        return  self::getIntance()->getTable()->find($primary_key)->current();
+    }
 
 	/**
 	 * insere os dados independente se possui primary key ou nao
-	 * 
+	 *
 	 * @return int primary key
 	 */
 	public function insert()
     {
        return $this->_doInsert();
     }
-	
+
 	public function update ()
 	{
 		$this->_cleanData = $this->_data;
@@ -288,20 +292,18 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
         if (!in_array(false, $result)) {
             $this->_cleanData = $this->_data;
         }
-        
+
         if(count($this->_modifiedFields) > 0 ){
 			return parent::save ();
 		}
     }
 
     /**
-    * @see Zend_Db_Adapter::fetchAll
+    * @see Zend_Db_Table_Rowset_Abstract::fetchAll
     */
     public static function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
     {
-        $name =  get_called_class();
-        $InstanceObject = new $name();
-        return $InstanceObject->getTable()->fetchAll ( $where , $order , $count , $offset );
+        return self::getIntance()->getTable()->fetchAll ( $where , $order , $count , $offset );
     }
 
     /**

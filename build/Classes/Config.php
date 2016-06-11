@@ -64,18 +64,20 @@ class Config
      */
     private $adapterDriver;
 
-    public function __construct ( $argv , $basePath )
+    private $frameworkList  = array (
+            'zf1', 'phalcon'
+        );
+
+    public function __construct ( $argv, $basePath )
     {
-        if ( array_key_exists ( 'help' , $argv ) )
-        {
+        if ( array_key_exists ( 'help', $argv ) ) {
             die ( $this->getUsage () );
         }
-        if ( array_key_exists ( 'status' , $argv ) )
-        {
+        if ( array_key_exists ( 'status', $argv ) ) {
             $argv[ 'status' ] = true;
         }
 
-        $this->argv = $this->parseConfig ( $basePath , $argv );
+        $this->argv = $this->parseConfig ( $basePath, $argv );
     }
 
     /**
@@ -85,7 +87,7 @@ class Config
      */
     public function getUsage ()
     {
-        $version = $this->getVersion();
+        $version = $this->getVersion ();
 
         return <<<EOF
 parameters:
@@ -119,24 +121,28 @@ EOF;
      * Analisa e estrutura a Configuracao do generate
      *
      * @param  string $basePath
-     * @param array   $argv
+     * @param array $argv
      *
      * @return array
      * @throws \Exception
      */
-    private function parseConfig ( $basePath , $argv )
+    private function parseConfig ( $basePath, $argv )
     {
         $this->_basePath = dirname ( $basePath );
 
         $configIni = isset( $argv[ 'config-ini' ] ) ? $argv[ 'config-ini' ]
             : $this->_basePath . $this->configIniDefault;
 
-        $configTemp = $this->loadIniFile ( realpath ( $configIni ) );
-        $configCurrent = self::parseConfigEnv ( $configTemp , $argv );
+        $configTemp    = $this->loadIniFile ( realpath ( $configIni ) );
+        $configCurrent = self::parseConfigEnv ( $configTemp, $argv );
 
-        if ( ! isset( $configCurrent[ 'framework' ] ) )
-        {
+        if ( !isset( $configCurrent[ 'framework' ] ) ) {
             throw new \Exception( "configure which framework you want to use! \n" );
+        }
+
+        if ( !in_array ( $configCurrent[ 'framework' ], $this->frameworkList ) ) {
+            $frameworks = implode("\n\t", $this->frameworkList);
+            throw new \Exception( "list of frameworks: \n".$frameworks."\n" );
         }
 
         return $argv + array_filter ( $configCurrent );
@@ -149,7 +155,7 @@ EOF;
      *
      * @return string
      */
-    private static function parseConfigEnv ( $configTemp , $argv )
+    private static function parseConfigEnv ( $configTemp, $argv )
     {
         $thisSection = isset( $configTemp[ key ( $configTemp ) ][ 'config-env' ] ) ?
             $configTemp[ key ( $configTemp ) ][ 'config-env' ] : null;
@@ -157,8 +163,7 @@ EOF;
         $thisSection = isset( $argv[ 'config-env' ] ) ? $argv[ 'config-env' ]
             : $thisSection;
 
-        if ( isset( $configTemp[ $thisSection ][ 'extends' ] ) )
-        {
+        if ( isset( $configTemp[ $thisSection ][ 'extends' ] ) ) {
             #faz marge da config principal com a config extendida
             return $configTemp[ $thisSection ]
                    + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
@@ -180,26 +185,23 @@ EOF;
      */
     protected function loadIniFile ( $filename )
     {
-        if ( ! is_file ( $filename ) )
-        {
+        if ( !is_file ( $filename ) ) {
             throw new \Exception( "configuration file does not exist! \n" );
         }
 
-        $loaded = parse_ini_file ( $filename , true );
+        $loaded   = parse_ini_file ( $filename, true );
         $iniArray = array ();
-        foreach ( $loaded as $key => $data )
-        {
-            $pieces = explode ( $this->sectionSeparator , $key );
+        foreach ( $loaded as $key => $data ) {
+            $pieces      = explode ( $this->sectionSeparator, $key );
             $thisSection = trim ( $pieces[ 0 ] );
-            switch ( count ( $pieces ) )
-            {
+            switch ( count ( $pieces ) ) {
                 case 1:
                     $iniArray[ $thisSection ] = $data;
                     break;
 
                 case 2:
-                    $extendedSection = trim ( $pieces[ 1 ] );
-                    $iniArray[ $thisSection ] = array_merge ( array ( 'extends' => $extendedSection ) , $data );
+                    $extendedSection          = trim ( $pieces[ 1 ] );
+                    $iniArray[ $thisSection ] = array_merge ( array ( 'extends' => $extendedSection ), $data );
                     break;
 
                 default:
@@ -218,8 +220,7 @@ EOF;
      */
     private function factoryConfig ()
     {
-        switch ( strtolower ( $this->argv[ 'framework' ] ) )
-        {
+        switch ( strtolower ( $this->argv[ 'framework' ] ) ) {
             case 'zf1':
                 return new ZendFrameworkOne( $this->argv );
             case 'phalcon':
@@ -237,8 +238,7 @@ EOF;
      */
     private function factoryDriver ()
     {
-        switch ( $this->argv[ 'driver' ] )
-        {
+        switch ( $this->argv[ 'driver' ] ) {
             case 'pgsql':
             case 'pdo_pgsql':
                 return new Pgsql( $this->getAdapterConfig () );
@@ -259,8 +259,7 @@ EOF;
      */
     public function getAdapterConfig ()
     {
-        if ( ! $this->adapterConfig instanceof AbstractAdapter )
-        {
+        if ( !$this->adapterConfig instanceof AbstractAdapter ) {
             $this->adapterConfig = $this->factoryConfig ();
         }
 
@@ -272,8 +271,7 @@ EOF;
      */
     public function getAdapterDriver ()
     {
-        if ( ! $this->adapterDriver )
-        {
+        if ( !$this->adapterDriver ) {
             $this->adapterDriver = $this->factoryDriver ();
         }
 

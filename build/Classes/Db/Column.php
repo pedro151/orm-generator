@@ -175,7 +175,7 @@ class Column
      *
      * @return $this
      */
-    public function createDependece ( $constraint_name , $table_name , $column_name , $schema = null )
+    public function createDependece ( $constraint_name , $table_name , $column_name ,$database, $schema = null )
     {
         $objConstrantDependence = Constrant::getInstance ()
                                            ->populate (
@@ -183,7 +183,8 @@ class Column
                                                    'constrant' => $constraint_name ,
                                                    'schema'    => $schema ,
                                                    'table'     => $table_name ,
-                                                   'column'    => $column_name
+                                                   'column'    => $column_name,
+                                                   'database'  => $database
                                                )
                                            );
 

@@ -33,6 +33,8 @@ status = false
 path = ""
 ;folder with the database driver name
 folder-database = 0
+;folder with the name
+folder-name=''
 ;.ini file the framework configuration
 framework-ini = ""
 ;the path to the directory of the framework library

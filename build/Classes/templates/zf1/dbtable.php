@@ -57,16 +57,22 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::g
 <?php endforeach; ?>
     );
 <?php endif ?>
+<?php if( $objTables->hasSequences() ) : ?>
+
 	/**
      * Definir a lógica para os novos valores na chave primária.
      * Pode ser uma string, boolean true ou false booleano.
      *
      * @var mixed
      */
-<?php if( $objTables->hasSequences() ) : ?>
+
 <?php if ( 1 ==  count($objTables->getSequences() ) ) : ?>
+<?php if(strpos($this->config->driver, 'pgsql')): ?>
 <?php $seqs = $objTables->getSequences();reset($seqs);$seq = current($seqs);?>
     protected $_sequence = '<?=$seq->getSequence() ?>';
+<?php else: ?>
+    protected $_sequence = true;
+<?php endif ?>
 <?php endif ?>
 <?php else: ?>
     protected $_sequence = false;

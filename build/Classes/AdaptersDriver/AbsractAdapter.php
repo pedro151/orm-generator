@@ -112,7 +112,8 @@ abstract class AbsractAdapter
                                                  'constrant' => $constrant[ 'constraint_name' ] ,
                                                  'schema'    => $constrant[ 'foreign_schema' ] ,
                                                  'table'     => $constrant[ 'foreign_table' ] ,
-                                                 'column'    => $constrant[ 'foreign_column' ]
+                                                 'column'    => $constrant[ 'foreign_column' ],
+                                                 'database'  => $this->database
                                              )
                                          );
 
@@ -155,6 +156,7 @@ abstract class AbsractAdapter
                           $constrant[ 'constraint_name' ] ,
                           $constrant[ 'table_name' ] ,
                           $constrant[ 'column_name' ] ,
+                          $this->database,
                           $constrant[ 'table_schema' ]
                       );
             }

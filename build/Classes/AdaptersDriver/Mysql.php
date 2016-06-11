@@ -133,7 +133,8 @@ class Mysql extends AbsractAdapter
      0 AS table_schema,
      k.table_name,
 	 k.column_name,
-     k.REFERENCED_TABLE_SCHEMA AS foreign_schema,
+     -- k.REFERENCED_TABLE_SCHEMA AS foreign_schema,
+     0 AS foreign_schema,
 	 k.REFERENCED_TABLE_NAME AS foreign_table,
 	 k.REFERENCED_COLUMN_NAME AS foreign_column
 FROM information_schema.TABLE_CONSTRAINTS as i

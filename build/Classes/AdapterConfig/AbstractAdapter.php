@@ -147,6 +147,13 @@ abstract class AbstractAdapter
             $arrNames[] = AbstractMaker::getClassName ( $this->arrConfig[ 'driver' ] );
         }
 
+        if ( isset( $this->arrConfig[ 'folder-name' ] )
+             && $this->arrConfig[ 'folder-name' ]
+        )
+        {
+            $arrNames[] = AbstractMaker::getClassName ( $this->arrConfig[ 'folder-name' ] );
+        }
+
         if ( $table->hasSchema () )
         {
             $arrNames[] = AbstractMaker::getClassName ( $table->getSchema () );
@@ -362,7 +369,8 @@ abstract class AbstractAdapter
             'link' ,
             'last_modify' ,
             'path' ,
-            'folder-database'
+            'folder-database',
+            'folder-name'
         );
 
         if ( in_array ( $str , $arr ) )

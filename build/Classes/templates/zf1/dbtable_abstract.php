@@ -21,7 +21,6 @@
 /**
  * Zend DB Table Abstract class
  */
-require_once 'Zend<?=DIRECTORY_SEPARATOR?>Db<?=DIRECTORY_SEPARATOR?>Table<?=DIRECTORY_SEPARATOR?>Abstract.php';
 
 abstract class <?=$this->config->namespace?>Model_TableAbstract extends Zend_Db_Table_Abstract
 {
