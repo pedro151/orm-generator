@@ -58,6 +58,14 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::g
     );
 <?php endif ?>
 <?php if($this->config->{'folder-name'}):?>
+    /**
+    * Initialize database adapter.
+    *
+    * @return void
+    * @see Zend_Db_Table_Abstract::_setupDatabaseAdapter
+    * @throws Zend_Db_Table_Exception
+    * @throws Zend_Exception
+    */
     protected function _setupDatabaseAdapter()
     {
         $this->_db = Zend_Registry::get( '<?=($this->config->{'folder-name'})?>');
