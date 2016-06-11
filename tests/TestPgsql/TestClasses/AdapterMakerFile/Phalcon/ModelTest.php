@@ -106,7 +106,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         $instance = \Classes\AdapterMakerFile\Phalcon\Entity::getInstance();
         $this->assertTrue ( $instance instanceof
                             \Classes\AdapterMakerFile\Phalcon\Entity );
-        $this->assertTrue ( $instance->getPastName () == "entity" );
+        $this->assertTrue ( $instance->getPastName () == "Entity" );
         $this->assertTrue ( $instance->getFileTpl () == "entity.php" );
     }
 
