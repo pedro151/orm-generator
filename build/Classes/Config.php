@@ -142,7 +142,7 @@ EOF;
 
         if ( !in_array ( $configCurrent[ 'framework' ], $this->frameworkList ) ) {
             $frameworks = implode("\n\t", $this->frameworkList);
-            throw new \Exception( "list of frameworks: \n".$frameworks."\n" );
+            throw new \Exception( "list of frameworks: \n\t\033[1;33m".$frameworks."\n\033[0m" );
         }
 
         return $argv + array_filter ( $configCurrent );
