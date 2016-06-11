@@ -59,13 +59,13 @@ class MakerFile extends AbstractMaker
 
         # pasta com nome do driver do banco
         $driverBase = '';
-        if ( isset($this->config->{"folder-database"}) && $this->config->{"folder-database"} )
+        if ( (bool) @$this->config->{"folder-database"} )
         {
             $classDriver = explode ( '\\' , get_class ( $this->driver ) );
             $driverBase = end ( $classDriver );
         }
         $folderName = '';
-        if ( isset($this->config->{"folder-name"}) && $this->config->{"folder-name"} )
+        if ( (bool) @$this->config->{"folder-name"} )
         {
             $folderName = $this->getClassName ( trim ( $this->config->{"folder-name"} ) );
         }
