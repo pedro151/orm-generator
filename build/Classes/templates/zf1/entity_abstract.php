@@ -64,7 +64,7 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
     protected function varNameToColumn($thevar)
     {
         foreach ($this->_columnsList as $column => $var) {
-            if ($var == $thevar) {
+            if ($var == strtolower($thevar)) {
                 return $column;
             }
         }
