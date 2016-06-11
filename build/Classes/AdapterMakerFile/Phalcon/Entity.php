@@ -16,7 +16,7 @@ class Entity extends AbstractAdapter
     /**
      * @var void
      */
-    public    $pastName  = "entity";
+    public    $pastName  = "Entity";
     protected $fileTpl   = "entity.php";
     protected $overwrite = true;
 
