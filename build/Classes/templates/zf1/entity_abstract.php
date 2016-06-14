@@ -14,7 +14,7 @@
  * @link      <?=$this->config->link."\n"?>
  */
 
-abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db_Table_Row_Abstract
+abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract extends Zend_Db_Table_Row_Abstract
 {
 
     /**
@@ -74,7 +74,7 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
 
     /**
     * @param array $data
-    * @return <?=$this->config->namespace?>Model_EntityAbstract
+    * @return <?=$this->config->namespace?$this->config->namespace."_":""?>>Model_EntityAbstract
     */
     public static function getIntance($data = array())
     {

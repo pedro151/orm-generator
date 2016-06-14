@@ -20,7 +20,7 @@
  * Abstract class for entity
  */
 
-abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
+abstract class <?=$className?> extends <?=$this->config->namespace?$this->config->namespace."_":""?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
 {
 
 <?php foreach ($objTables->getColumns() as $column): ?>

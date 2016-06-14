@@ -22,7 +22,7 @@
  * Zend DB Table Abstract class
  */
 
-abstract class <?=$this->config->namespace?>Model_TableAbstract extends Zend_Db_Table_Abstract
+abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Model_TableAbstract extends Zend_Db_Table_Abstract
 {
     /**
      * Nome da tabela do banco de dados
