@@ -63,6 +63,8 @@ abstract class <?=$className?> extends <?=$this->config->namespace?$this->config
         case 'Float':
             $filters = 'Digits';
             break;
+        case 'Date':
+            break;
         default:
             $filters = ucfirst ( $column->getType () );
             break;
