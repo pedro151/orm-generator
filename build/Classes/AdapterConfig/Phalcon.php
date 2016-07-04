@@ -47,14 +47,6 @@ class Phalcon extends AbstractAdapter
      */
     protected function getBaseNamespace ()
     {
-        if ( ! $this->arrConfig[ 'namespace' ] )
-        {
-            return array (
-                'App' ,
-                'Model'
-            );
-        }
-
         return array (
             $this->arrConfig[ 'namespace' ] ,
             'Model'

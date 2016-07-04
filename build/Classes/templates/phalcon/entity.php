@@ -5,7 +5,7 @@
  *
  * <?=$this->config->last_modify."\n"?>
  *
- * @package   <?=$this->config->namespace?>Model
+ * @package   <?=$objTables->getNamespace()?>\Entity
  * @subpackage Model
  * @author    <?=$this->config->author."\n"?>
  *
@@ -16,7 +16,7 @@
 
 namespace  <?=$objTables->getNamespace()?>\Entity;
 
-abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( 'Abstract'.$objTables->getName () )?> extends Phalcon\Mvc\Model
+abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends \Phalcon\Mvc\Model
 {
 
 <?php foreach ($objTables->getColumns() as $column): ?>
@@ -45,9 +45,9 @@ if ( $column->getMaxLength () ): ?>
     public function validation()
     {
 <?php foreach ($objTables->getColumns() as $column): ?>
-    <?php if(strtolower($column->getName()) == 'email'):?>
+<?php if(strtolower($column->getName()) == 'email'):?>
         $this->validate(
-            new Phalcon\Mvc\Model\Validator\Email(
+            new \Phalcon\Mvc\Model\Validator\Email(
                 array(
                     'field'    => 'email',
                     'required' => true,
@@ -55,7 +55,7 @@ if ( $column->getMaxLength () ): ?>
             )
         );
 
-    <?php endif ?>
+<?php endif ?>
 <?php endforeach;?>
         return $this->validationHasFailed() != true;
     }
@@ -106,7 +106,7 @@ if ( $column->getMaxLength () ): ?>
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>[]
+     * @return \<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>[]
      */
     public static function find($parameters = null)
     {
@@ -117,10 +117,29 @@ if ( $column->getMaxLength () ): ?>
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>
+     * @return \<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )."\n"?>
      */
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
     }
+
+
+<?php foreach ($objTables->getColumns() as $column): ?>
+    public function set<?=$this->getClassName ( $column->getName () )?>( $<?=$column->getName()?> )
+    {
+        $this-><?=$column->getName()?> = $<?=$column->getName()?>;
+    }
+
+<?php endforeach;?>
+<?php foreach ($objTables->getColumns() as $column): ?>
+    /**
+     * @return <?=$column->getType ()."\n" ?>
+     **/
+    public function get<?=$this->getClassName ( $column->getName () )?>()
+    {
+        return (<?=$column->getType () ?>) $this-><?=$column->getName()?>;
+    }
+
+<?php endforeach;?>
 }
