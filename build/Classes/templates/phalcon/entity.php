@@ -16,7 +16,7 @@
 
 namespace  <?=$objTables->getNamespace()?>\Entity;
 
-class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends Phalcon\Mvc\Model
+abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( 'Abstract'.$objTables->getName () )?> extends Phalcon\Mvc\Model
 {
 
 <?php foreach ($objTables->getColumns() as $column): ?>
