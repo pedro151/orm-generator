@@ -17,5 +17,26 @@
 
 class <?=$this->getClassName ( $objTables->getName () )?> extends <?=$objTables->getNamespace()?>\Entity\<?=$this->getClassName ( $objTables->getName () ). "\n"?>
 {
-    /* Codifique aqui */
+
+<?php foreach ($objTables->getColumns() as $column): ?>
+    public function set<?=$this->getClassName ( $column->getName () )?>( $<?=$column->getName()?> )
+    {
+        //  throw new \InvalidArgumentException('message');
+        $this-><?=$column->getName()?> = $<?=$column->getName()?>;
+    }
+
+<?php endforeach;?>
+<?php foreach ($objTables->getColumns() as $column): ?>
+    /**
+     * @return <?=$column->getType () ?>
+     **/
+    public function get<?=$this->getClassName ( $column->getName () )?>()
+    {
+        // Convert the value to <?=$column->getType () ?> before be used
+        return (<?=$column->getType () ?>) $this-><?=$column->getName()?>;
+    }
+
+<?php endforeach;?>
+
+     /* Codifique aqui */
 }

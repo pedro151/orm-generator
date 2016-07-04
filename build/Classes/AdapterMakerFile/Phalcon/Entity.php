@@ -51,7 +51,7 @@ class Entity extends AbstractAdapter
         {
             $constrant = $objColumn->getFks ();
             $references[] = sprintf (
-                "\$this->hasMany('%s', '%s', '%s')" ,
+                "\$this->hasMany('%s', '%s', '%s', array('alias' => '%2%s'))" ,
                 $objColumn->getName () ,
                 $makerFile->getConfig ()->createClassNamespace ( $constrant )
                 . Phalcon::SEPARETOR
@@ -85,7 +85,7 @@ class Entity extends AbstractAdapter
             foreach ( $objColumn->getDependences () as $dependence )
             {
                 $references[] = sprintf (
-                    "\$this->belongsTo('%s', '%s', '%s')" ,
+                    "\$this->belongsTo('%s', '%s', '%s', array('alias' => '%2%s'))" ,
                     $objColumn->getName () ,
                     $makerFile->getConfig ()->createClassNamespace ( $dependence )
                     . Phalcon::SEPARETOR

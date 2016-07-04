@@ -16,9 +16,7 @@
 
 namespace  <?=$objTables->getNamespace()?>\Entity;
 
-use Phalcon\Mvc\Model;
-
-class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends Model
+class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends Phalcon\Mvc\Model
 {
 
 <?php foreach ($objTables->getColumns() as $column): ?>
@@ -39,18 +37,59 @@ if ( $column->getMaxLength () ): ?>
     protected $<?=$column->getName()?>;
 
 <?php endforeach;?>
+    /**
+     * Validations and business logic
+     *
+     * @return boolean
+     */
+    public function validation()
+    {
+<?php foreach ($objTables->getColumns() as $column): ?>
+    <?php if(strtolower($column->getName()) == 'email'):?>
+        $this->validate(
+            new Phalcon\Mvc\Model\Validator\Email(
+                array(
+                    'field'    => 'email',
+                    'required' => true,
+                )
+            )
+        );
+
+    <?php endif ?>
+<?php endforeach;?>
+        return $this->validationHasFailed() != true;
+    }
+
+    /**
+     * Initialize method for model.
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        <?=$mapParents."\n"?>
+        <?=$mapDependents."\n"?>
+    }
+
 <?php if($objTables->hasSchema()): ?>
+    /**
+     * Returns schema name where table mapped is located
+     *
+     * @return string
+     */
     public function getSchema()
     {
         return '<?=$objTables->getSchema()?>';
     }
 
 <?php endif ?>
-    public function initialize()
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
     {
-        parent::initialize();
-        <?=$mapParents."\n"?>
-        <?=$mapDependents."\n"?>
+        return '<?=$objTables->getName()?>';
     }
 
 <?php if( $objTables->hasSequences() ) : ?>
@@ -61,10 +100,27 @@ if ( $column->getMaxLength () ): ?>
         return "<?=$seq->getSequence() ?>";
 <?php endif ?>
     }
+
 <?php endif ?>
+    /**
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>[]
+     */
+    public static function find($parameters = null)
+    {
+        return parent::find($parameters);
+    }
 
-
-
-
-
+    /**
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>
+     */
+    public static function findFirst($parameters = null)
+    {
+        return parent::findFirst($parameters);
+    }
 }
