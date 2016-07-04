@@ -49,7 +49,7 @@ class Phalcon extends AbstractAdapter
     {
         return array (
             $this->arrConfig[ 'namespace' ] ,
-            'Model'
+            'Models'
         );
     }
     /**

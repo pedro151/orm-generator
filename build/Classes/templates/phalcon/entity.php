@@ -65,7 +65,6 @@ if ( $column->getMaxLength () ): ?>
      */
     public function initialize()
     {
-        parent::initialize();
         <?=$mapParents."\n"?>
         <?=$mapDependents."\n"?>
     }
@@ -131,15 +130,12 @@ if ( $column->getMaxLength () ): ?>
         $this-><?=$column->getName()?> = $<?=$column->getName()?>;
     }
 
-<?php endforeach;?>
-<?php foreach ($objTables->getColumns() as $column): ?>
     /**
-     * @return <?=$column->getType ()."\n" ?>
-     **/
+    * @return <?=$column->getType ()."\n" ?>
+    **/
     public function get<?=$this->getClassName ( $column->getName () )?>()
     {
         return (<?=$column->getType () ?>) $this-><?=$column->getName()?>;
     }
-
 <?php endforeach;?>
 }

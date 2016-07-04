@@ -51,13 +51,13 @@ class Entity extends AbstractAdapter
         {
             $constrant = $objColumn->getFks ();
             $references[] = sprintf (
-                '$this->belongsTo(\'%s\', \'%s\', \'%s\', array(\'alias\' => \'%2$s\'))' ,
+                '$this->belongsTo(\'%s\', \'%s\', \'%s\', array(\'alias\' => \'%s\'))' ,
                 $objColumn->getName () ,
-//                $makerFile->getConfig ()->createClassNamespace ( $constrant )
-//                . Phalcon::SEPARETOR .
+                $makerFile->getConfig ()->createClassNamespace ( $constrant )
+                . Phalcon::SEPARETOR .
                  AbstractMaker::getClassName ( $constrant->getTable () ) ,
                 $constrant->getColumn (),
-                ''
+                AbstractMaker::getClassName ( $constrant->getTable () )
             );
         }
 
@@ -85,13 +85,13 @@ class Entity extends AbstractAdapter
             foreach ( $objColumn->getDependences () as $dependence )
             {
                 $references[] = sprintf (
-                    '$this->hasMany(\'%s\', \'%s\', \'%s\', array(\'alias\' => \'%2$s\'))' ,
+                    '$this->hasMany(\'%s\', \'%s\', \'%s\', array(\'alias\' => \'%s\'))' ,
                     $objColumn->getName () ,
-//                    $makerFile->getConfig ()->createClassNamespace ( $dependence )
-//                    . Phalcon::SEPARETOR .
+                    $makerFile->getConfig ()->createClassNamespace ( $dependence )
+                    . Phalcon::SEPARETOR .
                      AbstractMaker::getClassName ( $dependence->getTable () ) ,
                     $dependence->getColumn (),
-                    ''
+                    AbstractMaker::getClassName ( $dependence->getTable () )
                 );
 
             }
