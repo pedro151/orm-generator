@@ -17,8 +17,6 @@
 
 namespace <?=$objTables->getNamespace()?>;
 
-include_once('Entity/<?=$this->getClassName ( $objTables->getName () )?>.php');
-
 class <?=$this->getClassName ( $objTables->getName () )?> extends \<?=$objTables->getNamespace()?>\Entity\<?=$this->getClassName ( $objTables->getName () ). "\n"?>
 {
      /* Codifique aqui */
