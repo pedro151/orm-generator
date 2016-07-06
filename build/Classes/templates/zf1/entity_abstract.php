@@ -220,20 +220,21 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public function populate ( array $data )
     {
-	$methods = get_class_methods ( $this );
-	foreach ( $data as $key => $value )
-	{
-	    $key = preg_replace_callback ( '/_(.)/', create_function (
-			    '$matches', 'return ucfirst($matches[1]);'
-		    ), $key );
-	    $method = 'set' . ucfirst ( $key );
+        $methods = get_class_methods ( $this );
+        foreach ( $data as $key => $value )
+        {
+            $key = preg_replace_callback ( '/_(.)/', create_function (
+                    '$matches', 'return ucfirst($matches[1]);'
+                ), $key );
+            $method = 'set' . ucfirst ( $key );
 
-	    if ( in_array ( $method, $methods ) )
-	    {
-		    $this->$method ( $value );
-	    }
-	}
-	return $this;
+            if ( in_array ( $method, $methods ) )
+            {
+                $this->$method ( $value );
+            }
+        }
+
+        return $this;
     }
 
 

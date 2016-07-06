@@ -16,6 +16,8 @@
 
 namespace  <?=$objTables->getNamespace()?>\Entity;
 
+use Phalcon\Validation;
+
 abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends \Phalcon\Mvc\Model
 {
 
@@ -44,20 +46,18 @@ if ( $column->getMaxLength () ): ?>
      */
     public function validation()
     {
+        $validator = new Validation();
+
 <?php foreach ($objTables->getColumns() as $column): ?>
 <?php if(strtolower($column->getName()) == 'email'):?>
-        $this->validate(
-            new \Phalcon\Mvc\Model\Validator\Email(
-                array(
-                    'field'    => 'email',
-                    'required' => true,
-                )
-            )
+        $validator->add(
+            'email',
+            new \Phalcon\Validation\Validator\Email()
         );
 
 <?php endif ?>
 <?php endforeach;?>
-        return $this->validationHasFailed() != true;
+        return $this->validate($validator);
     }
 
     /**
@@ -105,7 +105,7 @@ if ( $column->getMaxLength () ): ?>
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return \<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>[]
+     * @return \<?=$objTables->getNamespace()?>\<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>[]
      */
     public static function find($parameters = null)
     {
@@ -116,7 +116,7 @@ if ( $column->getMaxLength () ): ?>
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return \<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )."\n"?>
+     * @return \<?=$objTables->getNamespace()?>\<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )."\n"?>
      */
     public static function findFirst($parameters = null)
     {
