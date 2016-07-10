@@ -90,7 +90,7 @@ class Entity extends AbstractAdapter
                     . Phalcon::SEPARETOR
                     . AbstractMaker::getClassName ( $dependence->getTable () ),
                     $dependence->getColumn (),
-                    AbstractMaker::getClassName ( "Many_".$dependence->getTable () )
+                    AbstractMaker::getClassName ( $dependence->getTable () )
                 );
 
             }

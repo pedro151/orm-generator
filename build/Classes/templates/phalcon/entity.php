@@ -65,8 +65,8 @@ if ( $column->getMaxLength () ): ?>
      */
     public function initialize()
     {
-        <?=$mapParents."\n"?>
         <?=$mapDependents."\n"?>
+        <?=$mapParents."\n"?>
     }
 
 <?php if($objTables->hasSchema()): ?>
