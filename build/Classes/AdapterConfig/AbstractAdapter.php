@@ -79,7 +79,7 @@ abstract class AbstractAdapter
 
     private $framworkFiles = array ();
 
-    protected $palavrasReservadas = array ();
+    public $reservedWord = array ();
 
     const SEPARETOR = "";
 
@@ -156,10 +156,10 @@ abstract class AbstractAdapter
         }
 
         if ( $table->hasSchema () ) {
-            $arrNames[] = $this->replacePalavrasReservadas ( AbstractMaker::getClassName ( $table->getSchema () ) );
+            $arrNames[] = $this->replaceReservedWord ( AbstractMaker::getClassName ( $table->getSchema () ) );
         }
         else {
-            $arrNames[] = AbstractMaker::getClassName ( $table->getDatabase () );
+            $arrNames[] = $this->replaceReservedWord ( AbstractMaker::getClassName ( $table->getDatabase () ) );
         }
 
         return implode ( static::SEPARETOR, array_filter ( $arrNames ) );
@@ -336,10 +336,10 @@ abstract class AbstractAdapter
      *
      * @return string
      */
-    public function replacePalavrasReservadas ( $palavra )
+    public function replaceReservedWord ( $palavra )
     {
-        if ( isset( $this->palavrasReservadas[ strtolower ( $palavra ) ] ) ) {
-            return $this->palavrasReservadas[ strtolower ( $palavra ) ];
+        if ( isset( $this->reservedWord[ strtolower ( $palavra ) ] ) ) {
+            return $this->reservedWord[ strtolower ( $palavra ) ];
         }
 
         return $palavra;

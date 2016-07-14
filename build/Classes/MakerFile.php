@@ -37,11 +37,45 @@ class MakerFile extends AbstractMaker
      */
     private $driver;
 
+    private $msgReservedWord = "\033[0mPlease enter the value for %index% \033[1;33m[%config%]:\033[0m ";
+
     public function __construct ( Config $config )
     {
         $this->config = $config->getAdapterConfig ();
-        $this->driver = $config->getAdapterDriver ();
+        $this->parseReservedWord ();
+        $this->driver = $config->getAdapterDriver ( $this->getConfig() );
         $this->parseLocation ( $config->_basePath );
+    }
+
+    public function parseReservedWord ()
+    {
+        $palavrasReservadas = $this->getConfig ()->reservedWord;
+        if ( !$palavrasReservadas ) {
+            return;
+        }
+
+        $schema      = $this->getConfig ()
+                            ->getSchemas ();
+        $db          = $this->getConfig ()
+                            ->getDatabase ();
+        $hasSchema   = array_intersect ( $schema, array_flip ( $palavrasReservadas ) );
+        $hasDatabase = in_array ( $db, $palavrasReservadas );
+        if ( !( $hasSchema or $hasDatabase ) ) {
+            return;
+        }
+
+        echo "- database has reserved words\n";
+        foreach ( $palavrasReservadas as $index => $config ) {
+            $attribs = array (
+                "%index%"  => $index,
+                "%config%" => $config
+            );
+            echo strtr ( $this->msgReservedWord, $attribs );
+            $line = trim ( fgets ( STDIN ) );
+            if ( !empty( $line ) ) {
+                $this->getConfig ()->reservedWord[ $index ] = $line;
+            }
+        }
     }
 
     /**
@@ -53,7 +87,7 @@ class MakerFile extends AbstractMaker
     {
         foreach ( $arrFoldersName as $index => $folderName ) {
             $arrFoldersName[ $index ] = $this->getConfig ()
-                                             ->replacePalavrasReservadas ( $folderName );
+                                             ->replaceReservedWord ( $folderName );
         }
 
         return implode ( DIRECTORY_SEPARATOR, array_filter ( $arrFoldersName ) );
