@@ -64,9 +64,11 @@ class Config
      */
     private $adapterDriver;
 
-    private $frameworkList  = array (
-           'none', 'zf1', 'phalcon'
-        );
+    private $frameworkList = array (
+        'none',
+        'zf1',
+        'phalcon'
+    );
 
     public function __construct ( $argv, $basePath )
     {
@@ -121,7 +123,7 @@ EOF;
      * Analisa e estrutura a Configuracao do generate
      *
      * @param  string $basePath
-     * @param array $argv
+     * @param array   $argv
      *
      * @return array
      * @throws \Exception
@@ -130,8 +132,10 @@ EOF;
     {
         $this->_basePath = dirname ( $basePath );
 
-        $configIni = isset( $argv[ 'config-ini' ] ) ? $argv[ 'config-ini' ]
-            : $this->_basePath . $this->configIniDefault;
+        $configIni = isset( $argv[ 'config-ini' ] )
+            ? $argv[ 'config-ini' ]
+            : $this->_basePath
+              . $this->configIniDefault;
 
         $configTemp    = $this->loadIniFile ( realpath ( $configIni ) );
         $configCurrent = self::parseConfigEnv ( $configTemp, $argv );
@@ -141,8 +145,8 @@ EOF;
         }
 
         if ( !in_array ( $configCurrent[ 'framework' ], $this->frameworkList ) ) {
-            $frameworks = implode("\n\t", $this->frameworkList);
-            throw new \Exception( "list of frameworks: \n\t\033[1;33m".$frameworks."\n\033[0m" );
+            $frameworks = implode ( "\n\t", $this->frameworkList );
+            throw new \Exception( "list of frameworks: \n\t\033[1;33m" . $frameworks . "\n\033[0m" );
         }
 
         return $argv + array_filter ( $configCurrent );
@@ -157,16 +161,15 @@ EOF;
      */
     private static function parseConfigEnv ( $configTemp, $argv )
     {
-        $thisSection = isset( $configTemp[ key ( $configTemp ) ][ 'config-env' ] ) ?
-            $configTemp[ key ( $configTemp ) ][ 'config-env' ] : null;
+        $thisSection = isset( $configTemp[ key ( $configTemp ) ][ 'config-env' ] ) ? $configTemp[ key (
+            $configTemp
+        ) ][ 'config-env' ] : null;
 
-        $thisSection = isset( $argv[ 'config-env' ] ) ? $argv[ 'config-env' ]
-            : $thisSection;
+        $thisSection = isset( $argv[ 'config-env' ] ) ? $argv[ 'config-env' ] : $thisSection;
 
         if ( isset( $configTemp[ $thisSection ][ 'extends' ] ) ) {
             #faz marge da config principal com a config extendida
-            return $configTemp[ $thisSection ]
-                   + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
+            return $configTemp[ $thisSection ] + $configTemp[ $configTemp[ $thisSection ][ 'extends' ] ];
         }
 
         return $configTemp[ key ( $configTemp ) ];
@@ -234,23 +237,25 @@ EOF;
     /**
      * Analisa a opção e instancia o determinado banco de dados
      *
-     * @return  \Classes\AdapterConfig\AbstractAdapter
+     * @param AdapterConfig\AbstractAdapter $config
+     *
+     * @return AdaptersDriver\AbsractAdapter
      */
-    private function factoryDriver ()
+    private function factoryDriver ( AdapterConfig\AbstractAdapter $config )
     {
         switch ( $this->argv[ 'driver' ] ) {
             case 'pgsql':
             case 'pdo_pgsql':
-                return new Pgsql( $this->getAdapterConfig () );
+                return new Pgsql( $config );
             case 'mysql':
             case 'pdo_mysql':
-                return new Mysql( $this->getAdapterConfig () );
+                return new Mysql( $config );
             case 'mssql':
-                return new Mssql( $this->getAdapterConfig () );
+                return new Mssql( $config );
             case 'dblib':
-                return new Dblib( $this->getAdapterConfig () );
+                return new Dblib( $config );
             case 'sqlsrv':
-                return new Sqlsrv( $this->getAdapterConfig () );
+                return new Sqlsrv( $config );
         }
     }
 
@@ -269,10 +274,10 @@ EOF;
     /**
      * @return AdaptersDriver\AbsractAdapter
      */
-    public function getAdapterDriver ()
+    public function getAdapterDriver ( AdapterConfig\AbstractAdapter $config )
     {
         if ( !$this->adapterDriver ) {
-            $this->adapterDriver = $this->factoryDriver ();
+            $this->adapterDriver = $this->factoryDriver ( $config );
         }
 
         return $this->adapterDriver;

@@ -16,7 +16,7 @@
  * @link      <?=$this->config->link."\n"?>
  */
 
-class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
+class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends <?=$this->config->namespace?$this->config->namespace."_":""?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
 {
     /**
      * Nome da tabela do banco de dados

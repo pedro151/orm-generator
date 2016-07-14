@@ -37,11 +37,61 @@ class MakerFile extends AbstractMaker
      */
     private $driver;
 
+    private $msgReservedWord = "\033[0mPlease enter the value for reserved word \033[0;31m'%index%' \033[1;33m[%config%]:\033[0m ";
+
     public function __construct ( Config $config )
     {
         $this->config = $config->getAdapterConfig ();
-        $this->driver = $config->getAdapterDriver ();
+        $this->parseReservedWord ( $this->getConfig () );
+        $this->driver = $config->getAdapterDriver ( $this->getConfig () );
         $this->parseLocation ( $config->_basePath );
+    }
+
+    /**
+     * @param AdapterConfig\AbstractAdapter $config
+     */
+    public function parseReservedWord ( AdapterConfig\AbstractAdapter $config )
+    {
+        $palavrasReservadas = $config->reservedWord;
+        if ( !$palavrasReservadas ) {
+            return;
+        }
+
+        $schema      = $config->getSchemas ();
+        $db          = $config->getDatabase ();
+        $hasSchema   = array_intersect ( $schema, array_flip ( $palavrasReservadas ) );
+        $hasDatabase = in_array ( $db, $palavrasReservadas );
+        if ( !( $hasSchema or $hasDatabase ) ) {
+            return;
+        }
+
+        echo "- database has reserved words\n";
+        foreach ( $palavrasReservadas as $index => $config ) {
+            $attribs = array (
+                "%index%"  => $index,
+                "%config%" => $config
+            );
+            echo strtr ( $this->msgReservedWord, $attribs );
+            $line = trim ( fgets ( STDIN ) );
+            if ( !empty( $line ) ) {
+                $this->getConfig()->reservedWord[ $index ] = $line;
+            }
+        }
+    }
+
+    /**
+     * @param array $arrFoldersName
+     *
+     * @return string
+     */
+    private function filterLocation ( $arrFoldersName )
+    {
+        foreach ( $arrFoldersName as $index => $folderName ) {
+            $arrFoldersName[ $index ] = $this->getConfig ()
+                                             ->replaceReservedWord ( $folderName );
+        }
+
+        return implode ( DIRECTORY_SEPARATOR, array_filter ( $arrFoldersName ) );
     }
 
     /**
@@ -51,31 +101,27 @@ class MakerFile extends AbstractMaker
     {
 
         $arrBase = array (
-            $basePath ,
+            $basePath,
             $this->config->path
         );
 
-        $this->baseLocation = implode ( DIRECTORY_SEPARATOR , array_filter ( $arrBase ) );
+        $this->baseLocation = $this->filterLocation ( $arrBase );
 
         # pasta com nome do driver do banco
         $driverBase = '';
-        if ( (bool) @$this->config->{"folder-database"} )
-        {
-            $classDriver = explode ( '\\' , get_class ( $this->driver ) );
-            $driverBase = end ( $classDriver );
+        if ( (bool) @$this->config->{"folder-database"} ) {
+            $classDriver = explode ( '\\', get_class ( $this->driver ) );
+            $driverBase  = end ( $classDriver );
         }
         $folderName = '';
-        if ( (bool) @$this->config->{"folder-name"} )
-        {
+        if ( (bool) @$this->config->{"folder-name"} ) {
             $folderName = $this->getClassName ( trim ( $this->config->{"folder-name"} ) );
         }
 
-        if ( $this->config->hasSchemas () )
-        {
+        if ( $this->config->hasSchemas () ) {
 
             $schemas = $this->config->getSchemas ();
-            foreach ( $schemas as $schema )
-            {
+            foreach ( $schemas as $schema ) {
                 $arrUrl = array (
                     $this->baseLocation,
                     $driverBase,
@@ -83,23 +129,24 @@ class MakerFile extends AbstractMaker
                     $this->getClassName ( $schema )
                 );
 
-                $this->location[ $schema ] = implode ( DIRECTORY_SEPARATOR , array_filter ( $arrUrl ) );
+                $this->location[ $schema ] = $this->filterLocation ( $arrUrl );
                 unset( $arrUrl );
             }
 
 
-        } else
-        {
-            $baseLocation = implode (
-                DIRECTORY_SEPARATOR , array_filter ( array (
-                        $this->baseLocation ,
-                        $driverBase ,
-                        $folderName ,
-                        $this->getClassName ( $this->getConfig ()->getDatabase () )
-                    )
+        }
+        else {
+            $url            = array (
+                $this->baseLocation,
+                $driverBase,
+                $folderName,
+                $this->getClassName (
+                    $this->getConfig ()
+                         ->getDatabase ()
                 )
             );
-            $this->location = array ( $baseLocation );
+            $this->location = array ( $this->filterLocation ( $url ) );
+            unset( $url );
         }
     }
 
@@ -120,7 +167,7 @@ class MakerFile extends AbstractMaker
 
     private function getRunTime ()
     {
-        return round ( ( microtime ( true ) - $this->startTime ) , 3 );
+        return round ( ( microtime ( true ) - $this->startTime ), 3 );
     }
 
     /**
@@ -130,47 +177,43 @@ class MakerFile extends AbstractMaker
     {
         $this->startTime ();
         $this->driver->runDatabase ();
-        $max = $this->driver->getTotalTables () * count ( $this->factoryMakerFile () );
-        $cur = 0;
+        $countSchema = count ( $this->location );
+        $max         = $this->driver->getTotalTables () * ( $countSchema * $this->countDiretory () );
+        $cur         = 0;
 
 
-        foreach ( $this->location as $schema => $location )
-        {
-            foreach ( $this->factoryMakerFile () as $objMakeFile )
-            {
+        foreach ( $this->location as $schema => $location ) {
+            foreach ( $this->factoryMakerFile () as $objMakeFile ) {
                 $path = $location . DIRECTORY_SEPARATOR . $objMakeFile->getPastName ();
                 self::makeDir ( $path );
 
-                if ( $objMakeFile->getParentFileTpl () != '' )
-                {
+                if ( $objMakeFile->getParentFileTpl () != '' ) {
                     $fileAbstract = $this->baseLocation
                                     . DIRECTORY_SEPARATOR
-                                    . $objMakeFile->getParentClass () . '.php';
+                                    . $objMakeFile->getParentClass ()
+                                    . '.php';
 
                     $tplAbstract = $this->getParsedTplContents ( $objMakeFile->getParentFileTpl () );
-                    self::makeSourcer ( $fileAbstract , $tplAbstract , $objMakeFile->isOverwrite () );
-                    unset( $fileAbstract , $tplAbstract );
+                    self::makeSourcer ( $fileAbstract, $tplAbstract, $objMakeFile->isOverwrite () );
+                    unset( $fileAbstract, $tplAbstract );
                 }
 
-                foreach ( $this->driver->getTables ( $schema ) as $key => $objTables )
-                {
+                foreach ( $this->driver->getTables ( $schema ) as $key => $objTables ) {
                     $total = ceil ( $cur / $max ) * 100;
-                    printf ( "\r Creating: %6.2f%%" , $total );
-                    $cur ++;
+                    printf ( "\r Creating: %6.2f%%", $total );
+                    $cur++;
 
-                    $file = $path
-                            . DIRECTORY_SEPARATOR
-                            . self::getClassName ( $objTables->getName () )
-                            . '.php';
+                    $file = $path . DIRECTORY_SEPARATOR . self::getClassName ( $objTables->getName () ) . '.php';
 
 
                     $tpl = $this->getParsedTplContents (
-                        $objMakeFile->getFileTpl () ,
-                        $objMakeFile->parseRelation ( $this , $objTables )
-                        , $objTables , $objMakeFile
+                        $objMakeFile->getFileTpl (),
+                        $objMakeFile->parseRelation ( $this, $objTables ),
+                        $objTables,
+                        $objMakeFile
 
                     );
-                    self::makeSourcer ( $file , $tpl , $objMakeFile->isOverwrite () );
+                    self::makeSourcer ( $file, $tpl, $objMakeFile->isOverwrite () );
                 }
 
             }
@@ -182,16 +225,15 @@ class MakerFile extends AbstractMaker
 
     private function reportProcess ( $countFiles )
     {
-        if ( $this->config->isStatusEnabled () )
-        {
-            $databases = count ( $this->location );
-            $countDir = $this->countDiretory ();
+        if ( $this->config->isStatusEnabled () ) {
+            $databases  = count ( $this->location );
+            $countDir   = $this->countDiretory ();
             $totalTable = $this->driver->getTotalTables ();
             echo "\n------";
-            printf ( "\n\r-Files generated:%s" , $countFiles );
-            printf ( "\n\r-Diretory generated:%s" , $databases * $countDir );
-            printf ( "\n\r-Scanned tables:%s" , $totalTable );
-            printf ( "\n\r-Execution time: %ssec" , $this->getRunTime () );
+            printf ( "\n\r-Files generated:%s", $countFiles );
+            printf ( "\n\r-Diretory generated:%s", $databases * $countDir );
+            printf ( "\n\r-Scanned tables:%s", $totalTable );
+            printf ( "\n\r-Execution time: %ssec", $this->getRunTime () );
             echo "\n------";
         }
     }
@@ -214,13 +256,12 @@ class MakerFile extends AbstractMaker
     public function countDiretory ()
     {
         $dir = 0;
-        foreach ( $this->factoryMakerFile () as $abstractAdapter )
-        {
-            if ( $abstractAdapter->hasDiretory () )
-            {
-                $dir ++;
+        foreach ( $this->factoryMakerFile () as $abstractAdapter ) {
+            if ( $abstractAdapter->hasDiretory () ) {
+                $dir++;
             }
         }
+
 
         return $dir;
     }
@@ -233,17 +274,18 @@ class MakerFile extends AbstractMaker
      *
      * @return String
      */
-    protected function getParsedTplContents ( $tplFile , $vars = array () , \Classes\Db\DbTable $objTables = null , $objMakeFile = null )
-    {
+    protected function getParsedTplContents ( $tplFile, $vars = array (), \Classes\Db\DbTable $objTables = null,
+                                              $objMakeFile = null
+    ) {
 
         $arrUrl = array (
-            __DIR__ ,
-            'templates' ,
-            $this->config->framework ,
+            __DIR__,
+            'templates',
+            $this->config->framework,
             $tplFile
         );
 
-        $filePath = implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrUrl ) );
+        $filePath = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrUrl ) );
 
         extract ( $vars );
         ob_start ();

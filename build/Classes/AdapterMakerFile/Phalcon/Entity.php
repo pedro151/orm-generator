@@ -22,18 +22,19 @@ class Entity extends AbstractAdapter
 
     protected $validFunc = array ();
 
+    private $intersectDependence = false;
+
     /**
      * @param \Classes\MakerFile  $makerFile
      * @param \Classes\Db\DbTable $dbTable
      *
      * @return array
      */
-    public function parseRelation ( \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable )
+    public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {
-
         return array (
-            'mapParents'    => $this->listParents ( $makerFile , $dbTable ) ,
-            'mapDependents' => $this->listDependence ( $makerFile , $dbTable )
+            'mapParents'    => $this->listParents ( $makerFile, $dbTable ),
+            'mapDependents' => $this->listDependence ( $makerFile, $dbTable )
         );
     }
 
@@ -43,27 +44,26 @@ class Entity extends AbstractAdapter
      *
      * @return array
      */
-    private function listParents ( \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable )
+    private function listParents ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {
         $mapParents = '';
         $references = array ();
-        foreach ( $dbTable->getForeingkeys () as $objColumn )
-        {
-            $constrant = $objColumn->getFks ();
+        foreach ( $dbTable->getForeingkeys () as $objColumn ) {
+            $constrant    = $objColumn->getFks ();
             $references[] = sprintf (
-                "\$this->hasMany('%s', '%s', '%s')" ,
-                $objColumn->getName () ,
-                $makerFile->getConfig ()->createClassNamespace ( $constrant )
-                . Phalcon::SEPARETOR
-                . AbstractMaker::getClassName ( $constrant->getTable () ) ,
-                $constrant->getColumn ()
-
+                '$this->belongsTo(\'%s\', \'%s\', \'%s\', array(\'alias\' => \'%s\'))',
+                $objColumn->getName (),
+                $makerFile->getConfig ()
+                          ->createClassNamespace ( $constrant ) . Phalcon::SEPARETOR . AbstractMaker::getClassName (
+                    $constrant->getTable ()
+                ),
+                $constrant->getColumn (),
+                AbstractMaker::getClassName ( $constrant->getTable () )
             );
         }
 
-        if ( sizeof ( $references ) > 0 )
-        {
-            $mapParents = join ( ";\n\t\t" , $references ) . ";\n";
+        if ( sizeof ( $references ) > 0 ) {
+            $mapParents = join ( ";\n\t\t", $references ) . ";\n";
         }
 
 
@@ -76,29 +76,28 @@ class Entity extends AbstractAdapter
      *
      * @return array
      */
-    private function listDependence ( \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable )
+    private function listDependence ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {
         $mapDependence = '';
-        $references = array ();
-        foreach ( $dbTable->getDependences () as $objColumn )
-        {
-            foreach ( $objColumn->getDependences () as $dependence )
-            {
+        $references    = array ();
+        foreach ( $dbTable->getDependences () as $objColumn ) {
+            foreach ( $objColumn->getDependences () as $dependence ) {
                 $references[] = sprintf (
-                    "\$this->belongsTo('%s', '%s', '%s')" ,
-                    $objColumn->getName () ,
-                    $makerFile->getConfig ()->createClassNamespace ( $dependence )
+                    '$this->hasMany(\'%s\', \'%s\', \'%s\', array(\'alias\' => \'%s\'))',
+                    $objColumn->getName (),
+                    $makerFile->getConfig ()
+                              ->createClassNamespace ( $dependence )
                     . Phalcon::SEPARETOR
-                    . AbstractMaker::getClassName ( $dependence->getTable () ) ,
-                    $dependence->getColumn ()
+                    . AbstractMaker::getClassName ( $dependence->getTable () ),
+                    $dependence->getColumn (),
+                    AbstractMaker::getClassName ( $dependence->getTable () )
                 );
 
             }
         }
 
-        if ( sizeof ( $references ) > 0 )
-        {
-            $mapDependence = join ( ";\n\t\t" , $references ) . ";";
+        if ( sizeof ( $references ) > 0 ) {
+            $mapDependence = join ( ";\n\t\t", $references ) . ";";
         }
 
         return $mapDependence;

@@ -5,8 +5,7 @@
  *
  * <?=$this->config->last_modify."\n"?>
  *
- * @package <?=$objTables->getNamespace()?>
- * @see  <?=$objTables->getNamespace()?>/Model/<?=$this->getClassName ( $objTables->getName () )?>. "\n"?>
+ * @see  <?=$objTables->getNamespace()?>\<?=$this->getClassName ( $objTables->getName () ). "\n"?>
  *
  * @author    <?=$this->config->author."\n"?>
  *
@@ -15,7 +14,10 @@
  * @link      <?=$this->config->link."\n"?>
  */
 
-class <?=$this->getClassName ( $objTables->getName () )?> extends <?=$objTables->getNamespace()?>\Entity\<?=$this->getClassName ( $objTables->getName () ). "\n"?>
+
+namespace <?=$objTables->getNamespace()?>;
+
+class <?=$this->getClassName ( $objTables->getName () )?> extends \<?=$objTables->getNamespace()?>\Entity\<?=$this->getClassName ( $objTables->getName () ). "\n"?>
 {
-    /* Codifique aqui */
+     /* Codifique aqui */
 }

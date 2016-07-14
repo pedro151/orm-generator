@@ -5,7 +5,7 @@
  *
  * <?=$this->config->last_modify."\n"?>
  *
- * @package   <?=$this->config->namespace?>Model
+ * @package   <?=$objTables->getNamespace()?>\Entity
  * @subpackage Model
  * @author    <?=$this->config->author."\n"?>
  *
@@ -16,9 +16,9 @@
 
 namespace  <?=$objTables->getNamespace()?>\Entity;
 
-use Phalcon\Mvc\Model;
+use Phalcon\Validation;
 
-class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends Model
+abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends \Phalcon\Mvc\Model
 {
 
 <?php foreach ($objTables->getColumns() as $column): ?>
@@ -39,18 +39,56 @@ if ( $column->getMaxLength () ): ?>
     protected $<?=$column->getName()?>;
 
 <?php endforeach;?>
+    /**
+     * Validations and business logic
+     *
+     * @return boolean
+     */
+    public function validation()
+    {
+        $validator = new Validation();
+
+<?php foreach ($objTables->getColumns() as $column): ?>
+<?php if(strtolower($column->getName()) == 'email'):?>
+        $validator->add(
+            'email',
+            new \Phalcon\Validation\Validator\Email()
+        );
+
+<?php endif ?>
+<?php endforeach;?>
+        return $this->validate($validator);
+    }
+
+    /**
+     * Initialize method for model.
+     */
+    public function initialize()
+    {
+        <?=$mapDependents."\n"?>
+        <?=$mapParents."\n"?>
+    }
+
 <?php if($objTables->hasSchema()): ?>
+    /**
+     * Returns schema name where table mapped is located
+     *
+     * @return string
+     */
     public function getSchema()
     {
         return '<?=$objTables->getSchema()?>';
     }
 
 <?php endif ?>
-    public function initialize()
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
     {
-        parent::initialize();
-        <?=$mapParents."\n"?>
-        <?=$mapDependents."\n"?>
+        return '<?=$objTables->getName()?>';
     }
 
 <?php if( $objTables->hasSequences() ) : ?>
@@ -61,10 +99,43 @@ if ( $column->getMaxLength () ): ?>
         return "<?=$seq->getSequence() ?>";
 <?php endif ?>
     }
+
 <?php endif ?>
+    /**
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return \<?=$objTables->getNamespace()?>\<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>[]
+     */
+    public static function find($parameters = null)
+    {
+        return parent::find($parameters);
+    }
+
+    /**
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return \<?=$objTables->getNamespace()?>\<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )."\n"?>
+     */
+    public static function findFirst($parameters = null)
+    {
+        return parent::findFirst($parameters);
+    }
 
 
+<?php foreach ($objTables->getColumns() as $column): ?>
+    public function set<?=$this->getClassName ( $column->getName () )?>( $<?=$column->getName()?> )
+    {
+        $this-><?=$column->getName()?> = $<?=$column->getName()?>;
+    }
 
-
-
+    /**
+    * @return <?=$column->getType ()."\n" ?>
+    **/
+    public function get<?=$this->getClassName ( $column->getName () )?>()
+    {
+        return (<?=$column->getType () ?>) $this-><?=$column->getName()?>;
+    }
+<?php endforeach;?>
 }

@@ -20,7 +20,7 @@
  * Abstract class for entity
  */
 
-abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
+abstract class <?=$className?> extends <?=$this->config->namespace?$this->config->namespace."_":""?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
 {
 
 <?php foreach ($objTables->getColumns() as $column): ?>
@@ -62,6 +62,8 @@ abstract class <?=$className?> extends <?=$this->config->namespace?>Model_<?=$ob
             break;
         case 'Float':
             $filters = 'Digits';
+            break;
+        case 'Date':
             break;
         default:
             $filters = ucfirst ( $column->getType () );

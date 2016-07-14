@@ -14,7 +14,7 @@
  * @link      <?=$this->config->link."\n"?>
  */
 
-abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db_Table_Row_Abstract
+abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract extends Zend_Db_Table_Row_Abstract
 {
 
     /**
@@ -64,7 +64,7 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
     protected function varNameToColumn($thevar)
     {
         foreach ($this->_columnsList as $column => $var) {
-            if ($var == $thevar) {
+            if ($var == strtolower($thevar)) {
                 return $column;
             }
         }
@@ -74,7 +74,7 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
 
     /**
     * @param array $data
-    * @return <?=$this->config->namespace?>Model_EntityAbstract
+    * @return <?=$this->config->namespace?$this->config->namespace."_":""?>>Model_EntityAbstract
     */
     public static function getIntance($data = array())
     {
@@ -220,20 +220,21 @@ abstract class <?=$this->config->namespace?>Model_EntityAbstract extends Zend_Db
      */
     public function populate ( array $data )
     {
-	$methods = get_class_methods ( $this );
-	foreach ( $data as $key => $value )
-	{
-	    $key = preg_replace_callback ( '/_(.)/', create_function (
-			    '$matches', 'return ucfirst($matches[1]);'
-		    ), $key );
-	    $method = 'set' . ucfirst ( $key );
+        $methods = get_class_methods ( $this );
+        foreach ( $data as $key => $value )
+        {
+            $key = preg_replace_callback ( '/_(.)/', create_function (
+                    '$matches', 'return ucfirst($matches[1]);'
+                ), $key );
+            $method = 'set' . ucfirst ( $key );
 
-	    if ( in_array ( $method, $methods ) )
-	    {
-		    $this->$method ( $value );
-	    }
-	}
-	return $this;
+            if ( in_array ( $method, $methods ) )
+            {
+                $this->$method ( $value );
+            }
+        }
+
+        return $this;
     }
 
 
