@@ -19,7 +19,8 @@ class Phalcon extends AbstractAdapter
     /**
      * @var string
      */
-    protected $framework = "phalcon";
+    protected $framework          = "phalcon";
+    protected $palavrasReservadas = array ( 'public' => '_public' );
 
     const SEPARETOR = "\\";
 
@@ -48,10 +49,11 @@ class Phalcon extends AbstractAdapter
     protected function getBaseNamespace ()
     {
         return array (
-            $this->arrConfig[ 'namespace' ] ,
+            $this->arrConfig[ 'namespace' ],
             'Models'
         );
     }
+
     /**
      * Cria Instancias dos arquivos que devem ser gerados
      *
@@ -60,7 +62,7 @@ class Phalcon extends AbstractAdapter
     public function getMakeFileInstances ()
     {
         return array (
-            Entity::getInstance () ,
+            Entity::getInstance (),
             Model::getInstance ()
         );
     }
