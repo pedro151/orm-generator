@@ -37,27 +37,28 @@ class MakerFile extends AbstractMaker
      */
     private $driver;
 
-    private $msgReservedWord = "\033[0mPlease enter the value for %index% \033[1;33m[%config%]:\033[0m ";
+    private $msgReservedWord = "\033[0mPlease enter the value for reserved word \033[0;31m'%index%' \033[1;33m[%config%]:\033[0m ";
 
     public function __construct ( Config $config )
     {
         $this->config = $config->getAdapterConfig ();
-        $this->parseReservedWord ();
-        $this->driver = $config->getAdapterDriver ( $this->getConfig() );
+        $this->parseReservedWord ( $this->getConfig () );
+        $this->driver = $config->getAdapterDriver ( $this->getConfig () );
         $this->parseLocation ( $config->_basePath );
     }
 
-    public function parseReservedWord ()
+    /**
+     * @param AdapterConfig\AbstractAdapter $config
+     */
+    public function parseReservedWord ( AdapterConfig\AbstractAdapter $config )
     {
-        $palavrasReservadas = $this->getConfig ()->reservedWord;
+        $palavrasReservadas = $config->reservedWord;
         if ( !$palavrasReservadas ) {
             return;
         }
 
-        $schema      = $this->getConfig ()
-                            ->getSchemas ();
-        $db          = $this->getConfig ()
-                            ->getDatabase ();
+        $schema      = $config->getSchemas ();
+        $db          = $config->getDatabase ();
         $hasSchema   = array_intersect ( $schema, array_flip ( $palavrasReservadas ) );
         $hasDatabase = in_array ( $db, $palavrasReservadas );
         if ( !( $hasSchema or $hasDatabase ) ) {
@@ -73,7 +74,7 @@ class MakerFile extends AbstractMaker
             echo strtr ( $this->msgReservedWord, $attribs );
             $line = trim ( fgets ( STDIN ) );
             if ( !empty( $line ) ) {
-                $this->getConfig ()->reservedWord[ $index ] = $line;
+                $this->getConfig()->reservedWord[ $index ] = $line;
             }
         }
     }

@@ -20,7 +20,7 @@ class Phalcon extends AbstractAdapter
      * @var string
      */
     protected $framework    = "phalcon";
-    public    $reservedWord = array ( 'public' => '_public' );
+    public    $reservedWord = array ( 'public' => 'Main' );
 
     const SEPARETOR = "\\";
 
