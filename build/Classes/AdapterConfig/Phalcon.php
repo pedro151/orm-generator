@@ -4,10 +4,12 @@ namespace Classes\AdapterConfig;
 
 use Classes\AdapterMakerFile\Phalcon\Entity;
 use Classes\AdapterMakerFile\Phalcon\Model;
+use Classes\AdapterMakerFile\Phalcon\Peer;
 
 require_once "Classes/AdapterConfig/AbstractAdapter.php";
 require_once "Classes/AdapterMakerFile/Phalcon/Entity.php";
 require_once "Classes/AdapterMakerFile/Phalcon/Model.php";
+require_once "Classes/AdapterMakerFile/Phalcon/Peer.php";
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -63,7 +65,8 @@ class Phalcon extends AbstractAdapter
     {
         return array (
             Entity::getInstance (),
-            Model::getInstance ()
+            Model::getInstance (),
+            Peer::getInstance ()
         );
     }
 
