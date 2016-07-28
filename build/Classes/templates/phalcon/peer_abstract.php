@@ -19,7 +19,7 @@ namespace  <?=$this->config->namespace?$this->config->namespace."\\":""?>Models;
 
 abstract class AbstractPeer
 {
-    static $className;
+    protected static $className;
 
     final private function __construct(){}
 
