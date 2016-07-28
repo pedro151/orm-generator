@@ -14,6 +14,7 @@
  * @copyright <?=$this->config->copyright."\n"?>
  * @license   <?=$this->config->license."\n"?>
  * @link      <?=$this->config->link."\n"?>
+ * @version   <?=$this->config->version."\n"?>
  */
 
 /**
