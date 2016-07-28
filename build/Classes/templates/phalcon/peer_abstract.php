@@ -21,13 +21,28 @@ abstract class AbstractPeer
 {
     static $className;
 
+    final private function __construct(){}
+
    /**
     * Name of the object for static instance
     *
     * @return string
     */
-    public function getClassName(){
+    static public function getClassName()
+    {
         return static::$className;
+    }
+
+   /**
+    * instance of the object
+    *
+    * @return static
+    */
+    static public function getObject()
+    {
+         $className = static::getClassName();
+
+         return new $className();
     }
 
     /**

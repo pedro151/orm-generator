@@ -17,7 +17,7 @@
 
 namespace  <?=$objTables->getNamespace()?>\Peer;
 
-abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends \<?=$this->config->namespace?$this->config->namespace."\\":""?>Models\<?=$objMakeFile->getParentClass() . "\n"?>
+class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends \<?=$this->config->namespace?$this->config->namespace."\\":""?>Models\<?=$objMakeFile->getParentClass() . "\n"?>
 {
     /**
     * Name of the object for static instance
@@ -26,4 +26,5 @@ abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getNa
     */
     protected static $className = '<?=$objTables->getNamespace()?>\<?=$this->getClassName ( $objTables->getName () )?>';
 
+    /* @TODO Codifique aqui */
 }

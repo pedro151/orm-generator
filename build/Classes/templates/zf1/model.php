@@ -16,7 +16,7 @@
  * @version   <?=$this->config->version."\n"?>
  */
 
-class  <?=$objTables->getNamespace()?>_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends <?=$objTables->getNamespace()?>_Entity_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () ). "\n"?>
+class <?=$objTables->getNamespace()?>_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends <?=$objTables->getNamespace()?>_Entity_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () ). "\n"?>
 {
-    /* Codifique aqui */
+       /* @TODO Codifique aqui */
 }

@@ -20,5 +20,5 @@ namespace <?=$objTables->getNamespace()?>;
 
 class <?=$this->getClassName ( $objTables->getName () )?> extends \<?=$objTables->getNamespace()?>\Entity\<?=$this->getClassName ( $objTables->getName () ). "\n"?>
 {
-     /* Codifique aqui */
+       /* @TODO Codifique aqui */
 }
