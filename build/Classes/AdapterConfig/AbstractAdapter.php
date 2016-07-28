@@ -2,9 +2,11 @@
 
 namespace Classes\AdapterConfig;
 
+use Classes\Config;
 use Classes\Maker\AbstractMaker;
 
 require_once "Classes/Maker/AbstractMaker.php";
+require_once "Classes/Config.php";
 require_once 'Exception.php';
 
 /**
@@ -17,20 +19,20 @@ abstract class AbstractAdapter
     protected $arrConfig = array (
         ############################# DATABASE
         //Driver do banco de dados
-        'driver'   => null,
+        'driver'          => null,
         //Nome do banco de dados
-        'database' => null,
+        'database'        => null,
         //Host do banco
-        'host'     => 'localhost',
+        'host'            => 'localhost',
         //Port do banco
-        'port'     => '',
+        'port'            => '',
         //usuario do banco
-        'username' => null,
+        'username'        => null,
         //senha do banco
-        'password' => null,
+        'password'        => null,
         // lista de schemas do banco de dados
-        'schema'   => array (),
-
+        'schema'          => array (),
+        'version'         => '',
         'socket'          => null,
 
         ########################### DOCS
@@ -39,6 +41,7 @@ abstract class AbstractAdapter
         'license'         => "New BSD License",
         'copyright'       => "ORM Generator - Pedro151",
         'link'            => 'https://github.com/pedro151/orm-generator',
+        'version'         => '',
         // data que foi gerado o script
         'last_modify'     => null,
 
@@ -168,6 +171,7 @@ abstract class AbstractAdapter
     public function __construct ( $array )
     {
         $array += array (
+            'version'     => Config::$version,
             'author'      => ucfirst ( get_current_user () ),
             'last_modify' => date ( "d-m-Y H:i:s." )
         );
@@ -207,7 +211,6 @@ abstract class AbstractAdapter
         if ( !is_dir ( $this->framworkFiles[ 'library' ] ) ) {
             return false;
         }
-
 
         if ( !isset ( $this->framworkFiles[ 'environment' ] ) or empty( $this->framworkFiles[ 'environment' ] ) ) {
             return false;
@@ -365,6 +368,7 @@ abstract class AbstractAdapter
             'framework',
             'author',
             'license',
+            'version',
             'copyright',
             'link',
             'last_modify',

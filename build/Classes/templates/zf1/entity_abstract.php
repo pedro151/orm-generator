@@ -12,6 +12,7 @@
  * @copyright <?=$this->config->copyright."\n"?>
  * @license   <?=$this->config->license."\n"?>
  * @link      <?=$this->config->link."\n"?>
+ * @version   <?=$this->config->version."\n"?>
  */
 
 abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract extends Zend_Db_Table_Row_Abstract
