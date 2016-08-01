@@ -17,6 +17,8 @@
 
 namespace  <?=$this->config->namespace?$this->config->namespace."\\":""?>Models;
 
+use Phalcon\Mvc\Model;
+
 abstract class AbstractPeer
 {
     protected static $className;
@@ -36,7 +38,7 @@ abstract class AbstractPeer
    /**
     * instance of the object
     *
-    * @return static
+    * @return Model
     */
     static public function getObject()
     {
@@ -61,7 +63,7 @@ abstract class AbstractPeer
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return static
+     * @return Model
      */
     public static function findFirst($parameters = null)
     {

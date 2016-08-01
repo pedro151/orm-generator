@@ -84,6 +84,17 @@ abstract class AbstractAdapter
 
     public $reservedWord = array ();
 
+
+    private $dataTypesDefault = array (
+        'int'     => 'int',
+        'float'   => 'float',
+        'string'  => 'string',
+        'date'    => 'date',
+        'boolean' => 'boolean'
+    );
+
+    protected $dataTypes = array ();
+
     const SEPARETOR = "";
 
     /**
@@ -384,4 +395,10 @@ abstract class AbstractAdapter
         return;
     }
 
+    public function convertTypeToTypeFramework ( $str )
+    {
+        $dataType = $this->dataTypes + $this->dataTypesDefault;
+
+        return $dataType[ $str ];
+    }
 }

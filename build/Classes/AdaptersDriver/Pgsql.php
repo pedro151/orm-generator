@@ -51,7 +51,7 @@ class Pgsql extends AbsractAdapter
         /* Binary Data Types */
         'bytea'            => 'string' ,
         /* Date/Time Types */
-        'datatime'         => 'date' ,
+        'datetime'         => 'datetime' ,
         'date'             => 'date' ,
 
         /* Boolean Type */

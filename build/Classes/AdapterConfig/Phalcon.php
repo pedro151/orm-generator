@@ -24,6 +24,11 @@ class Phalcon extends AbstractAdapter
     protected $framework    = "phalcon";
     public    $reservedWord = array ( 'public' => 'Main' );
 
+    protected $dataTypes = array (
+        'int'    => 'integer',
+        'float'  => 'decimal'
+    );
+
     const SEPARETOR = "\\";
 
     protected function init ()

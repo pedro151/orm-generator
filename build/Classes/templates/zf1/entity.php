@@ -65,6 +65,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?$this->config
             $filters = 'Digits';
             break;
         case 'Date':
+        case 'Datetime':
             break;
         default:
             $filters = ucfirst ( $column->getType () );
@@ -148,7 +149,7 @@ abstract class <?=$className?> extends <?=$this->config->namespace?$this->config
     *
     * Sets column <?=$column->getName()."\n"?>
     *
-<?php if ($column->getType()=='date'): ?>
+<?php if ($column->getType()=='date'or$column->getType()=='datetime'): ?>
     * Stored in ISO 8601 format.
     *
     * @param string|Zend_Date $<?=$column->getName() . "\n"?>
@@ -160,7 +161,9 @@ abstract class <?=$className?> extends <?=$this->config->namespace?$this->config
     public function set<?=\Classes\Maker\AbstractMaker::getClassName($column->getName())?>($<?=$column->getName()?>)
     {
 <?php switch ( $column->getType () ):
-        case 'date': ?>
+        case 'date':
+        case 'datetime':?>
+
         if (! empty($<?=$column->getName()?>))
         {
             if (! $<?=$column->getName()?> instanceof Zend_Date)
@@ -198,16 +201,16 @@ abstract class <?=$className?> extends <?=$this->config->namespace?$this->config
     /**
     * Gets column <?=$column->getName() . "\n"?>
     *
-<?php if ($column->getType()=='date'): ?>
+<?php if ($column->getType()=='date' or $column->getType()=='datetime'): ?>
     * @param boolean $returnZendDate
     * @return Zend_Date|null|string Zend_Date representation of this datetime if enabled, or ISO 8601 string if not
 <?php else: ?>
     * @return <?=$column->getType() . "\n"?>
 <?php endif; ?>
     */
-    public function get<?=\Classes\Maker\AbstractMaker::getClassName($column->getName())?>(<?php if ($column->getType()=='date'): ?>$returnZendDate = false <?php endif;?>)
+    public function get<?=\Classes\Maker\AbstractMaker::getClassName($column->getName())?>(<?php if ($column->getType()=='date' or $column->getType()=='datetime'): ?>$returnZendDate = false <?php endif;?>)
     {
-<?php if ($column->getType()=='date'): ?>
+<?php if ($column->getType()=='date' or $column->getType()=='datetime'): ?>
         if ($returnZendDate)
         {
             if ($this->_data['<?=$column->getName()?>'] === null)
