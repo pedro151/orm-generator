@@ -194,7 +194,7 @@ class MakerFile extends AbstractMaker
                                     . '.php';
 
                     $tplAbstract = $this->getParsedTplContents ( $objMakeFile->getParentFileTpl () );
-                    self::makeSourcer ( $fileAbstract, $tplAbstract, $objMakeFile->isOverwrite () );
+                    self::makeSourcer ( $fileAbstract, $tplAbstract, true );
                     unset( $fileAbstract, $tplAbstract );
                 }
 

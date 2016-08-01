@@ -69,4 +69,14 @@ abstract class AbstractPeer
         return $className::findFirst($parameters);
     }
 
+   /**
+    * Returns the models manager related to the entity instance
+    *
+    * @return \Phalcon\Mvc\Model\ManagerInterface
+    */
+    public static function getModelsManager()
+    {
+        return static::getObject()->getModelsManager();
+    }
+
 }

@@ -102,29 +102,6 @@ if ( $column->getMaxLength () ): ?>
     }
 
 <?php endif ?>
-    /**
-     * Allows to query a set of records that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return \<?=$objTables->getNamespace()?>\<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>[]
-     */
-    public static function find($parameters = null)
-    {
-        return parent::find($parameters);
-    }
-
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return \<?=$objTables->getNamespace()?>\<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )."\n"?>
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
-
-
 <?php foreach ($objTables->getColumns() as $column): ?>
     public function set<?=$this->getClassName ( $column->getName () )?>( $<?=$column->getName()?> )
     {
