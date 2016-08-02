@@ -17,8 +17,6 @@
 
 namespace  <?=$this->config->namespace?$this->config->namespace."\\":""?>Models;
 
-use Phalcon\Mvc\Model;
-
 abstract class AbstractEntity extends \Phalcon\Mvc\Model
 {
     protected static $_cache = array();
@@ -27,20 +25,20 @@ abstract class AbstractEntity extends \Phalcon\Mvc\Model
      * Implement a method that returns a string key based
      * on the query parameters
      */
-    protected static function _createKey($parameters)
+    public static function createKey($parameters)
     {
         $uniqueKey = array();
 
         foreach ($parameters as $key => $value) {
             if (is_scalar($value)) {
-                $uniqueKey[] = $key . ':' . $value;
+                $uniqueKey[] = $key . '_' . $value;
             } else {
                 if (is_array($value)) {
-                    $uniqueKey[] = $key . ':[' . self::_createKey($value) .']';
+                    $uniqueKey[] = $key . '_[' . self::createKey($value) .']';
                 }
             }
         }
 
-        return join(',', $uniqueKey);
+        return join('-', $uniqueKey);
     }
 }
