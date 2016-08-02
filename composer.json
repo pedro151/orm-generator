@@ -3,7 +3,7 @@
     "description": "orm-generator maps the entire database and then creates the DAO (Data Access Object) and ORM (Object-relational mapping) of the entire database to facilitate the development. uses various types of databases like Postgres and Mysql and various types of ORM framework.",
     "keywords": ["orm", "datamapper", "database", "model", "mapper", "entity", "dao", "generator", "orm-generator", "mysql", "postgres", "phalcon", "zend"],
     "license": "MIT",
-    "version": "v1.3.1",
+    "version": "v1.4.2",
     "authors": [
         {
             "name": "pedro151",
