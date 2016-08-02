@@ -14,9 +14,9 @@ class Peer extends AbstractAdapter
      * @var void
      */
     public    $pastName      = 'Peer';
+    protected $fileTpl       = "peer.php";
     protected $parentClass   = "AbstractPeer";
     protected $parentFileTpl = "peer_abstract.php";
-    protected $fileTpl       = "peer.php";
 
     public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {

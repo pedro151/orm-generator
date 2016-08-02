@@ -19,7 +19,7 @@ namespace  <?=$objTables->getNamespace()?>\Entity;
 
 use Phalcon\Validation;
 
-abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends \Phalcon\Mvc\Model
+abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends \<?=$this->config->namespace?$this->config->namespace."\\":""?>Models\<?=$objMakeFile->getParentClass() . "\n"?>
 {
 
 <?php foreach ($objTables->getColumns() as $column): ?>
