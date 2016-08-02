@@ -2,6 +2,8 @@
 
 namespace Classes\Db;
 
+use Classes\AdapterConfig\AbstractAdapter;
+
 /**
  * Colunas dos bancos
  *
@@ -90,9 +92,9 @@ class Column
      */
     public function populate ( $array )
     {
-        $this->name = $array[ 'name' ];
-        $this->type = $array[ 'type' ];
-        $this->nullable = $array[ 'nullable' ];
+        $this->name       = $array[ 'name' ];
+        $this->type       = $array[ 'type' ];
+        $this->nullable   = $array[ 'nullable' ];
         $this->max_length = $array[ 'max_length' ];
 
         return $this;
@@ -103,7 +105,7 @@ class Column
      */
     public function isPrimaryKey ()
     {
-        return ! empty( $this->primarykey );
+        return !empty( $this->primarykey );
     }
 
     /**
@@ -111,7 +113,7 @@ class Column
      */
     public function isForeingkey ()
     {
-        return ! empty( $this->refForeingkey );
+        return !empty( $this->refForeingkey );
     }
 
     /**
@@ -119,15 +121,40 @@ class Column
      */
     public function hasDependence ()
     {
-        return ! empty( $this->dependences );
+        return !empty( $this->dependences );
     }
 
     /**
      * @return string
      */
-    public function getType ()
+    public function getType ( $inPHP = true )
     {
-        return $this->type;
+        if ( !$inPHP ) {
+            return $this->type;
+        }
+
+        return AbstractAdapter::convertTypeToPHP ( $this->type );
+    }
+
+    /**
+     * @param      $type
+     * @param bool $inPHP
+     *
+     * @return bool
+     */
+    public function equalType ( $type, $inPHP = true )
+    {
+        return $this->getType ( $inPHP ) === $type;
+    }
+
+    /**
+     * @param AbstractAdapter $type
+     *
+     * @return mixed
+     */
+    public function getTypeByConfig ( AbstractAdapter $type )
+    {
+        return $type->convertTypeToTypeFramework ( $this->getType ( false ) );
     }
 
     /**
@@ -175,14 +202,14 @@ class Column
      *
      * @return $this
      */
-    public function createDependece ( $constraint_name , $table_name , $column_name ,$database, $schema = null )
+    public function createDependece ( $constraint_name, $table_name, $column_name, $database, $schema = null )
     {
         $objConstrantDependence = Constrant::getInstance ()
                                            ->populate (
                                                array (
-                                                   'constrant' => $constraint_name ,
-                                                   'schema'    => $schema ,
-                                                   'table'     => $table_name ,
+                                                   'constrant' => $constraint_name,
+                                                   'schema'    => $schema,
+                                                   'table'     => $table_name,
                                                    'column'    => $column_name,
                                                    'database'  => $database
                                                )

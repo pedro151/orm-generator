@@ -19,7 +19,7 @@ abstract class AbsractAdapter
     /**
      * @var void variavel com tipo de dados para serem convertida
      */
-    protected $dataTypes;
+    protected $dataTypesToSimple;
 
     /**
      * @type \PDO
@@ -176,7 +176,7 @@ abstract class AbsractAdapter
                             ->populate (
                                 array (
                                     'name'       => $table [ 'column_name' ],
-                                    'type'       => $this->convertTypeToPhp ( $table[ 'data_type' ] ),
+                                    'type'       => $this->convertTypeToSimple ( $table[ 'data_type' ] ),
                                     'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ),
                                     'max_length' => $table[ 'max_length' ]
                                 )
@@ -219,8 +219,17 @@ abstract class AbsractAdapter
      */
     protected function convertTypeToPhp ( $str )
     {
-        if ( isset( $this->dataTypes[ $str ] ) ) {
-            return $this->dataTypes[ $str ];
+        if ( isset( $this->dataTypesToPhp[ $str ] ) ) {
+            return $this->dataTypesToPhp[ $str ];
+        }
+
+        return 'string';
+    }
+
+    protected function convertTypeToSimple ( $str )
+    {
+        if ( isset( $this->dataTypesToSimple[ $str ] ) ) {
+            return $this->dataTypesToSimple[ $str ];
         }
 
         return 'string';

@@ -29,31 +29,30 @@ class Pgsql extends AbsractAdapter
      */
     protected $schema = array ( 'public' );
 
-    protected $dataTypes = array (
+    protected $dataTypesToSimple = array (
         /* Numeric Types */
-        'smallint'         => 'int' ,
-        'integer'          => 'int' ,
-        'bigint'           => 'float' ,
-        'decimal'          => 'float' ,
-        'numeric'          => 'float' ,
-        'real'             => 'float' ,
-        'double precision' => 'float' ,
-        'serial'           => 'int' ,
-        'bigserial'        => 'float' ,
+        'smallint'         => 'int',
+        'integer'          => 'int',
+        'serial'           => 'int',
+        'bigint'           => 'float',
+        'decimal'          => 'float',
+        'numeric'          => 'float',
+        'real'             => 'float',
+        'double precision' => 'float',
+        'bigserial'        => 'float',
         /* Monetary Types */
-        'money'            => 'float' ,
-        /* Character Types */
-        'character varyin' => 'string' ,
-        'varchar'          => 'string' ,
-        'character'        => 'string' ,
-        'char'             => 'string' ,
-        'text'             => 'string' ,
+        'money'            => 'float',
         /* Binary Data Types */
-        'bytea'            => 'string' ,
+        'bytea'            => 'int',
+        /* Character Types */
+        'character varyin' => 'string',
+        'varchar'          => 'string',
+        'character'        => 'string',
+        'char'             => 'string',
+        'text'             => 'text',
         /* Date/Time Types */
-        'datetime'         => 'datetime' ,
-        'date'             => 'date' ,
-
+        'datetime'         => 'datetime',
+        'date'             => 'date',
         /* Boolean Type */
         'boolean'          => 'boolean'
     );
@@ -61,8 +60,7 @@ class Pgsql extends AbsractAdapter
     public function __construct ( AbstractAdapter $adapterConfig )
     {
         parent::__construct ( $adapterConfig );
-        if ( $adapterConfig->hasSchemas () )
-        {
+        if ( $adapterConfig->hasSchemas () ) {
             $this->schema = $adapterConfig->getSchemas ();
         }
 
@@ -77,12 +75,12 @@ class Pgsql extends AbsractAdapter
      */
     public function getListNameTable ()
     {
-        if ( empty( $this->tableList ) )
-        {
-            $strSchema = implode ( "', '" , $this->schema );
+        if ( empty( $this->tableList ) ) {
+            $strSchema = implode ( "', '", $this->schema );
 
-            $this->tableList = $this->getPDO ()->query (
-                "SELECT table_schema,
+            $this->tableList = $this->getPDO ()
+                                    ->query (
+                                        "SELECT table_schema,
               table_name
              FROM information_schema.tables
              WHERE
@@ -92,7 +90,8 @@ class Pgsql extends AbsractAdapter
                table_schema,
                table_name
               ASC"
-            )->fetchAll ();
+                                    )
+                                    ->fetchAll ();
         }
 
         return $this->tableList;
@@ -105,10 +104,11 @@ class Pgsql extends AbsractAdapter
      */
     public function getListColumns ()
     {
-        $strSchema = implode ( "', '" , $this->schema );
+        $strSchema = implode ( "', '", $this->schema );
 
-        return $this->getPDO ()->query (
-            "SELECT distinct
+        return $this->getPDO ()
+                    ->query (
+                        "SELECT distinct
 	c.table_schema,
 	c.table_name,
 	c.column_name ,
@@ -121,15 +121,17 @@ class Pgsql extends AbsractAdapter
 		ON st.table_name=c.table_name and st.table_type = 'BASE TABLE'
 		and  c.table_schema IN ('$strSchema')
 		order by c.table_name asc"
-        )->fetchAll ( \PDO::FETCH_ASSOC );
+                    )
+                    ->fetchAll ( \PDO::FETCH_ASSOC );
     }
 
     public function getListConstrant ()
     {
-        $strSchema = implode ( "', '" , $this->schema );
+        $strSchema = implode ( "', '", $this->schema );
 
-        return $this->getPDO ()->query (
-            "SELECT distinct
+        return $this->getPDO ()
+                    ->query (
+                        "SELECT distinct
                 tc.constraint_type,
                 tc.constraint_name,
                 tc.table_schema,
@@ -148,7 +150,8 @@ class Pgsql extends AbsractAdapter
                       ON tc.constraint_name  = ccu.constraint_name
                         AND tc.constraint_schema = ccu.constraint_schema
                     ORDER by tc.table_schema"
-        )->fetchAll ( \PDO::FETCH_ASSOC );
+                    )
+                    ->fetchAll ( \PDO::FETCH_ASSOC );
     }
 
     /**
@@ -159,19 +162,18 @@ class Pgsql extends AbsractAdapter
      *
      * @return string
      */
-    public function getSequence ( $table , $column , $schema = 0 )
+    public function getSequence ( $table, $column, $schema = 0 )
     {
-        $tableTemp=$table;
-        if(0!==$schema){
-            $tableTemp = $schema.'.'.$table;
+        $tableTemp = $table;
+        if ( 0 !== $schema ) {
+            $tableTemp = $schema . '.' . $table;
         }
 
-        $pdo = $this->getPDO ();
+        $pdo     = $this->getPDO ();
         $return1 = $pdo->query ( "SELECT pg_get_serial_sequence('$tableTemp', '$column');" )
                        ->fetchColumn ();
 
-        if ( !is_null($return1) )
-        {
+        if ( !is_null ( $return1 ) ) {
             return $return1;
         }
 
@@ -186,19 +188,20 @@ class Pgsql extends AbsractAdapter
               "
         );
 
-        $stmt->bindParam ( 1 , $table );
-        $stmt->bindParam ( 2 , $column );
-        $stmt->bindParam ( 3 , $schema );
+        $stmt->bindParam ( 1, $table );
+        $stmt->bindParam ( 2, $column );
+        $stmt->bindParam ( 3, $schema );
         $stmt->execute ();
         $return2 = $stmt->fetchColumn ();
 
-        if ( $return2 )
-        {
+        if ( $return2 ) {
             return preg_filter (
                 array (
-                    '/nextval\(\'/' ,
+                    '/nextval\(\'/',
                     '/\'::regclass\)/'
-                ) , '' , $return2
+                ),
+                '',
+                $return2
             );
         }
 
@@ -211,9 +214,9 @@ class Pgsql extends AbsractAdapter
     public function getPDOString ()
     {
         return sprintf (
-            "pgsql:host=%s;port=%s;dbname=%s" ,
-            $this->host ,
-            $this->port ,
+            "pgsql:host=%s;port=%s;dbname=%s",
+            $this->host,
+            $this->port,
             $this->database
 
         );
@@ -226,8 +229,8 @@ class Pgsql extends AbsractAdapter
     public function getPDOSocketString ()
     {
         return sprintf (
-            "pgsql:unix_socket=%s;dbname=%s" ,
-            $this->socket ,
+            "pgsql:unix_socket=%s;dbname=%s",
+            $this->socket,
             $this->database
 
         );
@@ -240,17 +243,18 @@ class Pgsql extends AbsractAdapter
      */
     public function getTotalTables ()
     {
-        if ( empty( $this->totalTables ) )
-        {
-            $strSchema = implode ( "', '" , $this->schema );
+        if ( empty( $this->totalTables ) ) {
+            $strSchema = implode ( "', '", $this->schema );
 
-            $this->totalTables = $this->getPDO ()->query (
-                "SELECT COUNT(table_name)  AS total
+            $this->totalTables = $this->getPDO ()
+                                      ->query (
+                                          "SELECT COUNT(table_name)  AS total
              FROM information_schema.tables
              WHERE
               table_type = 'BASE TABLE'
               AND table_schema IN ( '" . $strSchema . "' )"
-            )->fetchColumn ();
+                                      )
+                                      ->fetchColumn ();
         }
 
         return (int) $this->totalTables;

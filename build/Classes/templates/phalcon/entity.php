@@ -32,7 +32,7 @@ abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getNa
 <?php if($column->hasSequence()):?>
     * @Identity
 <?php endif ?>
-    * @Column(type="<?=$this->config->convertTypeToTypeFramework($column->getType())?>", nullable=<?=$column->isNullable () ? "true" : "false"?><?php
+    * @Column(type="<?=$column->getTypeByConfig( $this->config )?>", nullable=<?=$column->isNullable () ? "true" : "false"?><?php
 if ( $column->getMaxLength () ): ?>
 , length=<?=$column->getMaxLength ()?>
 <?php endif ?>, column="<?=$column->getName()?>" )
