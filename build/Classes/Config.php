@@ -31,7 +31,7 @@ class Config
     /**
      * @var string
      */
-    public static $version = "1.4.3";
+    public static $version = "1.4.4";
 
     /**
      * String that separates the parent section name
@@ -84,9 +84,9 @@ class Config
         'path'       => "specify where to create the files (default is current directory).",
     );
 
-    public function __construct ( $argv, $basePath, $numArgv )
+    public function __construct ( $argv, $basePath, $numArgs )
     {
-        if ( array_key_exists ( 'help', $argv ) or ( $numArgv > 1 && count ( $argv ) < 1 ) ) {
+        if ( array_key_exists ( 'help', $argv ) or ( $numArgs > 1 && count ( $argv ) < 1 ) ) {
             die ( $this->getUsage () );
         }
         if ( array_key_exists ( 'version', $argv ) ) {
