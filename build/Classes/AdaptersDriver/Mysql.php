@@ -24,30 +24,38 @@ class Mysql extends AbsractAdapter
     protected $port = 3306;
 
     /**
-     * converts MySQL data types to PHP data types
+     * converts MySQL data types to Simple data types
      *
      * @param string $str
      *
      * @return string
      */
-    protected function convertTypeToPhp ( $str )
+    protected function convertTypeToSimple ( $str )
     {
         $res = '';
-        if ( preg_match ( '/(tinyint\(1\)|bit)/' , $str ) )
-        {
+        if ( preg_match ( '/(tinyint\(1\)|bit)/', $str ) ) {
             $res = 'boolean';
-        } elseif ( preg_match ( '/(datetime|timestamp|blob|char|enum|text|date)/' , $str ) )
-        {
+        }
+        elseif ( preg_match ( '/(timestamp|blob|char|enum)/', $str ) ) {
             $res = 'string';
-        } elseif ( preg_match ( '/(decimal|numeric|float|double)/' , $str ) )
-        {
+        }
+        elseif ( preg_match ( '/(text)/', $str ) ) {
+            $res = 'text';
+        }
+        elseif ( preg_match ( '/(decimal|numeric|float|double)/', $str ) ) {
             $res = 'float';
-        } elseif ( preg_match ( '#^(?:tiny|small|medium|long|big|var)?(\w+)(?:\(\d+\))?(?:\s\w+)*$#' , $str , $matches ) )
-        {
+        }
+        elseif ( preg_match ( '#^(?:tiny|small|medium|long|big|var)?(\w+)(?:\(\d+\))?(?:\s\w+)*$#', $str, $matches ) ) {
             $res = $matches[ 1 ];
-        } else
-        {
-            print "Can't convert column type to PHP - Unrecognized type: $str";
+        }
+        elseif ( preg_match ( '/(date)/', $str ) ) {
+            $res = 'date';
+        }
+        elseif ( preg_match ( '/(datetime)/', $str ) ) {
+            $res = 'datetime';
+        }
+        else {
+            print "Can't convert column type to Simple - Unrecognized type: $str";
         }
 
         return $res;
@@ -60,9 +68,9 @@ class Mysql extends AbsractAdapter
     public function getPDOString ()
     {
         return sprintf (
-            "mysql:host=%s;port=%s;dbname=%s" ,
-            $this->host ,
-            $this->port ,
+            "mysql:host=%s;port=%s;dbname=%s",
+            $this->host,
+            $this->port,
             $this->database
 
         );
@@ -75,8 +83,8 @@ class Mysql extends AbsractAdapter
     public function getPDOSocketString ()
     {
         return sprintf (
-            "mysql:unix_socket=%s;dbname=%s" ,
-            $this->socket ,
+            "mysql:unix_socket=%s;dbname=%s",
+            $this->socket,
             $this->database
 
         );
@@ -88,11 +96,12 @@ class Mysql extends AbsractAdapter
      */
     public function getListNameTable ()
     {
-        if ( empty( $this->tableList ) )
-        {
-            $this->tableList = $this->getPDO ()->query (
-                "show tables"
-            )->fetchAll ();
+        if ( empty( $this->tableList ) ) {
+            $this->tableList = $this->getPDO ()
+                                    ->query (
+                                        "show tables"
+                                    )
+                                    ->fetchAll ();
         }
 
         return $this->tableList;
@@ -106,8 +115,9 @@ class Mysql extends AbsractAdapter
     public function getListColumns ()
     {
 
-        return $this->getPDO ()->query (
-            "select
+        return $this->getPDO ()
+                    ->query (
+                        "select
                 0 AS table_schema,
                 table_name,
                 column_name ,
@@ -117,7 +127,8 @@ class Mysql extends AbsractAdapter
             from information_schema.columns
             where table_schema IN ('{$this->database}')
             order by table_name,ordinal_position"
-        )->fetchAll ( \PDO::FETCH_ASSOC );
+                    )
+                    ->fetchAll ( \PDO::FETCH_ASSOC );
     }
 
     /**
@@ -125,8 +136,9 @@ class Mysql extends AbsractAdapter
      */
     public function getListConstrant ()
     {
-        return $this->getPDO ()->query (
-            "SELECT distinct
+        return $this->getPDO ()
+                    ->query (
+                        "SELECT distinct
      i.constraint_type,
      k.constraint_name,
      -- k.table_schema,
@@ -143,7 +155,8 @@ ON i.CONSTRAINT_NAME = k.CONSTRAINT_NAME and k.TABLE_SCHEMA <> 'mysql'
 WHERE
 i.TABLE_SCHEMA IN ('{$this->database}') AND i.CONSTRAINT_TYPE IN ('FOREIGN KEY', 'PRIMARY KEY' )
 order by k.table_schema, k.table_name;"
-        )->fetchAll ( \PDO::FETCH_ASSOC );
+                    )
+                    ->fetchAll ( \PDO::FETCH_ASSOC );
     }
 
     /**
@@ -153,12 +166,13 @@ order by k.table_schema, k.table_name;"
      */
     public function getTotalTables ()
     {
-        if ( empty( $this->totalTables ) )
-        {
+        if ( empty( $this->totalTables ) ) {
 
-            $this->totalTables = $this->getPDO ()->query (
-                "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{$this->database}'"
-            )->fetchColumn ();
+            $this->totalTables = $this->getPDO ()
+                                      ->query (
+                                          "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{$this->database}'"
+                                      )
+                                      ->fetchColumn ();
         }
 
         return (int) $this->totalTables;
@@ -172,14 +186,15 @@ order by k.table_schema, k.table_name;"
      *
      * @return string
      */
-    public function getSequence ( $table , $column, $schema=0 )
+    public function getSequence ( $table, $column, $schema = 0 )
     {
         $return = $this->getPDO ()
-                       ->query ( "select * from information_schema.columns where extra like '%auto_increment%' and  TABLE_SCHEMA='{$this->database}' AND TABLE_NAME='{$table}' AND COLUMN_NAME='{$column}';" )
+                       ->query (
+                           "select * from information_schema.columns where extra like '%auto_increment%' and  TABLE_SCHEMA='{$this->database}' AND TABLE_NAME='{$table}' AND COLUMN_NAME='{$column}';"
+                       )
                        ->fetch ( \PDO::FETCH_ASSOC );
 
-        if ( ! $return )
-        {
+        if ( !$return ) {
             return;
         }
 

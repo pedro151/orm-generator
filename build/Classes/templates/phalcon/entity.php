@@ -19,7 +19,7 @@ namespace  <?=$objTables->getNamespace()?>\Entity;
 
 use Phalcon\Validation;
 
-abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends \Phalcon\Mvc\Model
+abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends \<?=$this->config->namespace?$this->config->namespace."\\":""?>Models\<?=$objMakeFile->getParentClass() . "\n"?>
 {
 
 <?php foreach ($objTables->getColumns() as $column): ?>
@@ -32,10 +32,10 @@ abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getNa
 <?php if($column->hasSequence()):?>
     * @Identity
 <?php endif ?>
-    * @Column(type="<?=$column->getType()?>", nullable=<?=$column->isNullable () ? "true" : "false"?><?php
+    * @Column(type="<?=$column->getTypeByConfig( $this->config )?>", nullable=<?=$column->isNullable () ? "true" : "false"?><?php
 if ( $column->getMaxLength () ): ?>
 , length=<?=$column->getMaxLength ()?>
-<?php endif ?>)
+<?php endif ?>, column="<?=$column->getName()?>" )
     */
     protected $<?=$column->getName()?>;
 
@@ -102,29 +102,6 @@ if ( $column->getMaxLength () ): ?>
     }
 
 <?php endif ?>
-    /**
-     * Allows to query a set of records that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return \<?=$objTables->getNamespace()?>\<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>[]
-     */
-    public static function find($parameters = null)
-    {
-        return parent::find($parameters);
-    }
-
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return \<?=$objTables->getNamespace()?>\<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )."\n"?>
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
-
-
 <?php foreach ($objTables->getColumns() as $column): ?>
     public function set<?=$this->getClassName ( $column->getName () )?>( $<?=$column->getName()?> )
     {

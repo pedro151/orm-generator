@@ -84,6 +84,19 @@ abstract class AbstractAdapter
 
     public $reservedWord = array ();
 
+
+    private static $dataTypesDefault = array (
+        'int'      => 'int',
+        'float'    => 'float',
+        'string'   => 'string',
+        'text'     => 'string',
+        'date'     => 'date',
+        'datetime' => 'date',
+        'boolean'  => 'boolean'
+    );
+
+    protected $dataTypes = array ();
+
     const SEPARETOR = "";
 
     /**
@@ -170,6 +183,7 @@ abstract class AbstractAdapter
 
     public function __construct ( $array )
     {
+        $this->dataTypes = $this->dataTypes + self::$dataTypesDefault;
         $array += array (
             'version'     => Config::$version,
             'author'      => ucfirst ( get_current_user () ),
@@ -384,4 +398,23 @@ abstract class AbstractAdapter
         return;
     }
 
+    /**
+     * @param string $type
+     *
+     * @return string
+     */
+    public static function convertTypeToPHP ( $type )
+    {
+        return self::$dataTypesDefault[ $type ];
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return string
+     */
+    public function convertTypeToTypeFramework ( $type )
+    {
+        return $this->dataTypes[ $type ];
+    }
 }

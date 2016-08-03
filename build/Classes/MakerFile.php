@@ -74,7 +74,7 @@ class MakerFile extends AbstractMaker
             echo strtr ( $this->msgReservedWord, $attribs );
             $line = trim ( fgets ( STDIN ) );
             if ( !empty( $line ) ) {
-                $this->getConfig()->reservedWord[ $index ] = $line;
+                $this->getConfig ()->reservedWord[ $index ] = $line;
             }
         }
     }
@@ -133,7 +133,6 @@ class MakerFile extends AbstractMaker
                 unset( $arrUrl );
             }
 
-
         }
         else {
             $url            = array (
@@ -177,8 +176,7 @@ class MakerFile extends AbstractMaker
     {
         $this->startTime ();
         $this->driver->runDatabase ();
-        $countSchema = count ( $this->location );
-        $max         = $this->driver->getTotalTables () * ( $countSchema * $this->countDiretory () );
+        $this->max   = $this->driver->getTotalTables () * $this->countDiretory ();
         $cur         = 0;
 
 
@@ -186,7 +184,6 @@ class MakerFile extends AbstractMaker
             foreach ( $this->factoryMakerFile () as $objMakeFile ) {
                 $path = $location . DIRECTORY_SEPARATOR . $objMakeFile->getPastName ();
                 self::makeDir ( $path );
-
                 if ( $objMakeFile->getParentFileTpl () != '' ) {
                     $fileAbstract = $this->baseLocation
                                     . DIRECTORY_SEPARATOR
@@ -194,17 +191,12 @@ class MakerFile extends AbstractMaker
                                     . '.php';
 
                     $tplAbstract = $this->getParsedTplContents ( $objMakeFile->getParentFileTpl () );
-                    self::makeSourcer ( $fileAbstract, $tplAbstract, $objMakeFile->isOverwrite () );
+                    self::makeSourcer ( $fileAbstract, $tplAbstract, true );
                     unset( $fileAbstract, $tplAbstract );
                 }
 
                 foreach ( $this->driver->getTables ( $schema ) as $key => $objTables ) {
-                    $total = ceil ( $cur / $max ) * 100;
-                    printf ( "\r Creating: %6.2f%%", $total );
-                    $cur++;
-
                     $file = $path . DIRECTORY_SEPARATOR . self::getClassName ( $objTables->getName () ) . '.php';
-
 
                     $tpl = $this->getParsedTplContents (
                         $objMakeFile->getFileTpl (),
@@ -214,13 +206,20 @@ class MakerFile extends AbstractMaker
 
                     );
                     self::makeSourcer ( $file, $tpl, $objMakeFile->isOverwrite () );
+                    $this->countCreatedFiles ( $cur );
                 }
-
             }
         }
 
         $this->reportProcess ( $cur );
         echo "\n\033[1;32mSuccessfully process finished!\n\033[0m";
+    }
+
+    private function countCreatedFiles ( &$cur )
+    {
+        ++$cur;
+        $total = ( $cur / $this->max ) * 100;
+        printf ( "\r Creating: %6.2f%%", $total );
     }
 
     private function reportProcess ( $countFiles )
@@ -230,7 +229,7 @@ class MakerFile extends AbstractMaker
             $countDir   = $this->countDiretory ();
             $totalTable = $this->driver->getTotalTables ();
             echo "\n------";
-            printf ( "\n\r-Files generated:%s", $countFiles );
+            printf ( "\n\r-Files generated:%s of %s", $countFiles, $this->max );
             printf ( "\n\r-Diretory generated:%s", $databases * $countDir );
             printf ( "\n\r-Scanned tables:%s", $totalTable );
             printf ( "\n\r-Execution time: %ssec", $this->getRunTime () );
@@ -255,13 +254,12 @@ class MakerFile extends AbstractMaker
      */
     public function countDiretory ()
     {
-        $dir = 0;
+        $dir = 1;
         foreach ( $this->factoryMakerFile () as $abstractAdapter ) {
             if ( $abstractAdapter->hasDiretory () ) {
-                $dir++;
+                ++$dir;
             }
         }
-
 
         return $dir;
     }
@@ -275,8 +273,8 @@ class MakerFile extends AbstractMaker
      * @return String
      */
     protected function getParsedTplContents ( $tplFile, $vars = array (), \Classes\Db\DbTable $objTables = null,
-                                              $objMakeFile = null
-    ) {
+                                              $objMakeFile = null )
+    {
 
         $arrUrl = array (
             __DIR__,

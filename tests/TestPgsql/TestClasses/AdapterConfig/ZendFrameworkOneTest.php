@@ -12,19 +12,19 @@ class ZendFrameworkOneTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp ()
     {
-        $this->pdo = new \PDO($GLOBALS['db_dsn'], $GLOBALS['db_username'], $GLOBALS['db_password']);
-        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $this->pdo->query("CREATE TABLE dao (test VARCHAR(50) NOT NULL)");
+        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ], $GLOBALS[ 'db_username' ], $GLOBALS[ 'db_password' ] );
+        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
+        $this->pdo->query ( "CREATE TABLE dao (test VARCHAR(50) NOT NULL)" );
     }
 
     protected function tearDown ()
     {
-        $this->pdo->query("DROP TABLE dao");
+        $this->pdo->query ( "DROP TABLE dao" );
     }
 
     protected static function getMethod ( $name )
     {
-        $class = new \ReflectionClass( '\Classes\AdapterConfig\ZendFrameworkOne' );
+        $class  = new \ReflectionClass( '\Classes\AdapterConfig\ZendFrameworkOne' );
         $method = $class->getMethod ( $name );
         $method->setAccessible ( true );
 
@@ -37,17 +37,30 @@ class ZendFrameworkOneTest extends \PHPUnit_Framework_TestCase
     public function testIsValidTrue ()
     {
         $config = array (
-            'driver'   => 'pdo_pgsql' ,
-            'host'     => 'localhost' ,
-            'database'  => $GLOBALS[ 'dbname' ],
-            'username'  => $GLOBALS[ 'db_username' ],
-            'password'  => $GLOBALS[ 'db_password' ],
+            'driver'   => 'pdo_pgsql',
+            'host'     => 'localhost',
+            'database' => $GLOBALS[ 'dbname' ],
+            'username' => $GLOBALS[ 'db_username' ],
+            'password' => $GLOBALS[ 'db_password' ],
         );
-        $obj = new \Classes\AdapterConfig\None( $config );
+        $obj    = new \Classes\AdapterConfig\None( $config );
 
         $valid = self::getMethod ( 'isValid' );
-        $resp = $valid->invoke ( $obj );
-        $this->assertTrue ( $resp , "IsValid populado deve retornar True" );
+        $resp  = $valid->invoke ( $obj );
+        $this->assertTrue ( $resp, "IsValid populado deve retornar True" );
+    }
+
+    public function testTypeConvert ()
+    {
+        $config = array (
+            'driver'   => 'pdo_pgsql',
+            'host'     => 'localhost',
+            'database' => $GLOBALS[ 'dbname' ],
+            'username' => $GLOBALS[ 'db_username' ],
+            'password' => $GLOBALS[ 'db_password' ],
+        );
+        $obj    = new \Classes\AdapterConfig\Phalcon( $config );
+        $this->assertTrue('integer'===$obj->convertTypeToTypeFramework('int'));
     }
 
     /**
@@ -61,7 +74,12 @@ class ZendFrameworkOneTest extends \PHPUnit_Framework_TestCase
 
         $obj = $this->getMockBuilder ( '\Classes\AdapterConfig\ZendFrameworkOne' )
                     ->setConstructorArgs ( array ( array () ) )
-                    ->setMethods ( array ( 'getParams', 'parseFrameworkConfig' ) )
+                    ->setMethods (
+                        array (
+                            'getParams',
+                            'parseFrameworkConfig'
+                        )
+                    )
                     ->getMock ();
 
         $obj->expects ( $this->any () )
