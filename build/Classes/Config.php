@@ -70,9 +70,23 @@ class Config
         'phalcon'
     );
 
-    public function __construct ( $argv, $basePath )
+    private $parameterList = array (
+        'init'       => 'Creates the necessary configuration file to start using the orm-generator.',
+        'config-ini' => 'reference to another .ini file configuration (relative path).',
+        'config-env' => 'orm-generator configuration environment.',
+        'framework'  => 'name framework used, which has the contents of the database configurations and framework template.',
+        'driver'     => 'database driver name (Ex.: pgsql).',
+        'database'   => 'database name.',
+        'schema'     => 'database schema name (one or more than one).',
+        'status'     => 'show status of implementation carried out after completing the process.',
+        'version'    => 'shows the version of orm-generator.',
+        'help'       => "help command explaining all the options and manner of use.",
+        'path'       => "specify where to create the files (default is current directory).",
+    );
+
+    public function __construct ( $argv, $basePath, $numArgv )
     {
-        if ( array_key_exists ( 'help', $argv ) ) {
+        if ( array_key_exists ( 'help', $argv ) or ( $numArgv > 1 && count ( $argv ) < 1 ) ) {
             die ( $this->getUsage () );
         }
         if ( array_key_exists ( 'version', $argv ) ) {
@@ -93,26 +107,31 @@ class Config
     public function getUsage ()
     {
         $version = $this->getVersion ();
+        $list    = $this->renderParam ();
 
         return <<<EOF
 parameters:
-
-    --init                : Creates the necessary configuration file to start using the orm-generator.
-    --config-ini          : reference to another .ini file configuration (relative path).
-    --config-env          : orm-generator configuration environment.
-    --framework           : name framework used, which has the contents of the database configurations and framework template.
-    --driver              : database driver name (Ex.: pgsql).
-    --database            : database name.
- *  --schema              : database schema name (one or more than one).
-    --status              : show status of implementation carried out after completing the process.
-    --version             : shows the version of orm-generator.
-    --help                : help command explaining all the options and manner of use.
-    --path                  specify where to create the files (default is current directory).
-
+$list
  example: php generate.php --framework=zf1 --database=foo --table=foobar --status
 
 $version
 EOF;
+    }
+
+    public function renderParam ()
+    {
+        $return = "";
+        foreach ( $this->parameterList as $param => $desc ) {
+            if ( strlen ( $param ) < 5 ) {
+                $return .= "\t--" . $param . "\t\t: " . $desc . "\n";
+            }
+            else {
+                $return .= "\t--" . $param . "\t: " . $desc . "\n";
+            }
+
+        }
+
+        return $return;
     }
 
     public function getVersion ()

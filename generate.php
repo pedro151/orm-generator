@@ -80,14 +80,13 @@ try
     );
 
     $_path = realpath ( __FILE__ );
-    $argv = getopt ( null , $arrValid );
-
-    if ( array_key_exists ( 'init' , $argv ) )
+    $arg   = getopt ( null , $arrValid );
+    if ( array_key_exists ( 'init' , $arg ) )
     {
-        $maker = new \Classes\MakerConfigFile( $argv , $_path );
+        $maker = new \Classes\MakerConfigFile( $arg , $_path );
     } else
     {
-        $maker = new \Classes\MakerFile( new \Classes\Config( $argv , $_path ) );
+        $maker = new \Classes\MakerFile( new \Classes\Config( $arg , $_path, count($argv) ) );
     }
 
     $maker->run ();
