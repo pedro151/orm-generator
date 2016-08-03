@@ -31,7 +31,7 @@ class Config
     /**
      * @var string
      */
-    public static $version = "1.4.2";
+    public static $version = "1.4.3";
 
     /**
      * String that separates the parent section name
@@ -74,6 +74,9 @@ class Config
     {
         if ( array_key_exists ( 'help', $argv ) ) {
             die ( $this->getUsage () );
+        }
+        if ( array_key_exists ( 'version', $argv ) ) {
+            die ( $this->getVersion () );
         }
         if ( array_key_exists ( 'status', $argv ) ) {
             $argv[ 'status' ] = true;
@@ -133,9 +136,8 @@ EOF;
         $this->_basePath = dirname ( $basePath );
 
         $configIni = isset( $argv[ 'config-ini' ] )
-            ? $argv[ 'config-ini' ]
-            : $this->_basePath
-              . $this->configIniDefault;
+            ? $argv[ 'config-ini' ] : $this->_basePath
+                                      . $this->configIniDefault;
 
         $configTemp    = $this->loadIniFile ( realpath ( $configIni ) );
         $configCurrent = self::parseConfigEnv ( $configTemp, $argv );
