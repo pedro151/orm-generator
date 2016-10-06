@@ -90,7 +90,7 @@ CREATE TABLE bugs_products (
         {
             $arrConfig = array (
                 'driver'    => 'pdo_mysql' ,
-                'host'      => 'localhost' ,
+                'host'      => $GLOBALS[ 'host' ],
                 'database'  => $GLOBALS[ 'dbname' ],
                 'username'  => $GLOBALS[ 'db_username' ],
                 'password'  => $GLOBALS[ 'db_password' ],
