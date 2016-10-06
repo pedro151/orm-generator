@@ -1,0 +1,28 @@
+version : '2'
+
+services:
+  orm-dbs:
+      container_name: orm-dbs
+      image: pedro151/postgres
+      ports:
+          - "5432:5432"
+      environment:
+          POSTGRES_PASSWORD: 123
+          POSTGRES_USER: postgres
+  orm:
+      container_name: orm
+      image: pedro151/phalcon
+      build: .
+      volumes:
+          - /c/Users:/c/Users
+          - /Users/htdocs/orm-generator:/var/www
+      ports:
+          - "80:80"
+          - "443:443"
+      tty: true
+      environment:
+        XDEBUG_CONFIG: remote_host=192.168.99.100
+      depends_on:
+          - orm-dbs
+      links:
+          - orm-dbs
