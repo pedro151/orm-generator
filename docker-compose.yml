@@ -1,14 +1,21 @@
 version : '2'
 
 services:
-  orm-dbs:
-      container_name: orm-dbs
+  orm-postgres:
+      container_name: orm-postgres
       image: pedro151/postgres
       ports:
           - "5432:5432"
       environment:
           POSTGRES_PASSWORD: 123
           POSTGRES_USER: postgres
+  orm-mysql:
+        container_name: orm-mysql
+        image: mysql/mysql-server
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: 123
   orm:
       container_name: orm
       image: pedro151/phalcon
@@ -23,6 +30,8 @@ services:
       environment:
         XDEBUG_CONFIG: remote_host=192.168.99.100
       depends_on:
-          - orm-dbs
+          - orm-postgres
+          - orm-mysql
       links:
-          - orm-dbs
+          - orm-postgres
+          - orm-mysql
