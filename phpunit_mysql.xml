@@ -6,7 +6,6 @@
         <var name="dbname" value="dao_generator" />
         <var name="db_username" value="root"/>
         <var name="db_password" value=""/>
-        <var name="base_path" value="__FILE__" />
     </php>
 
     <testsuites>
