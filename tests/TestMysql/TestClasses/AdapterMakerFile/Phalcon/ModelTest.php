@@ -111,7 +111,6 @@ CREATE TABLE bugs_products (
     public function testGetInstace ()
     {
         $instance = \Classes\AdapterMakerFile\Phalcon\Entity::getInstance();
-        var_dump($instance);
         $this->assertTrue ( $instance instanceof
                             \Classes\AdapterMakerFile\Phalcon\Entity );
         $this->assertTrue ( $instance->getPastName () == "Entity" );
