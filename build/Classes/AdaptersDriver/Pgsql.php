@@ -76,6 +76,9 @@ class Pgsql extends AbsractAdapter
     public function getListNameTable ()
     {
         if ( empty( $this->tableList ) ) {
+
+            $sqlTables = !empty($this->tablesName)?"AND table_name IN ( $this->tablesName )":'';
+
             $strSchema = implode ( "', '", $this->schema );
 
             $this->tableList = $this->getPDO ()
@@ -85,7 +88,7 @@ class Pgsql extends AbsractAdapter
              FROM information_schema.tables
              WHERE
               table_type = 'BASE TABLE'
-              AND table_schema IN ( '$strSchema' )
+              AND table_schema IN ( '$strSchema' ) $sqlTables
               ORDER by
                table_schema,
                table_name
@@ -104,6 +107,7 @@ class Pgsql extends AbsractAdapter
      */
     public function getListColumns ()
     {
+        $sqlTables = !empty($this->tablesName)?"AND c.table_name IN ( $this->tablesName )":'';
         $strSchema = implode ( "', '", $this->schema );
 
         return $this->getPDO ()
@@ -119,7 +123,7 @@ class Pgsql extends AbsractAdapter
 		information_schema.tables AS st
 		INNER JOIN  information_schema.columns AS c
 		ON st.table_name=c.table_name and st.table_type = 'BASE TABLE'
-		and  c.table_schema IN ('$strSchema')
+		 $sqlTables and  c.table_schema IN ('$strSchema')
 		order by c.table_name asc"
                     )
                     ->fetchAll ( \PDO::FETCH_ASSOC );
@@ -127,6 +131,7 @@ class Pgsql extends AbsractAdapter
 
     public function getListConstrant ()
     {
+        $sqlTables = !empty($this->tablesName)?"AND tc.table_name IN ( $this->tablesName )":'';
         $strSchema = implode ( "', '", $this->schema );
 
         return $this->getPDO ()
@@ -146,6 +151,7 @@ class Pgsql extends AbsractAdapter
                       ON tc.constraint_name = kcu.constraint_name
                        AND tc.table_schema IN ('$strSchema')
                        AND tc.constraint_type IN ('FOREIGN KEY','PRIMARY KEY')
+                       $sqlTables
                     JOIN information_schema.constraint_column_usage AS ccu
                       ON tc.constraint_name  = ccu.constraint_name
                         AND tc.constraint_schema = ccu.constraint_schema
@@ -244,6 +250,8 @@ class Pgsql extends AbsractAdapter
     public function getTotalTables ()
     {
         if ( empty( $this->totalTables ) ) {
+            $sqlTables = !empty($this->tablesName)?"AND table_name IN ( $this->tablesName )":'';
+
             $strSchema = implode ( "', '", $this->schema );
 
             $this->totalTables = $this->getPDO ()
@@ -252,7 +260,7 @@ class Pgsql extends AbsractAdapter
              FROM information_schema.tables
              WHERE
               table_type = 'BASE TABLE'
-              AND table_schema IN ( '" . $strSchema . "' )"
+              AND table_schema IN ( '" . $strSchema . "' ) $sqlTables"
                                       )
                                       ->fetchColumn ();
         }

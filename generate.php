@@ -75,6 +75,7 @@ try
         'database:' ,
         'schema:' ,
         'driver:' ,
+        'tables:',
         'framework:' ,
         'path:'
     );

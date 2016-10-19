@@ -54,6 +54,11 @@ abstract class AbsractAdapter
     /**
      * @type string
      */
+    protected $tablesName;
+
+    /**
+     * @type string
+     */
     protected $socket;
 
     /**
@@ -338,6 +343,7 @@ abstract class AbsractAdapter
         $this->username = $adapterConfig->getUser ();
         $this->password = $adapterConfig->getPassword ();
         $this->socket   = $adapterConfig->getSocket ();
+        $this->tablesName = $adapterConfig->hasTablesName ()? $adapterConfig->getListTablesName():'';
 
     }
 
