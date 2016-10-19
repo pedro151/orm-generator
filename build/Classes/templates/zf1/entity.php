@@ -4,24 +4,24 @@
     ) ?>
 
 /**
-* Application Entity
-*
-* <?= $this->config->last_modify . "\n" ?>
-*
-* @package <?= $objTables->getNamespace () . "\n" ?>
-* @subpackage Entity
-*
-* @author    <?= $this->config->author . "\n" ?>
-*
-* @copyright <?= $this->config->copyright . "\n" ?>
-* @license   <?= $this->config->license . "\n" ?>
-* @link      <?= $this->config->link . "\n" ?>
-* @version   <?= $this->config->version . "\n" ?>
-*/
+ * Application Entity
+ *
+ * <?= $this->config->last_modify . "\n" ?>
+ *
+ * @package <?= $objTables->getNamespace () . "\n" ?>
+ * @subpackage Entity
+ *
+ * @author    <?= $this->config->author . "\n" ?>
+ *
+ * @copyright <?= $this->config->copyright . "\n" ?>
+ * @license   <?= $this->config->license . "\n" ?>
+ * @link      <?= $this->config->link . "\n" ?>
+ * @version   <?= $this->config->version . "\n" ?>
+ */
 
 /**
-* Abstract class for entity
-*/
+ * Abstract class for entity
+ */
 
 abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->config->namespace
                                                                         . "_" : "" ?>Model_<?= $objMakeFile->getParentClass (
@@ -30,26 +30,26 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
 
 <?php foreach ( $objTables->getColumns () as $column ): ?>
     /**
-    * Database constraint in the column <?= $column->getName () . "\n" ?>
-    *
-    */
+     * Database constraint in the column <?= $column->getName () . "\n" ?>
+     *
+     */
     const <?= strtoupper ( $column->getName () ) ?> = '<?= $objTables->getName () ?>.<?= $column->getName () ?>';
 <?php endforeach; ?>
 
-/**
-* Nome da tabela DbTable do model
-*
-* @var string
-* @access protected
-*/
-protected $_tableClass = '<?= $objTables->getNamespace () ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName (
+    /**
+     * Nome da tabela DbTable do model
+     *
+     * @var string
+     * @access protected
+     */
+    protected $_tableClass = '<?= $objTables->getNamespace () ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName (
     $objTables->getName ()
 ) ?>';
 
-/**
-* @see <?= $this->config->namespace ?>Model_EntityAbstract::$_columnsList
-*/
-protected $_columnsList = array(
+    /**
+     * @see <?= $this->config->namespace ?>Model_EntityAbstract::$_columnsList
+     */
+    protected $_columnsList = array(
 <?php foreach ( $objTables->getColumns () as $column ): ?>
     self::<?= strtoupper ( $column->getName () ) ?> => '<?= strtolower (
         \Classes\Maker\AbstractMaker::getClassName ( $column->getName () )
@@ -57,10 +57,10 @@ protected $_columnsList = array(
 <?php endforeach; ?>
 );
 
-/**
-* @see <?= $this->config->namespace ?>Model_EntityAbstract::$_filters
-*/
-protected $_filters = array(
+    /**
+     * @see <?= $this->config->namespace ?>Model_EntityAbstract::$_filters
+     */
+    protected $_filters = array(
 <?php foreach ( $objTables->getColumns () as $column ): ?>
     <?php
     $filters = null;
@@ -84,10 +84,10 @@ protected $_filters = array(
 <?php endforeach; ?>
 );
 
-/**
-* @see <?= $this->config->namespace ?>Model_EntityAbstract::$_validators
-*/
-protected $_validators= array(
+    /**
+     * @see <?= $this->config->namespace ?>Model_EntityAbstract::$_validators
+     */
+    protected $_validators= array(
 <?php foreach ( $objTables->getColumns () as $column ): ?>
     <?php
     $validators = array ();
@@ -122,8 +122,7 @@ protected $_validators= array(
     * @var string
     * @access protected
     */
-
-    protected $_primary = array(
+   protected $_primary = array(
     <?php foreach ( $objTables->getPrimarykeys () as $pks ) : ?>
         '<?= $pks->getName () ?>',
     <?php endforeach ?>
@@ -132,36 +131,36 @@ protected $_validators= array(
 
 <?php foreach ( $parents as $parent ): ?>
     /**
-    * Parent relation <?= \Classes\Maker\AbstractMaker::getClassName ( $parent[ 'table' ] ) . "\n" ?>
-    *
-    * @var <?= $parent[ 'name' ] . "\n" ?>
-    */
+     * Parent relation <?= \Classes\Maker\AbstractMaker::getClassName ( $parent[ 'table' ] ) . "\n" ?>
+     *
+     * @var <?= $parent[ 'name' ] . "\n" ?>
+     */
     protected $_parent_<?= $parent[ 'name' ] ?>;
 
 <?php endforeach; ?>
 <?php foreach ( $depends as $depend ): ?>
     /**
-    * Depends relation <?= \Classes\Maker\AbstractMaker::getClassName ( $depend[ 'table' ] ) . "\n" ?>
-    *
-    * @var <?= $depend[ 'class' ] . "\n" ?>
-    */
+     * Depends relation <?= \Classes\Maker\AbstractMaker::getClassName ( $depend[ 'table' ] ) . "\n" ?>
+     *
+     * @var <?= $depend[ 'class' ] . "\n" ?>
+     */
     protected $_depend_<?= $depend[ 'name' ] ?>;
 
 <?php endforeach; ?>
 <?php foreach ( $objTables->getColumns () as $column ): ?>
     /**
-    *
-    * Sets column <?= $column->getName () . "\n" ?>
-    *
+     *
+     * Sets column <?= $column->getName () . "\n" ?>
+     *
     <?php if ( $column->equalType ( 'date' ) ): ?>
-        * Stored in ISO 8601 format.
-        *
-        * @param string|Zend_Date $<?= $column->getName () . "\n" ?>
+     * Stored in ISO 8601 format.
+     *
+     * @param string|Zend_Date $<?= $column->getName () . "\n" ?>
     <?php else: ?>
-        * @param <?= $column->getType () ?> $<?= $column->getName () . "\n" ?>
+     * @param <?= $column->getType () ?> $<?= $column->getName () . "\n" ?>
     <?php endif; ?>
-    * @return <?= $className . "\n" ?>
-    */
+     * @return <?= $className . "\n" ?>
+     */
     public function set<?= \Classes\Maker\AbstractMaker::getClassName ( $column->getName () ) ?>($<?= $column->getName (
     ) ?>)
     {
@@ -169,12 +168,12 @@ protected $_validators= array(
         case 'date': ?>
             if (! empty($<?= $column->getName () ?>))
             {
-            if (! $<?= $column->getName () ?> instanceof Zend_Date)
-            {
-            $<?= $column->getName () ?> = new Zend_Date($<?= $column->getName () ?>);
-            }
+                if (! $<?= $column->getName () ?> instanceof Zend_Date)
+                {
+                    $<?= $column->getName () ?> = new Zend_Date($<?= $column->getName () ?>);
+                }
 
-            $this-><?= $column->getName () ?> = $<?= $column->getName () ?>->toString(Zend_Date::ISO_8601);
+                $this-><?= $column->getName () ?> = $<?= $column->getName () ?>->toString(Zend_Date::ISO_8601);
             }
 
             <?php break ?>
@@ -186,32 +185,33 @@ protected $_validators= array(
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
             $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName (
             ) ?>'=>$<?= $column->getName () ?> ));
+
             if(!$input->isValid ('<?= $column->getName () ?>'))
             {
-            $errors =  $input->getMessages ();
-            foreach ( $errors['<?= $column->getName () ?>'] as $key => $value )
-            {
-            throw new Exception ( $value );
-            }
+                $errors =  $input->getMessages ();
+                foreach ( $errors['<?= $column->getName () ?>'] as $key => $value )
+                {
+                    throw new Exception ( $value );
+                }
             }
 
             $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
 
             <?php break ?>
         <?php endswitch ?>
-    return $this;
+        return $this;
     }
 
     /**
-    * Gets column <?= $column->getName () . "\n" ?>
-    *
+     * Gets column <?= $column->getName () . "\n" ?>
+     *
     <?php if ( $column->equalType ( 'date' ) ): ?>
-        * @param boolean $returnZendDate
-        * @return Zend_Date|null|string Zend_Date representation of this datetime if enabled, or ISO 8601 string if not
+     * @param boolean $returnZendDate
+     * @return Zend_Date|null|string Zend_Date representation of this datetime if enabled, or ISO 8601 string if not
     <?php else: ?>
-        * @return <?= $column->getType () . "\n" ?>
+     * @return <?= $column->getType () . "\n" ?>
     <?php endif; ?>
-    */
+     */
     public function get<?= \Classes\Maker\AbstractMaker::getClassName (
         $column->getName ()
     ) ?>(<?php if ( $column->equalType ( 'date' ) ): ?>$returnZendDate = false <?php endif; ?>)
@@ -219,36 +219,36 @@ protected $_validators= array(
     <?php if ( $column->equalType ( 'date' ) ): ?>
         if ($returnZendDate)
         {
-        if ($this->_data['<?= $column->getName () ?>'] === null)
-        {
-        return null;
-        }
+            if ($this->_data['<?= $column->getName () ?>'] === null)
+            {
+                return null;
+            }
 
-        return new Zend_Date($this-><?= $column->getName () ?>, Zend_Date::ISO_8601);
+            return new Zend_Date($this-><?= $column->getName () ?>, Zend_Date::ISO_8601);
         }
 
     <?php endif; ?>
-    return $this-><?= $column->getName () ?>;
+        return $this-><?= $column->getName () ?>;
     }
 
 <?php endforeach; ?>
 <?php foreach ( $parents as $parent ): ?>
     /**
-    * Gets parent <?= $parent[ 'table' ] . "\n" ?>
-    *
-    * @return <?= $parent[ 'class' ] . "\n" ?>
-    */
+     * Gets parent <?= $parent[ 'table' ] . "\n" ?>
+     *
+     * @return <?= $parent[ 'class' ] . "\n" ?>
+     */
     public function get<?= $parent[ 'function' ] ?>()
     {
-    if ($this->_parent_<?= $parent[ 'name' ] ?> === null)
-    {
-    $this->_parent_<?= $parent[ 'name' ] ?> = $this->findParentRow('<?= $objTables->getNamespace (
+        if ($this->_parent_<?= $parent[ 'name' ] ?> === null)
+        {
+            $this->_parent_<?= $parent[ 'name' ] ?> = $this->findParentRow('<?= $objTables->getNamespace (
     ) ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName (
         $parent[ 'table' ]
     ) ?>', '<?= \Classes\Maker\AbstractMaker::getClassName ( $parent[ 'name' ] ) ?>');
     }
 
-    return $this->_parent_<?= $parent[ 'name' ] ?>;
+        return $this->_parent_<?= $parent[ 'name' ] ?>;
     }
 
 <?php endforeach; ?>
@@ -256,19 +256,19 @@ protected $_validators= array(
 
 <?php foreach ( $depends as $depend ): ?>
     /**
-    * Gets dependent <?= $depend[ 'table' ] . "\n" ?>
-    *
-    * @return <?= $depend[ 'class' ] . "\n" ?>
-    */
+     * Gets dependent <?= $depend[ 'table' ] . "\n" ?>
+     *
+     * @return <?= $depend[ 'class' ] . "\n" ?>
+     */
     public function get<?= $depend[ 'function' ] ?>()
     {
-    if ($this->_depend_<?= $depend[ 'name' ] ?> === null)
-    {
-    $this->_depend_<?= $depend[ 'name' ] ?> = $this->findDependentRowset('<?= $objTables->getNamespace (
+        if ($this->_depend_<?= $depend[ 'name' ] ?> === null)
+        {
+            $this->_depend_<?= $depend[ 'name' ] ?> = $this->findDependentRowset('<?= $objTables->getNamespace (
     ) ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName ( $depend[ 'table' ] ) ?>');
-    }
+        }
 
-    return $this->_depend_<?= $depend[ 'name' ] ?>;
+        return $this->_depend_<?= $depend[ 'name' ] ?>;
     }
 
 <?php endforeach; ?>

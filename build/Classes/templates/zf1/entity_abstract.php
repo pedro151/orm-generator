@@ -19,11 +19,11 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
 {
 
     /**
-    * Nome da tabela DbTable do model
-    *
-    * @var string
-    * @access protected
-    */
+     * Nome da tabela DbTable do model
+     *
+     * @var string
+     * @access protected
+     */
     protected $_tableClass;
 
     /**
