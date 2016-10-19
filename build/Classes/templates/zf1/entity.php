@@ -62,7 +62,7 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
      */
     protected $_filters = array(
 <?php foreach ( $objTables->getColumns () as $column ): ?>
-    <?php
+<?php
     $filters = null;
     switch ( ucfirst ( $column->getType () ) ) {
         case 'String':
@@ -89,7 +89,7 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
      */
     protected $_validators= array(
 <?php foreach ( $objTables->getColumns () as $column ): ?>
-    <?php
+<?php
     $validators = array ();
 
     $validators[] = $column->isNullable () ? "'allowEmpty' => true" : "'NotEmpty'";
@@ -123,9 +123,9 @@ $validators = implode ( ", ", $validators ) ?>
     * @access protected
     */
    protected $_primary = array(
-    <?php foreach ( $objTables->getPrimarykeys () as $pks ) : ?>
+<?php foreach ( $objTables->getPrimarykeys () as $pks ) : ?>
         '<?= $pks->getName () ?>',
-    <?php endforeach ?>
+<?php endforeach ?>
     );
 <?php endif ?>
 
@@ -152,19 +152,19 @@ $validators = implode ( ", ", $validators ) ?>
      *
      * Sets column <?= $column->getName () . "\n" ?>
      *
-    <?php if ( $column->equalType ( 'date' ) ): ?>
+<?php if ( $column->equalType ( 'date' ) ): ?>
      * Stored in ISO 8601 format.
      *
      * @param string|Zend_Date $<?= $column->getName () . "\n" ?>
-    <?php else: ?>
+<?php else: ?>
      * @param <?= $column->getType () ?> $<?= $column->getName () . "\n" ?>
-    <?php endif; ?>
+<?php endif; ?>
      * @return <?= $className . "\n" ?>
      */
     public function set<?= \Classes\Maker\AbstractMaker::getClassName ( $column->getName () ) ?>($<?= $column->getName (
     ) ?>)
     {
-    <?php switch ( $column->getType () ):
+<?php switch ( $column->getType () ):
         case 'date': ?>
             if (! empty($<?= $column->getName () ?>))
             {
@@ -176,12 +176,12 @@ $validators = implode ( ", ", $validators ) ?>
                 $this-><?= $column->getName () ?> = $<?= $column->getName () ?>->toString(Zend_Date::ISO_8601);
             }
 
-            <?php break ?>
-        <?php case 'boolean': ?>
+<?php break ?>
+<?php case 'boolean': ?>
             $this-><?= $column->getName () ?> = $<?= $column->getName () ?> ? true : false;
 
-            <?php break ?>
-        <?php default: ?>
+<?php break ?>
+<?php default: ?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
             $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName (
             ) ?>'=>$<?= $column->getName () ?> ));
@@ -197,26 +197,26 @@ $validators = implode ( ", ", $validators ) ?>
 
             $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
 
-            <?php break ?>
-        <?php endswitch ?>
+<?php break ?>
+<?php endswitch ?>
         return $this;
     }
 
     /**
      * Gets column <?= $column->getName () . "\n" ?>
      *
-    <?php if ( $column->equalType ( 'date' ) ): ?>
+<?php if ( $column->equalType ( 'date' ) ): ?>
      * @param boolean $returnZendDate
      * @return Zend_Date|null|string Zend_Date representation of this datetime if enabled, or ISO 8601 string if not
-    <?php else: ?>
+<?php else: ?>
      * @return <?= $column->getType () . "\n" ?>
-    <?php endif; ?>
+<?php endif; ?>
      */
     public function get<?= \Classes\Maker\AbstractMaker::getClassName (
         $column->getName ()
     ) ?>(<?php if ( $column->equalType ( 'date' ) ): ?>$returnZendDate = false <?php endif; ?>)
     {
-    <?php if ( $column->equalType ( 'date' ) ): ?>
+<?php if ( $column->equalType ( 'date' ) ): ?>
         if ($returnZendDate)
         {
             if ($this->_data['<?= $column->getName () ?>'] === null)
@@ -226,8 +226,7 @@ $validators = implode ( ", ", $validators ) ?>
 
             return new Zend_Date($this-><?= $column->getName () ?>, Zend_Date::ISO_8601);
         }
-
-    <?php endif; ?>
+<?php endif; ?>
         return $this-><?= $column->getName () ?>;
     }
 
@@ -246,7 +245,7 @@ $validators = implode ( ", ", $validators ) ?>
     ) ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName (
         $parent[ 'table' ]
     ) ?>', '<?= \Classes\Maker\AbstractMaker::getClassName ( $parent[ 'name' ] ) ?>');
-    }
+        }
 
         return $this->_parent_<?= $parent[ 'name' ] ?>;
     }
