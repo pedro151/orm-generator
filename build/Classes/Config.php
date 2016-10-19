@@ -43,7 +43,7 @@ class Config
     /**
      * @var string
      */
-    private $configIniDefault = 'configs/config.ini';
+    private $configIniDefault = '/configs/config.ini';
 
     /**
      * @var string
@@ -152,7 +152,7 @@ EOF;
      */
     private function parseConfig ( $basePath, $argv )
     {
-        $this->_basePath =  $basePath;
+        $this->_basePath = dirname ( $basePath . '/' );
 
         $configIni = isset( $argv[ 'config-ini' ] )
             ? $argv[ 'config-ini' ] : $this->_basePath
