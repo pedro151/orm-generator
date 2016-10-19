@@ -51,11 +51,11 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
      */
     protected $_columnsList = array(
 <?php foreach ( $objTables->getColumns () as $column ): ?>
-    self::<?= strtoupper ( $column->getName () ) ?> => '<?= strtolower (
-        \Classes\Maker\AbstractMaker::getClassName ( $column->getName () )
+        self::<?= strtoupper ( $column->getName () ) ?> => '<?= strtolower (
+            \Classes\Maker\AbstractMaker::getClassName ( $column->getName () )
     ) ?>',
 <?php endforeach; ?>
-);
+    );
 
     /**
      * @see <?= $this->config->namespace ?>Model_EntityAbstract::$_filters
@@ -78,11 +78,11 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             break;
     }
     ?>
-    '<?= $column->getName () ?>'=>array (
-    <?= ( !empty( $filters ) ) ? "\"{$filters}\"\n" : null; ?>
-    ),
+    '<?= $column->getName () ?>' => array (
+            <?= ( !empty( $filters ) ) ? "\"{$filters}\"\n" : null; ?>
+        ),
 <?php endforeach; ?>
-);
+    );
 
     /**
      * @see <?= $this->config->namespace ?>Model_EntityAbstract::$_validators
@@ -108,12 +108,12 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             $validators[] = "'$name'";
             break;
     }
-    $validators = implode ( ", ", $validators ) ?>
+$validators = implode ( ", ", $validators ) ?>
     '<?= $column->getName () ?>' => array (
-    <?= ( !empty( $validators ) ) ? "{$validators}\n" : null ?>
-    ),
+            <?= ( !empty( $validators ) ) ? "{$validators}\n" : null ?>
+        ),
 <?php endforeach; ?>
-);
+    );
 
 <?php if ( $objTables->hasPrimaryKey () ): ?>
     /**

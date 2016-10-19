@@ -163,7 +163,7 @@ class MakerFile extends AbstractMaker
     /* Get current time */
     public function startTime ()
     {
-        echo "Starting..\n";
+        echo "\033[1;32mStarting..\033[0m\n";
         $this->startTime = microtime ( true );
     }
 
@@ -177,12 +177,15 @@ class MakerFile extends AbstractMaker
      */
     public function run ()
     {
-        $this->startTime ();
-        $this->driver->runDatabase ();
-        $this->max       = $this->driver->getTotalTables () * $this->countDiretory ();
         $cur             = 0;
         $numFilesCreated = 0;
         $numFilesIgnored = 0;
+
+        $this->startTime ();
+        $this->waitOfDatabase($cur);
+
+        $this->max       = $this->driver->getTotalTables () * $this->countDiretory ();
+
         foreach ( $this->location as $schema => $location ) {
             foreach ( $this->factoryMakerFile () as $objMakeFile ) {
                 $path = $location . DIRECTORY_SEPARATOR . $objMakeFile->getPastName ();
@@ -222,6 +225,13 @@ class MakerFile extends AbstractMaker
 
         $this->reportProcess ( $numFilesCreated, $numFilesIgnored );
         echo "\n\033[1;32mSuccessfully process finished!\n\033[0m";
+    }
+
+    private function waitOfDatabase ( &$cur )
+    {
+        printf ( "\033[1;33mWait, the database is being analyzed..\033[0m\n" );
+        $this->driver->runDatabase ();
+        printf ( "\r Creating: \033[1;32m%6.2f%%\033[0m", $cur );
     }
 
     private function countCreatedFiles ( &$cur )
