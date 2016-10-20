@@ -251,11 +251,11 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     }
 
     /**
-    * Retorna o objeto pela primary key
-    *
-    * @param int|array $primary_key
-    * @return <?=$this->config->namespace?>Model_EntityAbstract
-    */
+     * Retorna o objeto pela primary key
+     *
+     * @param int|array $primary_key
+     * @return <?=$this->config->namespace?>Model_EntityAbstract
+     */
     public static function find ( $primary_key )
     {
         return  self::getIntance()->getTable()->find($primary_key)->current();
@@ -271,10 +271,15 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
        return $this->_doInsert();
     }
 
+    /**
+     * atualiza os dados independente se possui primary key ou nao
+     *
+     * @return int primary key
+     */
 	public function update ()
 	{
-		$this->_cleanData = $this->_data;
-		return $this->_doUpdate ();
+	    $this->_cleanData = $this->_data;
+	    return $this->_doUpdate ();
 	}
 
 	/**
