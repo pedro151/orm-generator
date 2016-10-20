@@ -282,9 +282,9 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
         return $this->_doUpdate ();
     }
 
-	/**
-	 * @see Zend_Db_Table_Row_Abstract::save()
-	 */
+    /**
+     * @see Zend_Db_Table_Row_Abstract::save()
+     */
     public function save()
     {
         $primary_keyIn = $this->getPrimaryKeyName();
