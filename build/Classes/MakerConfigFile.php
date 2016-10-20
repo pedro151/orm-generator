@@ -52,7 +52,7 @@ class MakerConfigFile extends AbstractMaker
      */
     private function parseConfig ( $basePath , $argv )
     {
-        $this->baseLocation = dirname ( $basePath );
+        $this->baseLocation = $basePath;
 
         $arrayIO = array_diff_key ( $this->configs , $argv );
         foreach ( $arrayIO as $index => $config )
