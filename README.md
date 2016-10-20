@@ -77,7 +77,7 @@ Configurations optionals
 | --config-ini   | reference to another .ini file configuration (relative path). |
 | --config-env   | ORM Generator configuration environment. |
 | --framework    | name framework used, which has the contents of the database configurations and framework template. |
-| --driver       | database driver name (Ex.: pgsql). |
+| --driver       | database driver name (Ex.: pgsql, mysql). |
 | --database     | database name. |
 | --schema       | database schema name (one or more than one). |
 | --tables       | table name (parameter can be used more then once). |
