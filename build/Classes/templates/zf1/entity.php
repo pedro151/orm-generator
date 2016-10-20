@@ -133,18 +133,22 @@ $validators = implode ( ", ", $validators ) ?>
     /**
      * Parent relation <?= \Classes\Maker\AbstractMaker::getClassName ( $parent[ 'table' ] ) . "\n" ?>
      *
-     * @var <?= $parent[ 'name' ] . "\n" ?>
+     * - CONSTRAINT in DB <?= $parent[ 'name' ] . "\n" ?>
+     *
+     * @var <?= $parent[ 'variable' ] . "\n" ?>
      */
-    protected $_parent_<?= $parent[ 'name' ] ?>;
+    protected $_parent_<?= $parent[ 'variable' ] ?>;
 
 <?php endforeach; ?>
 <?php foreach ( $depends as $depend ): ?>
     /**
      * Depends relation <?= \Classes\Maker\AbstractMaker::getClassName ( $depend[ 'table' ] ) . "\n" ?>
      *
-     * @var <?= $depend[ 'class' ] . "\n" ?>
+     * - CONSTRAINT in DB <?= $depend[ 'name' ] . "\n" ?>
+     *
+     * @var <?= $depend[ 'variable' ] . "\n" ?>
      */
-    protected $_depend_<?= $depend[ 'name' ] ?>;
+    protected $_depend_<?= $depend[ 'variable' ] ?>;
 
 <?php endforeach; ?>
 <?php foreach ( $objTables->getColumns () as $column ): ?>
@@ -239,15 +243,15 @@ $validators = implode ( ", ", $validators ) ?>
      */
     public function get<?= $parent[ 'function' ] ?>()
     {
-        if ($this->_parent_<?= $parent[ 'name' ] ?> === null)
+        if ($this->_parent_<?= $parent[ 'variable' ] ?> === null)
         {
-            $this->_parent_<?= $parent[ 'name' ] ?> = $this->findParentRow('<?= $objTables->getNamespace (
+            $this->_parent_<?= $parent[ 'variable' ] ?> = $this->findParentRow('<?= $objTables->getNamespace (
     ) ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName (
         $parent[ 'table' ]
-    ) ?>', '<?= \Classes\Maker\AbstractMaker::getClassName ( $parent[ 'name' ] ) ?>');
+    ) ?>', '<?= \Classes\Maker\AbstractMaker::getClassName ( $parent[ 'variable' ] ) ?>');
         }
 
-        return $this->_parent_<?= $parent[ 'name' ] ?>;
+        return $this->_parent_<?= $parent[ 'variable' ] ?>;
     }
 
 <?php endforeach; ?>
@@ -261,13 +265,13 @@ $validators = implode ( ", ", $validators ) ?>
      */
     public function get<?= $depend[ 'function' ] ?>()
     {
-        if ($this->_depend_<?= $depend[ 'name' ] ?> === null)
+        if ($this->_depend_<?= $depend[ 'variable' ] ?> === null)
         {
-            $this->_depend_<?= $depend[ 'name' ] ?> = $this->findDependentRowset('<?= $objTables->getNamespace (
+            $this->_depend_<?= $depend[ 'variable' ] ?> = $this->findDependentRowset('<?= $objTables->getNamespace (
     ) ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName ( $depend[ 'table' ] ) ?>');
         }
 
-        return $this->_depend_<?= $depend[ 'name' ] ?>;
+        return $this->_depend_<?= $depend[ 'variable' ] ?>;
     }
 
 <?php endforeach; ?>

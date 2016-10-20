@@ -59,6 +59,8 @@ class Entity extends AbstractAdapter
                 . ZendFrameworkOne::SEPARETOR
                 . $objColumn->getName ();
 
+            $variable = $constrant->getNameConstrant () . ZendFrameworkOne::SEPARETOR . $objColumn->getName ();
+
             $arrClass = array (
                 $makerFile->getConfig ()->createClassNamespace ( $constrant ),
                 AbstractMaker::getClassName ( $constrant->getTable () )
@@ -69,8 +71,10 @@ class Entity extends AbstractAdapter
                 'class'    => $class ,
                 'function' => AbstractMaker::getClassName ( $name ) ,
                 'table'    => $constrant->getTable () ,
-                'column'   => $objColumn->getName () ,
-                'name'     => $constrant->getNameConstrant () ,
+                'column'   => $constrant->getColumn() ,
+                'name'     => $constrant->getNameConstrant() ,
+                'variable' => $variable
+
             );
             unset( $name );
         }
@@ -102,6 +106,8 @@ class Entity extends AbstractAdapter
 
                 if ( ! key_exists ( $name , $this->validFunc ) )
                 {
+                    $variable = $dependence->getNameConstrant () . ZendFrameworkOne::SEPARETOR . $objColumn->getName ();
+
                     $arrClass = array (
                         $makerFile->getConfig ()->createClassNamespace ( $dependence ),
                         AbstractMaker::getClassName ( $dependence->getTable () )
@@ -114,7 +120,8 @@ class Entity extends AbstractAdapter
                         'function' => AbstractMaker::getClassName ( $name ) ,
                         'table'    => $dependence->getTable () ,
                         'column'   => $dependence->getColumn () ,
-                        'name'     => $dependence->getNameConstrant ()
+                        'name'     =>  $dependence->getNameConstrant (),
+                        'variable' => $variable
                     );
                 }
                 unset( $name );
