@@ -80,10 +80,10 @@ try {
 
     $arg = getopt ( null, $arrValid );
     if ( array_key_exists ( 'init', $arg ) ) {
-        $maker = new \Classes\MakerConfigFile( $arg, $_path );
+        $maker = new \Classes\MakerConfigFile( $arg, dirname($_path) );
     }
     else {
-        $maker = new \Classes\MakerFile( new \Classes\Config( $arg, $_path, count ( $argv ) ) );
+        $maker = new \Classes\MakerFile( new \Classes\Config( $arg, dirname($_path), count ( $argv ) ) );
     }
 
     $maker->run ();
