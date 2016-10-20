@@ -261,14 +261,14 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
         return  self::getIntance()->getTable()->find($primary_key)->current();
     }
 
-	/**
-	 * insere os dados independente se possui primary key ou nao
-	 *
-	 * @return int primary key
-	 */
-	public function insert()
+    /**
+     * insere os dados independente se possui primary key ou nao
+     *
+     * @return int primary key
+     */
+    public function insert()
     {
-       return $this->_doInsert();
+        return $this->_doInsert();
     }
 
     /**
@@ -276,11 +276,11 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      *
      * @return int primary key
      */
-	public function update ()
-	{
-	    $this->_cleanData = $this->_data;
-	    return $this->_doUpdate ();
-	}
+    public function update ()
+    {
+        $this->_cleanData = $this->_data;
+        return $this->_doUpdate ();
+    }
 
 	/**
 	 * @see Zend_Db_Table_Row_Abstract::save()
