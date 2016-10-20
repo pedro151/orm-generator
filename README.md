@@ -80,6 +80,7 @@ Configurations optionals
 | --driver       | database driver name (Ex.: pgsql). |
 | --database     | database name. |
 | --schema       | database schema name (one or more than one). |
+| --tables       | table name (parameter can be used more then once). |
 | --status       | show status of implementation carried out after completing the process. |
 | --version      | shows the version of ORM Generator. |
 | --help         | help command explaining all the options and manner of use. |
