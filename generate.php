@@ -80,7 +80,7 @@ try
         'path:'
     );
 
-    $_path = realpath ( __FILE__ );
+    $_path = __DIR__;
     $arg   = getopt ( null , $arrValid );
     if ( array_key_exists ( 'init' , $arg ) )
     {
