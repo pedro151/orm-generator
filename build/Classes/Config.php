@@ -211,7 +211,7 @@ EOF;
     protected function loadIniFile ( $filename )
     {
         if ( !is_file ( $filename ) ) {
-            throw new \Exception( "configuration file does not exist! \n" );
+            throw new \Exception( "\033[0;31mError: configuration file does not exist! \033[0m\n" );
         }
 
         $loaded   = parse_ini_file ( $filename, true );

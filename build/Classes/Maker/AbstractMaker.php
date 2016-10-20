@@ -16,7 +16,7 @@ abstract class AbstractMaker
         {
             if ( !@mkdir ( $dir, 0755, true ) )
             {
-                die( "error: could not create directory $dir\n" );
+                die( "\033[0;31mError: could not create directory $dir\033[0m\n" );
             }
         }
     }
@@ -37,7 +37,7 @@ abstract class AbstractMaker
 
         if ( !file_put_contents ( $nameFile, $tplContent ) )
         {
-            die( "Error: could not write model file $nameFile." );
+            die( "\033[0;31mError: could not write model file $nameFile.\033[0m\n" );
         }
 
         return true;
