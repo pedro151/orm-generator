@@ -27,8 +27,8 @@ class DbTableTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp ()
     {
-        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ] , $GLOBALS[ 'db_username' ] , $GLOBALS[ 'db_password' ] );
-        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE , \PDO::ERRMODE_EXCEPTION );
+        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ], $GLOBALS[ 'db_username' ], $GLOBALS[ 'db_password' ] );
+        $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
         $this->tearDown ();
 
         $this->pdo->exec (
@@ -64,7 +64,8 @@ CREATE TABLE bugs_products (
 		REFERENCES bugs(bug_id),
 	FOREIGN KEY (product_id)
 		REFERENCES products(product_id)
-);"   );
+);"
+        );
     }
 
     /**
@@ -86,11 +87,10 @@ CREATE TABLE bugs_products (
      */
     protected function getDataBaseDrive ()
     {
-        if ( ! $this->objDriver )
-        {
+        if ( !$this->objDriver ) {
             $arrConfig = array (
-                'driver'    => 'pdo_mysql' ,
-                'host'      => 'localhost' ,
+                'driver'    => 'pdo_mysql',
+                'host'      => $GLOBALS[ 'host' ],
                 'database'  => $GLOBALS[ 'dbname' ],
                 'username'  => $GLOBALS[ 'db_username' ],
                 'password'  => $GLOBALS[ 'db_password' ],
@@ -106,22 +106,28 @@ CREATE TABLE bugs_products (
 
     public function testParseRelation ()
     {
-        $maker = new \Classes\MakerFile( new \Classes\Config( array('config-ini'=>'configs/config.ini'), '' ) );
-        $objMakeFile = DbTable::getInstance();
+        $maker       = new \Classes\MakerFile(
+            new \Classes\Config( array ( 'config-ini' => 'configs/config.ini' ), '', 1 )
+        );
+        $objMakeFile = DbTable::getInstance ();
 
-        foreach (  $this->getDataBaseDrive ()->getTables ( 0 ) as $key => $objTables )
-        {
-            $objMakeFile->parseRelation ( $maker , $objTables );
+        foreach (
+            $this->getDataBaseDrive ()
+                 ->getTables ( 0 ) as $key => $objTables
+        ) {
+            $objMakeFile->parseRelation ( $maker, $objTables );
         }
     }
+
     /**
      *
      */
     public function testGetInstace ()
     {
         $instance = \Classes\AdapterMakerFile\ZendFrameworkOne\DbTable::getInstance ();
-        $this->assertTrue ( $instance instanceof
-                            \Classes\AdapterMakerFile\ZendFrameworkOne\DbTable );
+        $this->assertTrue (
+            $instance instanceof \Classes\AdapterMakerFile\ZendFrameworkOne\DbTable
+        );
         $this->assertTrue ( $instance->getPastName () == "DbTable" );
         $this->assertTrue ( $instance->getFileTpl () == "dbtable.php" );
         $this->assertTrue ( $instance->getParentClass () == "TableAbstract" );
@@ -130,19 +136,28 @@ CREATE TABLE bugs_products (
 
     public function testColumns ()
     {
-        $dbTable = $this->getDataBaseDrive ()->getTable ( 'bugs_products' , 0 );
-        $this->assertInternalType ( "array" , $dbTable->getColumns () );
+        $dbTable = $this->getDataBaseDrive ()
+                        ->getTable ( 'bugs_products', 0 );
+        $this->assertInternalType ( "array", $dbTable->getColumns () );
         $this->assertTrue ( $dbTable->getColumn ( "bug_id" ) instanceof Column );
     }
 
     public function testForeingkey ()
     {
-        $dbTable = $this->getDataBaseDrive ()->getTable ( 'bugs' , 0 );
-        $this->assertTrue ( count ( $dbTable->getColumns () )
-                            >= count ( $dbTable->getForeingkeys () ) );
+        $dbTable = $this->getDataBaseDrive ()
+                        ->getTable ( 'bugs', 0 );
+        $this->assertTrue (
+            count ( $dbTable->getColumns () ) >= count ( $dbTable->getForeingkeys () )
+        );
         $this->assertTrue ( 0 < count ( $dbTable->getForeingkeys () ) );
-        $this->assertTrue ( $dbTable->getColumn ( 'reported_by' )->isForeingkey () );
-        $this->assertFalse ( $dbTable->getColumn ( 'bug_description' )->isForeingkey () );
+        $this->assertTrue (
+            $dbTable->getColumn ( 'reported_by' )
+                    ->isForeingkey ()
+        );
+        $this->assertFalse (
+            $dbTable->getColumn ( 'bug_description' )
+                    ->isForeingkey ()
+        );
     }
 
 

@@ -114,6 +114,7 @@ class Mysql extends AbsractAdapter
      */
     public function getListColumns ()
     {
+        $sqlTables = !empty($this->tablesName)?"AND table_name IN ( $this->tablesName )":'';
 
         return $this->getPDO ()
                     ->query (
@@ -125,7 +126,7 @@ class Mysql extends AbsractAdapter
                 is_nullable,
                 character_maximum_length AS max_length
             from information_schema.columns
-            where table_schema IN ('{$this->database}')
+            where table_schema IN ('{$this->database}') $sqlTables
             order by table_name,ordinal_position"
                     )
                     ->fetchAll ( \PDO::FETCH_ASSOC );
@@ -136,6 +137,8 @@ class Mysql extends AbsractAdapter
      */
     public function getListConstrant ()
     {
+        $sqlTables = !empty($this->tablesName)?"AND k.table_name IN ( $this->tablesName )":'';
+
         return $this->getPDO ()
                     ->query (
                         "SELECT distinct
@@ -153,7 +156,7 @@ FROM information_schema.TABLE_CONSTRAINTS as i
 inner join information_schema.key_column_usage as k
 ON i.CONSTRAINT_NAME = k.CONSTRAINT_NAME and k.TABLE_SCHEMA <> 'mysql'
 WHERE
-i.TABLE_SCHEMA IN ('{$this->database}') AND i.CONSTRAINT_TYPE IN ('FOREIGN KEY', 'PRIMARY KEY' )
+i.TABLE_SCHEMA IN ('{$this->database}') AND i.CONSTRAINT_TYPE IN ('FOREIGN KEY', 'PRIMARY KEY' ) $sqlTables
 order by k.table_schema, k.table_name;"
                     )
                     ->fetchAll ( \PDO::FETCH_ASSOC );
@@ -168,9 +171,11 @@ order by k.table_schema, k.table_name;"
     {
         if ( empty( $this->totalTables ) ) {
 
+            $sqlTables = !empty($this->tablesName)?"AND table_name IN ( $this->tablesName )":'';
+
             $this->totalTables = $this->getPDO ()
                                       ->query (
-                                          "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{$this->database}'"
+                                          "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{$this->database}' $sqlTables"
                                       )
                                       ->fetchColumn ();
         }

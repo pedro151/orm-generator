@@ -11,11 +11,11 @@
 [main]
 
 ; name framework used, which has the contents of the database configurations
-; and framework template
+; and framework template (Ex.: zf1, phalcon)
 framework = "<?= $framework ?>"<?= "\n" ?>
 ; configuration environment you want to generate
 environment = <?= $environment ?><?= "\n" ?>
-; database driver name (Ex.: pgsql)
+; database driver name (Ex.: pgsql, mysql)
 driver = '<?= $driver ?>'<?= "\n" ?>
 ; database host
 host = <?= $host ?><?= "\n" ?>
@@ -29,6 +29,8 @@ username = <?= isset( $username ) ? $username : '' ?><?= "\n" ?>
 password = <?= isset( $password ) ? $password : '' ?><?= "\n" ?>
 ; show status of implementation carried out after completing the process
 status = false
+; table name (parameter can be used more then once)
+;tables=""
 ; specify where to create the files (default is current directory)
 path = ""
 ;folder with the database driver name
@@ -41,14 +43,6 @@ framework-ini = ""
 framework-path-library = ""
 
 namespace = ''
-
-;=============TODO============================================
-; table name (parameter can be used more then once)
-;tables=""
-; create classes for all the scripts in the database
-;all-tables = 1
-;
-
 
 ;=====================READ ME!================================
 ;

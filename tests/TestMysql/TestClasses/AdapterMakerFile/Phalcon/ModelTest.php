@@ -26,7 +26,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp ()
     {
-        $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ] , $GLOBALS[ 'db_username' ] , $GLOBALS[ 'db_password' ] );
+      $this->pdo = new \PDO( $GLOBALS[ 'db_dsn' ] , $GLOBALS[ 'db_username' ] , $GLOBALS[ 'db_password' ] );
         $this->pdo->setAttribute ( \PDO::ATTR_ERRMODE , \PDO::ERRMODE_EXCEPTION );
         $this->tearDown ();
 
@@ -90,7 +90,7 @@ CREATE TABLE bugs_products (
         {
             $arrConfig = array (
                 'driver'    => 'pdo_mysql' ,
-                'host'      => 'localhost' ,
+                'host'      => $GLOBALS[ 'host' ],
                 'framework' => 'phalcon',
                 'database'  => $GLOBALS[ 'dbname' ],
                 'username'  => $GLOBALS[ 'db_username' ],
@@ -111,7 +111,6 @@ CREATE TABLE bugs_products (
     public function testGetInstace ()
     {
         $instance = \Classes\AdapterMakerFile\Phalcon\Entity::getInstance();
-        var_dump($instance);
         $this->assertTrue ( $instance instanceof
                             \Classes\AdapterMakerFile\Phalcon\Entity );
         $this->assertTrue ( $instance->getPastName () == "Entity" );

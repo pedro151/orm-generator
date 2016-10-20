@@ -20,7 +20,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp ()
     {
-        $this->basePath = dirname ( $GLOBALS[ 'base_path' ] );
+        $this->basePath = __DIR__ . '/../../';
     }
 
     private function rrmdir ( $dir )
@@ -61,7 +61,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                         'quiz'
                     )
                 ) ,
-                $this->basePath
+                $this->basePath, 1
             )
         );
         foreach ( $maker->factoryMakerFile () as $key => $obj )
@@ -82,7 +82,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                         'quiz' ,
                     )
                 ) ,
-                $this->basePath
+                $this->basePath, 3
             )
         );
 
@@ -114,7 +114,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                         'quiz' ,
                     )
                 ) ,
-                $this->basePath
+                $this->basePath, 3
             )
         );
 
@@ -143,7 +143,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                     'driver'          => 'mysql' ,
                     'schema'          => array ()
                 ) ,
-                $this->basePath
+                $this->basePath, 3
             )
         );
 
@@ -177,7 +177,7 @@ class MakerFileTest extends \PHPUnit_Framework_TestCase
                         'quiz' ,
                     )
                 ) ,
-                $this->basePath
+                $this->basePath, 3
             )
         );
 

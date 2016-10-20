@@ -37,6 +37,9 @@ class MakerFile extends AbstractMaker
      */
     private $driver;
 
+    private $countDir;
+    private $max;
+
     private $msgReservedWord = "\033[0mPlease enter the value for reserved word \033[0;31m'%index%' \033[1;33m[%config%]:\033[0m ";
 
     public function __construct ( Config $config )
@@ -160,7 +163,7 @@ class MakerFile extends AbstractMaker
     /* Get current time */
     public function startTime ()
     {
-        echo "Starting..\n";
+        echo "\033[1;32mStarting..\033[0m\n";
         $this->startTime = microtime ( true );
     }
 
@@ -174,11 +177,14 @@ class MakerFile extends AbstractMaker
      */
     public function run ()
     {
-        $this->startTime ();
-        $this->driver->runDatabase ();
-        $this->max   = $this->driver->getTotalTables () * $this->countDiretory ();
-        $cur         = 0;
+        $cur             = 0;
+        $numFilesCreated = 0;
+        $numFilesIgnored = 0;
 
+        $this->startTime ();
+        $this->waitOfDatabase($cur);
+
+        $this->max       = $this->driver->getTotalTables () * $this->countDiretory ();
 
         foreach ( $this->location as $schema => $location ) {
             foreach ( $this->factoryMakerFile () as $objMakeFile ) {
@@ -205,34 +211,50 @@ class MakerFile extends AbstractMaker
                         $objMakeFile
 
                     );
-                    self::makeSourcer ( $file, $tpl, $objMakeFile->isOverwrite () );
+                    if ( self::makeSourcer ( $file, $tpl, $objMakeFile->isOverwrite () ) ) {
+                        ++$numFilesCreated;
+                    }
+                    else {
+                        ++$numFilesIgnored;
+                    }
+
                     $this->countCreatedFiles ( $cur );
                 }
             }
         }
 
-        $this->reportProcess ( $cur );
+        $this->reportProcess ( $numFilesCreated, $numFilesIgnored );
         echo "\n\033[1;32mSuccessfully process finished!\n\033[0m";
+    }
+
+    private function waitOfDatabase ( &$cur )
+    {
+        printf ( "\033[1;33mWait, the database is being analyzed..\033[0m\n" );
+        $this->driver->runDatabase ();
+        printf ( "\r Creating: \033[1;32m%6.2f%%\033[0m", $cur );
     }
 
     private function countCreatedFiles ( &$cur )
     {
         ++$cur;
         $total = ( $cur / $this->max ) * 100;
-        printf ( "\r Creating: %6.2f%%", $total );
+        printf ( "\r Creating: \033[1;32m%6.2f%%\033[0m", $total );
     }
 
-    private function reportProcess ( $countFiles )
+    private function reportProcess ( $numFilesCreated = 0, $numFilesIgnored = 0 )
     {
         if ( $this->config->isStatusEnabled () ) {
             $databases  = count ( $this->location );
             $countDir   = $this->countDiretory ();
             $totalTable = $this->driver->getTotalTables ();
+            $totalFiles = $numFilesIgnored + $numFilesCreated;
             echo "\n------";
-            printf ( "\n\r-Files generated:%s of %s", $countFiles, $this->max );
-            printf ( "\n\r-Diretory generated:%s", $databases * $countDir );
-            printf ( "\n\r-Scanned tables:%s", $totalTable );
-            printf ( "\n\r-Execution time: %ssec", $this->getRunTime () );
+            printf ( "\n\r-Files generated/updated: \033[1;33m%s\033[0m", $numFilesCreated );
+            printf ( "\n\r-Files not upgradeable: \033[1;33m%s\033[0m", $numFilesIgnored );
+            printf ( "\n\r-Total files analyzed: \033[1;33m%s of %s\033[0m", $totalFiles, $this->max );
+            printf ( "\n\r-Diretories: \033[1;33m%s\033[0m", $databases * $countDir );
+            printf ( "\n\r-Scanned tables: \033[1;33m%s\033[0m", $totalTable );
+            printf ( "\n\r-Execution time: \033[1;33m%ssec\033[0m", $this->getRunTime () );
             echo "\n------";
         }
     }
@@ -254,14 +276,16 @@ class MakerFile extends AbstractMaker
      */
     public function countDiretory ()
     {
-        $dir = 1;
-        foreach ( $this->factoryMakerFile () as $abstractAdapter ) {
-            if ( $abstractAdapter->hasDiretory () ) {
-                ++$dir;
+        if ( null === $this->countDir ) {
+            $this->countDir = 1;
+            foreach ( $this->factoryMakerFile () as $abstractAdapter ) {
+                if ( $abstractAdapter->hasDiretory () ) {
+                    ++$this->countDir;
+                }
             }
         }
 
-        return $dir;
+        return $this->countDir;
     }
 
     /**

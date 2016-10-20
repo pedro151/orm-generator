@@ -37,6 +37,7 @@ class DbTable extends AbstractAdapter
         foreach ( $dbTable->getForeingkeys () as $objColumn )
         {
             $constrant = $objColumn->getFks ();
+            $variable =  $constrant->getNameConstrant () . ZendFrameworkOne::SEPARETOR . $objColumn->getName ();
 
             $arrClass = array (
                 $makerFile->getConfig ()->createClassNamespace ( $constrant ),
@@ -52,7 +53,7 @@ class DbTable extends AbstractAdapter
             'refTableClass' => '%s',
             'refColumns'    =>'%s'
        )",
-                AbstractMaker::getClassName ( $constrant->getNameConstrant () ),
+                AbstractMaker::getClassName ( $variable ),
                 $objColumn->getName (),
                 $class,
                 $constrant->getColumn ()

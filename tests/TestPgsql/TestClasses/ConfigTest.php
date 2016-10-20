@@ -18,8 +18,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp ()
     {
-        $this->basePath = dirname ( $GLOBALS[ 'base_path' ] );
-
+        $this->basePath = __DIR__ . '/../../';
     }
 
     /**
@@ -54,10 +53,10 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 'framework' => 'none',
                 'database'  => $GLOBALS[ 'dbname' ],
                 'driver'    => 'pgsql'
-            ), $this->basePath
+            ), $this->basePath, 3
         );
 
-        $driver = $config->getAdapterDriver ( $config->getAdapterConfig() );
+        $driver = $config->getAdapterDriver ( $config->getAdapterConfig () );
         $table  = $driver->getTables ();
         $this->assertTrue ( $driver instanceof Pgsql );
         $this->assertTrue ( is_array ( $table ) );
@@ -69,12 +68,11 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             array (
                 'database' => $GLOBALS[ 'dbname' ],
                 'driver'   => 'pgsql'
-            ), $this->basePath
+            ), $this->basePath, 2
         );
         $config    = $config->getAdapterConfig ();
         $strAuthor = $config->author;
         $this->assertTrue ( $strAuthor == ucfirst ( get_current_user () ) );
-        $this->assertTrue ( $config->lol == null );
     }
 
     public function testParseConfigEnvDefault ()

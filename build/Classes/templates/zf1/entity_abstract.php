@@ -19,11 +19,11 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
 {
 
     /**
-    * Nome da tabela DbTable do model
-    *
-    * @var string
-    * @access protected
-    */
+     * Nome da tabela DbTable do model
+     *
+     * @var string
+     * @access protected
+     */
     protected $_tableClass;
 
     /**
@@ -251,35 +251,40 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     }
 
     /**
-    * Retorna o objeto pela primary key
-    *
-    * @param int|array $primary_key
-    * @return <?=$this->config->namespace?>Model_EntityAbstract
-    */
+     * Retorna o objeto pela primary key
+     *
+     * @param int|array $primary_key
+     * @return <?=$this->config->namespace?>Model_EntityAbstract
+     */
     public static function find ( $primary_key )
     {
         return  self::getIntance()->getTable()->find($primary_key)->current();
     }
 
-	/**
-	 * insere os dados independente se possui primary key ou nao
-	 *
-	 * @return int primary key
-	 */
-	public function insert()
+    /**
+     * insere os dados independente se possui primary key ou nao
+     *
+     * @return int primary key
+     */
+    public function insert()
     {
-       return $this->_doInsert();
+        return $this->_doInsert();
     }
 
-	public function update ()
-	{
-		$this->_cleanData = $this->_data;
-		return $this->_doUpdate ();
-	}
+    /**
+     * atualiza os dados independente se possui primary key ou nao
+     *
+     * @return int primary key
+     */
+    public function update ()
+    {
+        $this->_cleanData = $this->_data;
+        return $this->_doUpdate ();
+    }
 
-	/**
-	 * @see Zend_Db_Table_Row_Abstract::save()
-	 */
+    /**
+     * @see Zend_Db_Table_Row_Abstract::save()
+     */
     public function save()
     {
         $primary_keyIn = $this->getPrimaryKeyName();

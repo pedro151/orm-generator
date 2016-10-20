@@ -86,7 +86,7 @@ class PgsqlTest extends \PHPUnit_Framework_TestCase
         {
             $arrConfig = array (
                 'driver'    => 'pdo_pgsql' ,
-                'host'      => 'localhost' ,
+                'host'      => $GLOBALS[ 'host' ] ,
                 'database'  => $GLOBALS[ 'dbname' ],
                 'username'  => $GLOBALS[ 'db_username' ],
                 'password'  => $GLOBALS[ 'db_password' ],
