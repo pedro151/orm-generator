@@ -186,6 +186,9 @@ $validators = implode ( ", ", $validators ) ?>
 
 <?php break ?>
 <?php default: ?>
+<?php if(!$column->isNullable ()):?>
+            $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
+<?php endif ?>
             $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName (
             ) ?>'=>$<?= $column->getName () ?> ));
 
