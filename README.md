@@ -107,7 +107,7 @@ Support Database
 Framework Class Generator ORM
 -----------------------------
 
-<sup><sub> - Classes Overwrite: Classes should not be personalized, they will be rewritten every generation of classes. </sup></sup>
+<sup> - Classes Overwrite: Classes should not be personalized, they will be rewritten every generation of classes. </sup>
 
 | Frameworks         |  Config Name   | Version | Generate Classes | Classes Overwrite |
 |--------------------|----------------|:---------:|------------------|------------------|
