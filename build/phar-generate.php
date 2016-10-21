@@ -75,7 +75,8 @@ try {
         'driver:',
         'tables:',
         'framework:',
-        'path:'
+        'path:',
+        'clean-trash:'
     );
 
     $arg = getopt ( null, $arrValid );
