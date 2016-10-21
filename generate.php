@@ -77,7 +77,8 @@ try
         'driver:' ,
         'tables:',
         'framework:' ,
-        'path:'
+        'path:',
+        'clean-trash:'
     );
 
     $_path = __DIR__;

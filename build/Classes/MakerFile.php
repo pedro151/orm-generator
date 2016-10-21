@@ -7,6 +7,7 @@ use Classes\Maker\AbstractMaker;
 
 require_once 'Classes/AdapterMakerFile/AbstractAdapter.php';
 require_once 'Classes/Maker/AbstractMaker.php';
+require_once 'Classes/CleanTrash.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -189,6 +190,9 @@ class MakerFile extends AbstractMaker
         foreach ( $this->location as $schema => $location ) {
             foreach ( $this->factoryMakerFile () as $objMakeFile ) {
                 $path = $location . DIRECTORY_SEPARATOR . $objMakeFile->getPastName ();
+                if($this->config->isCleanTrash()){
+                    CleanTrash::getInstance ()->run ( $path , $this->driver, $schema );
+                }
                 self::makeDir ( $path );
                 if ( $objMakeFile->getParentFileTpl () != '' ) {
                     $fileAbstract = $this->baseLocation
@@ -248,13 +252,15 @@ class MakerFile extends AbstractMaker
             $countDir   = $this->countDiretory ();
             $totalTable = $this->driver->getTotalTables ();
             $totalFiles = $numFilesIgnored + $numFilesCreated;
+            $totalFilesDeleted = CleanTrash::getInstance ()->getNumFilesDeleted();
             echo "\n------";
-            printf ( "\n\r-Files generated/updated: \033[1;33m%s\033[0m", $numFilesCreated );
-            printf ( "\n\r-Files not upgradeable: \033[1;33m%s\033[0m", $numFilesIgnored );
-            printf ( "\n\r-Total files analyzed: \033[1;33m%s of %s\033[0m", $totalFiles, $this->max );
-            printf ( "\n\r-Diretories: \033[1;33m%s\033[0m", $databases * $countDir );
-            printf ( "\n\r-Scanned tables: \033[1;33m%s\033[0m", $totalTable );
-            printf ( "\n\r-Execution time: \033[1;33m%ssec\033[0m", $this->getRunTime () );
+            printf ( "\n\r-Files generated/updated: \033[1;33m%s\033[0m" , $numFilesCreated );
+            printf ( "\n\r-Files not upgradeable: \033[1;33m%s\033[0m" , $numFilesIgnored );
+            printf ( "\n\r-Files deleted: \033[1;33m%s\033[0m" , $totalFilesDeleted );
+            printf ( "\n\r-Total files analyzed: \033[1;33m%s of %s\033[0m" , $totalFiles , $this->max );
+            printf ( "\n\r-Diretories: \033[1;33m%s\033[0m" , $databases * $countDir );
+            printf ( "\n\r-Scanned tables: \033[1;33m%s\033[0m" , $totalTable );
+            printf ( "\n\r-Execution time: \033[1;33m%ssec\033[0m" , $this->getRunTime () );
             echo "\n------";
         }
     }

@@ -58,6 +58,8 @@ abstract class AbstractAdapter
         // string com o nome da pastar personalizada
         'folder-name'     => '' ,
 
+        'clean-trash'     => false,
+
         ############################## Comandos adicionais
         //flag para mostrar o status da execução ao termino do processo
         'status'          => false ,
@@ -337,6 +339,13 @@ abstract class AbstractAdapter
     public function hasPort ()
     {
         return ! empty( $this->arrConfig[ 'port' ] );
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCleanTrash(){
+        return (boolean) $this->arrConfig[ 'clean-trash' ];
     }
 
     /**

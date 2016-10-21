@@ -81,6 +81,7 @@ Configurations optionals
 | --database     | database name. |
 | --schema       | database schema name (one or more than one). |
 | --tables       | table name (parameter can be used more then once). |
+| --clean-trash  | delete all files that do not belong to your Database due. |
 | --status       | show status of implementation carried out after completing the process. |
 | --version      | shows the version of ORM Generator. |
 | --help         | help command explaining all the options and manner of use. |

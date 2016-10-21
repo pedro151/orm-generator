@@ -6,6 +6,9 @@ use Classes\AdapterConfig\AbstractAdapter;
 use Classes\Db\Column;
 use Classes\Db\Constrant;
 use Classes\Db\DbTable;
+use Classes\Db\Iterators\DbTables;
+
+require_once 'Classes/Db/Iterators/DbTables.php';
 
 /**
  * Adapter com funcoes de analise das consultas
@@ -62,7 +65,7 @@ abstract class AbsractAdapter
     protected $socket;
 
     /**
-     * @type \Classes\Db\DbTable[][]
+     * @type \Classes\Db\Iterators\DbTables[]
      */
     private $objDbTables = array ();
 
@@ -81,18 +84,20 @@ abstract class AbsractAdapter
      */
     protected function parseConstrants ()
     {
-        foreach ( $this->getListConstrant () as $constrant ) {
+        foreach ( $this->getListConstrant () as $constrant )
+        {
 
-            $schema     = $constrant[ 'table_schema' ];
+            $schema = $constrant[ 'table_schema' ];
             $table_name = $constrant [ 'table_name' ];
-            $this->populateForeignAndPrimaryKeys ( $constrant, $table_name, $schema );
-            unset( $table_name, $schema );
+            $this->populateForeignAndPrimaryKeys ( $constrant , $table_name , $schema );
+            unset( $table_name , $schema );
 
-            if ( $constrant[ 'constraint_type' ] == "FOREIGN KEY" ) {
-                $schema     = $constrant[ 'foreign_schema' ];
+            if ( $constrant[ 'constraint_type' ] == "FOREIGN KEY" )
+            {
+                $schema = $constrant[ 'foreign_schema' ];
                 $table_name = $constrant [ 'foreign_table' ];
-                $this->populateDependece ( $constrant, $table_name, $schema );
-                unset( $table_name, $schema );
+                $this->populateDependece ( $constrant , $table_name , $schema );
+                unset( $table_name , $schema );
             }
         }
     }
@@ -102,23 +107,26 @@ abstract class AbsractAdapter
      * @param string $table_name
      * @param int    $schema
      */
-    private function populateForeignAndPrimaryKeys ( $constrant, $table_name, $schema = 0 )
+    private function populateForeignAndPrimaryKeys ( $constrant , $table_name , $schema = 0 )
     {
-        if ( $this->hasTable ( $table_name, $schema ) ) {
-            $table = $this->getTable ( $table_name, $schema );
-            if ( $table->hasColumn ( $constrant[ "column_name" ] ) ) {
+        if ( $this->hasTable ( $table_name , $schema ) )
+        {
+            $table = $this->getTable ( $table_name , $schema );
+            if ( $table->hasColumn ( $constrant[ "column_name" ] ) )
+            {
                 $objConstrant = Constrant::getInstance ()
                                          ->populate (
                                              array (
-                                                 'constrant' => $constrant[ 'constraint_name' ],
-                                                 'schema'    => $constrant[ 'foreign_schema' ],
-                                                 'table'     => $constrant[ 'foreign_table' ],
-                                                 'column'    => $constrant[ 'foreign_column' ],
+                                                 'constrant' => $constrant[ 'constraint_name' ] ,
+                                                 'schema'    => $constrant[ 'foreign_schema' ] ,
+                                                 'table'     => $constrant[ 'foreign_table' ] ,
+                                                 'column'    => $constrant[ 'foreign_column' ] ,
                                                  'database'  => $this->database
                                              )
                                          );
 
-                switch ( $constrant[ 'constraint_type' ] ) {
+                switch ( $constrant[ 'constraint_type' ] )
+                {
                     case "FOREIGN KEY":
                         $table->getColumn ( $constrant[ "column_name" ] )
                               ->addRefFk ( $objConstrant );
@@ -128,8 +136,8 @@ abstract class AbsractAdapter
                               ->setPrimaryKey ( $objConstrant )
                               ->setSequence (
                                   $this->getSequence (
-                                      $table_name,
-                                      $constrant[ "column_name" ],
+                                      $table_name ,
+                                      $constrant[ "column_name" ] ,
                                       $schema
                                   )
                               );
@@ -144,17 +152,19 @@ abstract class AbsractAdapter
      * @param string $table_name
      * @param int    $schema
      */
-    private function populateDependece ( $constrant, $table_name, $schema = 0 )
+    private function populateDependece ( $constrant , $table_name , $schema = 0 )
     {
-        if ( $this->hasTable ( $table_name, $schema ) ) {
-            $table = $this->getTable ( $table_name, $schema );
-            if ( $table->hasColumn ( $constrant[ "foreign_column" ] ) ) {
+        if ( $this->hasTable ( $table_name , $schema ) )
+        {
+            $table = $this->getTable ( $table_name , $schema );
+            if ( $table->hasColumn ( $constrant[ "foreign_column" ] ) )
+            {
                 $table->getColumn ( $constrant[ "foreign_column" ] )
                       ->createDependece (
-                          $constrant[ 'constraint_name' ],
-                          $constrant[ 'table_name' ],
-                          $constrant[ 'column_name' ],
-                          $this->database,
+                          $constrant[ 'constraint_name' ] ,
+                          $constrant[ 'table_name' ] ,
+                          $constrant[ 'column_name' ] ,
+                          $this->database ,
                           $constrant[ 'table_schema' ]
                       );
             }
@@ -166,31 +176,34 @@ abstract class AbsractAdapter
      */
     public function parseTables ()
     {
-        if ( $this->hasTables () ) {
+        if ( $this->hasTables () )
+        {
             return $this->getAllTables ();
         }
 
-        foreach ( $this->getListColumns () as $table ) {
+        foreach ( $this->getListColumns () as $table )
+        {
             $schema = $table[ 'table_schema' ];
-            $key    = $table [ 'table_name' ];
-            if ( !$this->hasTable ( $key, $schema ) ) {
-                $this->createTable ( $key, $schema );
+            $key = $table [ 'table_name' ];
+            if ( ! $this->hasTable ( $key , $schema ) )
+            {
+                $this->createTable ( $key , $schema );
             }
 
             $column = Column::getInstance ()
                             ->populate (
                                 array (
-                                    'name'       => $table [ 'column_name' ],
-                                    'type'       => $this->convertTypeToSimple ( $table[ 'data_type' ] ),
-                                    'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ),
+                                    'name'       => $table [ 'column_name' ] ,
+                                    'type'       => $this->convertTypeToSimple ( $table[ 'data_type' ] ) ,
+                                    'nullable'   => ( $table[ 'is_nullable' ] == 'YES' ) ,
                                     'max_length' => $table[ 'max_length' ]
                                 )
                             );
 
-            $this->getTable ( $key, $schema )
+            $this->getTable ( $key , $schema )
                  ->addColumn ( $column )
                  ->setNamespace (
-                     $this->config->createClassNamespace ( $this->getTable ( $key, $schema ) )
+                     $this->config->createClassNamespace ( $this->getTable ( $key , $schema ) )
                  );
         }
     }
@@ -210,7 +223,7 @@ abstract class AbsractAdapter
      *
      * @return string
      */
-    abstract public function getSequence ( $table, $column, $schema = 0 );
+    abstract public function getSequence ( $table , $column , $schema = 0 );
 
     /**
      * @return array
@@ -224,7 +237,8 @@ abstract class AbsractAdapter
      */
     protected function convertTypeToPhp ( $str )
     {
-        if ( isset( $this->dataTypesToPhp[ $str ] ) ) {
+        if ( isset( $this->dataTypesToPhp[ $str ] ) )
+        {
             return $this->dataTypesToPhp[ $str ];
         }
 
@@ -233,7 +247,8 @@ abstract class AbsractAdapter
 
     protected function convertTypeToSimple ( $str )
     {
-        if ( isset( $this->dataTypesToSimple[ $str ] ) ) {
+        if ( isset( $this->dataTypesToSimple[ $str ] ) )
+        {
             return $this->dataTypesToSimple[ $str ];
         }
 
@@ -256,13 +271,18 @@ abstract class AbsractAdapter
      *
      * @return \Classes\Db\DbTable
      */
-    public function createTable ( $nameTable, $schema = 0 )
+    public function createTable ( $nameTable , $schema = 0 )
     {
+        if ( ! isset( $this->objDbTables[ $schema ] ) )
+        {
+            $this->objDbTables[ $schema ] = new DbTables();
+        }
+
         $this->objDbTables[ $schema ][ trim ( $nameTable ) ] = DbTable::getInstance ()
                                                                       ->populate (
                                                                           array (
-                                                                              'table'    => $nameTable,
-                                                                              'schema'   => $schema,
+                                                                              'table'    => $nameTable ,
+                                                                              'schema'   => $schema ,
                                                                               'database' => $this->database
                                                                           )
                                                                       );
@@ -273,11 +293,12 @@ abstract class AbsractAdapter
     /**
      * Retorna um Array Assoc com a chave com nome da tabela e o valor com objeto tables
      *
-     * @return \Classes\Db\DbTable[]
+     * @return \Classes\Db\Iterators\DbTables
      */
     public function getTables ( $schema = 0 )
     {
-        if ( !isset( $this->objDbTables[ $schema ] ) ) {
+        if ( ! isset( $this->objDbTables[ $schema ] ) )
+        {
             return array ();
         }
 
@@ -291,7 +312,7 @@ abstract class AbsractAdapter
 
     public function hasTables ()
     {
-        return !empty( $this->objDbTables );
+        return ! empty( $this->objDbTables );
     }
 
     /**
@@ -301,7 +322,7 @@ abstract class AbsractAdapter
      *
      * @return \Classes\Db\DbTable
      */
-    public function getTable ( $nameTable, $schema = 0 )
+    public function getTable ( $nameTable , $schema = 0 )
     {
         return $this->objDbTables[ $schema ][ trim ( $nameTable ) ];
     }
@@ -312,7 +333,7 @@ abstract class AbsractAdapter
      *
      * @return bool
      */
-    public function hasTable ( $nameTable, $schema = 0 )
+    public function hasTable ( $nameTable , $schema = 0 )
     {
         return isset( $this->objDbTables[ $schema ][ trim ( $nameTable ) ] );
     }
@@ -336,14 +357,16 @@ abstract class AbsractAdapter
      */
     public function __construct ( AbstractAdapter $adapterConfig )
     {
-        $this->config   = $adapterConfig;
-        $this->host     = $adapterConfig->getHost ();
+        $this->config = $adapterConfig;
+        $this->host = $adapterConfig->getHost ();
         $this->database = $adapterConfig->getDatabase ();
-        $this->port     = $adapterConfig->hasPort () ? $adapterConfig->getPort () : $this->port;
+        $this->port = $adapterConfig->hasPort () ? $adapterConfig->getPort ()
+            : $this->port;
         $this->username = $adapterConfig->getUser ();
         $this->password = $adapterConfig->getPassword ();
-        $this->socket   = $adapterConfig->getSocket ();
-        $this->tablesName = $adapterConfig->hasTablesName ()? $adapterConfig->getListTablesName():'';
+        $this->socket = $adapterConfig->getSocket ();
+        $this->tablesName = $adapterConfig->hasTablesName ()
+            ? $adapterConfig->getListTablesName () : '';
 
     }
 
@@ -362,19 +385,23 @@ abstract class AbsractAdapter
      */
     public function getPDO ()
     {
-        if ( is_null ( $this->_pdo ) ) {
-            if ( !empty( $this->socket ) ) {
+        if ( is_null ( $this->_pdo ) )
+        {
+            if ( ! empty( $this->socket ) )
+            {
                 $pdoString = $this->getPDOSocketString ();
-            }
-            else {
+            } else
+            {
                 $pdoString = $this->getPDOString ();
             }
 
-            try {
+            try
+            {
                 $this->_pdo = new \PDO (
-                    $pdoString, $this->username, $this->password
+                    $pdoString , $this->username , $this->password
                 );
-            } catch ( \Exception $e ) {
+            } catch ( \Exception $e )
+            {
                 die ( "\033[0;31mPDO error: " . $e->getMessage () . "\033[0m\n" );
             }
         }
