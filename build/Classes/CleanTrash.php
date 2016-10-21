@@ -1,6 +1,7 @@
 <?php
 
 namespace Classes;
+use Classes\Db\Iterators\DbTables;
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -49,7 +50,11 @@ class CleanTrash
      */
     private function diffFiles ( $path , $driver , $schema = 0 )
     {
-        $tablesName = $driver->getTables ( $schema )->toArrayFileName ();
+        $tables = $driver->getTables ( $schema );
+        if(!$tables instanceof DbTables){
+            return array();
+        }
+        $tablesName = $tables->toArrayFileName();
         return array_diff ( $this->scanDir ( $path ) , $tablesName );
     }
 
