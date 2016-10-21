@@ -181,10 +181,7 @@ $validators = implode ( ", ", $validators ) ?>
             }
 
 <?php break ?>
-<?php case 'boolean': ?>
-            $this-><?= $column->getName () ?> = $<?= $column->getName () ?> ? true : false;
 
-<?php break ?>
 <?php default: ?>
 <?php if(!$column->isNullable ()):?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
