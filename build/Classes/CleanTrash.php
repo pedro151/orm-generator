@@ -36,7 +36,16 @@ class CleanTrash
 
     private function scanDir ( $directory )
     {
-        return array_diff ( preg_grep ( '*\.*' , scandir ( $directory ) ) , array (
+        if(!is_dir($directory)){
+            return array();
+        }
+
+        $diretories = preg_grep ( '*\.ph*' , scandir ( $directory ) );
+        if(!$diretories){
+            return array();
+        }
+
+        return array_diff ( $diretories, array (
             '..' , '.'
         ) );
     }
