@@ -107,7 +107,9 @@ Support Database
 Framework Class Generator ORM
 -----------------------------
 
-| Frameworks         |  Config Name   | Version | Generate Classes |
-|--------------------|----------------|:---------:|------------------|
-|Zend Framework | zf1 | 1.12 |  DbTable, Entity, Model  |
-|Phalcon | phalcon | 2.1.0 | Entity, Model, Peer  |
+<sup><sub> - Classes Overwrite: Classes should not be personalized, they will be rewritten every generation of classes. </sup></sup>
+
+| Frameworks         |  Config Name   | Version | Generate Classes | Classes Overwrite |
+|--------------------|----------------|:---------:|------------------|------------------|
+|Zend Framework | zf1 | 1.12 |  DbTable, Entity, Model  | DbTable, Entity |
+|Phalcon | phalcon | 3.0 | Entity, Model, Peer  | Entity |
