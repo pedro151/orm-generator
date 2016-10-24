@@ -145,6 +145,11 @@ EOF;
 
     public function checkHasNewVersion ()
     {
+        if ( ! ini_get ( 'file_get_contents' ) )
+        {
+            return;
+        }
+
         $opts = array (
             'http' => array (
                 'method' => 'GET' ,
