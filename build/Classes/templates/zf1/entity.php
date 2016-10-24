@@ -64,14 +64,16 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
 <?php foreach ( $objTables->getColumns () as $column ): ?>
 <?php
     $filters = null;
-    switch ( ucfirst ( $column->getType () ) ) {
-        case 'String':
+    switch ( strtolower ( $column->getType () ) ) {
+        case 'string':
             $filters = 'StripTags", "StringTrim';
             break;
-        case 'Float':
+        case 'float':
             $filters = 'Digits';
             break;
-        case 'Date':
+        case 'date':
+            break;
+        case 'boolean':
             break;
         default:
             $filters = ucfirst ( $column->getType () );
@@ -94,14 +96,14 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
 
     $validators[] = $column->isNullable () ? "'allowEmpty' => true" : "'NotEmpty'";
 
-    switch ( ucfirst ( $column->getType () ) ) {
-        case 'String':
+    switch ( strtolower ( $column->getType () ) ) {
+        case 'string':
             if ( $column->getMaxLength () ) {
                 $validators[] = "array( 'StringLength', array( 'max' => " . $column->getMaxLength () . " ) )";
             }
 
             break;
-        case 'Boolean':
+        case 'boolean':
             break;
         default:
             $name         = ucfirst ( $column->getType () );
@@ -151,6 +153,27 @@ $validators = implode ( ", ", $validators ) ?>
     protected $_depend_<?= $depend[ 'variable' ] ?>;
 
 <?php endforeach; ?>
+
+    /**
+     * @param int $primarykey
+     *
+     * @return <?=$className?>
+     */
+    public function find ( $primarykey )
+    {
+       return <?=$className?>::find ( $primarykey );
+    }
+
+    /**
+     * @see Zend_Db_Table_Rowset_Abstract::fetchAll
+     *
+     * @return <?=$className?>[]
+     */
+    public function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
+    {
+       return <?=$className?>::fetchAll ( $where , $order , $count , $offset );
+    }
+
 <?php foreach ( $objTables->getColumns () as $column ): ?>
     /**
      *
@@ -168,7 +191,7 @@ $validators = implode ( ", ", $validators ) ?>
     public function set<?= \Classes\Maker\AbstractMaker::getClassName ( $column->getName () ) ?>($<?= $column->getName (
     ) ?>)
     {
-<?php switch ( $column->getType () ):
+<?php switch ( strtolower( $column->getType () ) ):
         case 'date': ?>
             if (! empty($<?= $column->getName () ?>))
             {
@@ -180,10 +203,9 @@ $validators = implode ( ", ", $validators ) ?>
                 $this-><?= $column->getName () ?> = $<?= $column->getName () ?>->toString(Zend_Date::ISO_8601);
             }
 
-<?php break ?>
-
-<?php default: ?>
-<?php if(!$column->isNullable ()):?>
+<?php break;
+        default: ?>
+<?php if(!$column->isNullable () or strtolower( $column->getType () ) != 'boolean'):?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
 <?php endif ?>
             $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName (
