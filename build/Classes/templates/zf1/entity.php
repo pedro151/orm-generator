@@ -158,11 +158,12 @@ $validators = implode ( ", ", $validators ) ?>
     /**
      * @param int $primarykey
      *
-     * @return <?=$classNameModel?>
+     * @return <?=$classNameModel."\n"?>
      */
     public function find ( $primarykey )
     {
-       return <?=$classNameModel?>::retrieve ( $primarykey );
+       $this->populate(<?=$classNameModel?>::retrieve ( $primarykey )->toArray());
+       return $this;
     }
 
     /**
