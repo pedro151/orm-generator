@@ -158,7 +158,7 @@ $validators = implode ( ", ", $validators ) ?>
     /**
      * @param int $primarykey
      *
-     * @return <?=$classNameModel?>
+     * @return <?=$classNameModel."\n"?>
      */
     public function find ( $primarykey )
     {
