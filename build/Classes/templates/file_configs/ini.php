@@ -41,6 +41,8 @@ folder-name=''
 framework-ini = ""
 ;the path to the directory of the framework library
 framework-path-library = ""
+;delete all files that do not belong to your Database due.
+;clean-trash=0
 
 namespace = ''
 

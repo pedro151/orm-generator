@@ -8,12 +8,12 @@
 
 if ( ! ini_get ( 'short_open_tag' ) )
 {
-    die( "please enable short_open_tag directive in php.ini\n" );
+    die( "\033[0;31mError: please enable short_open_tag directive in php.ini\033[0m\n" );
 }
 
 if ( ! ini_get ( 'register_argc_argv' ) )
 {
-    die( "please enable register_argc_argv directive in php.ini\n" );
+    die( "\033[0;31mError: please enable register_argc_argv directive in php.ini\033[0m\n" );
 }
 
 
@@ -71,13 +71,14 @@ try
         'status' ,
         'init' ,
         'config-env:' ,
-        'config-ini:' ,
+        'name-ini:' ,
         'database:' ,
         'schema:' ,
         'driver:' ,
         'tables:',
         'framework:' ,
-        'path:'
+        'path:',
+        'clean-trash:'
     );
 
     $_path = __DIR__;
@@ -94,5 +95,5 @@ try
 
 } catch ( \Exception $e )
 {
-    die( $e->getMessage () );
+    die( $e->getMessage ()  );
 }

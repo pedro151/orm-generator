@@ -47,7 +47,7 @@ class Mssql extends AbsractAdapter
     /**
      * @inheritDoc
      * @param string $databaseName
-     * @return \Classes\Db\DbTable[]
+     * @return \Classes\Db\Iterators\DbTables
      */
     public function getTables($schema = 0)
     {

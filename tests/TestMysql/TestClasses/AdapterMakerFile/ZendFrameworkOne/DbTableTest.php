@@ -107,7 +107,7 @@ CREATE TABLE bugs_products (
     public function testParseRelation ()
     {
         $maker       = new \Classes\MakerFile(
-            new \Classes\Config( array ( 'config-ini' => 'configs/config.ini' ), '', 1 )
+            new \Classes\Config( array ( 'name-ini' => 'configs/config.ini' ), '', 1 )
         );
         $objMakeFile = DbTable::getInstance ();
 

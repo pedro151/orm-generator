@@ -1,11 +1,13 @@
 <?php
 
-if ( !ini_get ( 'short_open_tag' ) ) {
-    die( "please enable short_open_tag directive in php.ini\n" );
+if ( ! ini_get ( 'short_open_tag' ) )
+{
+    die( "\033[0;31mError: please enable short_open_tag directive in php.ini\033[0m\n" );
 }
 
-if ( !ini_get ( 'register_argc_argv' ) ) {
-    die( "please enable register_argc_argv directive in php.ini\n" );
+if ( ! ini_get ( 'register_argc_argv' ) )
+{
+    die( "\033[0;31mError: please enable register_argc_argv directive in php.ini\033[0m\n" );
 }
 
 if ( function_exists ( 'ini_set' ) ) {
@@ -67,21 +69,22 @@ try {
         'status',
         'init',
         'config-env:',
-        'config-ini:',
+        'name-ini:',
         'database:',
         'schema:',
         'driver:',
         'tables:',
         'framework:',
-        'path:'
+        'path:',
+        'clean-trash:'
     );
 
     $arg = getopt ( null, $arrValid );
     if ( array_key_exists ( 'init', $arg ) ) {
-        $maker = new \Classes\MakerConfigFile( $arg, $_path );
+        $maker = new \Classes\MakerConfigFile( $arg, dirname($_path) );
     }
     else {
-        $maker = new \Classes\MakerFile( new \Classes\Config( $arg, $_path, count ( $argv ) ) );
+        $maker = new \Classes\MakerFile( new \Classes\Config( $arg, dirname($_path), count ( $argv ) ) );
     }
 
     $maker->run ();

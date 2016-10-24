@@ -75,7 +75,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
 
     /**
     * @param array $data
-    * @return <?=$this->config->namespace?$this->config->namespace."_":""?>>Model_EntityAbstract
+    * @return <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract
     */
     public static function getIntance($data = array())
     {
@@ -242,7 +242,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     /**
      * Retorna o nome da coluna da primary key
      *
-     * @see <?=$this->config->namespace?>Model__DbTable_TableAbstract::getPrimaryKeyName()
+     * @see <?=$this->config->namespace?$this->config->namespace."_":""?>Model_DbTable_TableAbstract::getPrimaryKeyName()
      * @return string|array The name or array of names which form the primary key
      */
     public function getPrimaryKeyName()
@@ -254,9 +254,9 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      * Retorna o objeto pela primary key
      *
      * @param int|array $primary_key
-     * @return <?=$this->config->namespace?>Model_EntityAbstract
+     * @return <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract
      */
-    public static function find ( $primary_key )
+    public static function retrieve ( $primary_key )
     {
         return  self::getIntance()->getTable()->find($primary_key)->current();
     }
@@ -308,7 +308,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     /**
     * @see Zend_Db_Table_Rowset_Abstract::fetchAll
     */
-    public static function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
+    public static function retrieveAll ( $where = null , $order = null , $count = null , $offset = null )
     {
         return self::getIntance()->getTable()->fetchAll ( $where , $order , $count , $offset );
     }

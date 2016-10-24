@@ -25,7 +25,7 @@ class MakerConfigFile extends AbstractMaker
     private $msg = "\033[0mPlease enter the value for %index% \033[1;33m[%config%]:\033[0m ";
 
     private $configs = array (
-        'config-env'  => 'config' ,
+        'name-ini'  => 'config' ,
         'framework'   => 'none' ,
         'driver'      => 'pgsql' ,
         'environment' => 'dev' ,
@@ -52,7 +52,7 @@ class MakerConfigFile extends AbstractMaker
      */
     private function parseConfig ( $basePath , $argv )
     {
-        $this->baseLocation = dirname ( $basePath );
+        $this->baseLocation = $basePath;
 
         $arrayIO = array_diff_key ( $this->configs , $argv );
         foreach ( $arrayIO as $index => $config )
@@ -74,7 +74,7 @@ class MakerConfigFile extends AbstractMaker
         $path = $this->baseLocation . DIRECTORY_SEPARATOR . "configs";
         self::makeDir ( $path );
         self::makeSourcer (
-            $path . DIRECTORY_SEPARATOR . $this->argv[ 'config-env' ] . '.ini' ,
+            $path . DIRECTORY_SEPARATOR . $this->argv[ 'name-ini' ] . '.ini' ,
             $this->getParsedTplContents ( $this->template , $this->argv )
         );
         echo "\n\033[1;32mSuccessfully process finished!\n\033[0m";

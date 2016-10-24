@@ -58,6 +58,8 @@ abstract class AbstractAdapter
         // string com o nome da pastar personalizada
         'folder-name'     => '' ,
 
+        'clean-trash'     => false,
+
         ############################## Comandos adicionais
         //flag para mostrar o status da execução ao termino do processo
         'status'          => false ,
@@ -340,6 +342,13 @@ abstract class AbstractAdapter
     }
 
     /**
+     * @return boolean
+     */
+    public function isCleanTrash(){
+        return (boolean) $this->arrConfig[ 'clean-trash' ];
+    }
+
+    /**
      * @return string
      */
     public function getSocket ()
@@ -391,7 +400,7 @@ abstract class AbstractAdapter
         $matches = preg_grep ( '*\.*' , $this->getTablesName () );
         if ( count ( $matches ) )
         {
-           die("error: Table name must not contain the schema\n");
+           die("\033[0;31mError: Table name must not contain the schema.\033[0m\n");
         }
     }
 
