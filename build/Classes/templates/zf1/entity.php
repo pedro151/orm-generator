@@ -1,4 +1,5 @@
 <?= "<?php\n" ?>
+<?php $classNameModel = $objTables->getNamespace () . '_' . \Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () ) ?>
 <?php $className = $objTables->getNamespace () . '_Entity_' . \Classes\Maker\AbstractMaker::getClassName (
         $objTables->getName ()
     ) ?>
@@ -157,21 +158,21 @@ $validators = implode ( ", ", $validators ) ?>
     /**
      * @param int $primarykey
      *
-     * @return <?=$className?>
+     * @return <?=$classNameModel?>
      */
     public function find ( $primarykey )
     {
-       return <?=$className?>::find ( $primarykey );
+       return <?=$classNameModel?>::retrieve ( $primarykey );
     }
 
     /**
      * @see Zend_Db_Table_Rowset_Abstract::fetchAll
      *
-     * @return <?=$className?>[]
+     * @return <?=$classNameModel?>[]
      */
     public function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
     {
-       return <?=$className?>::fetchAll ( $where , $order , $count , $offset );
+       return <?=$classNameModel?>::retrieveAll ( $where , $order , $count , $offset );
     }
 
 <?php foreach ( $objTables->getColumns () as $column ): ?>
@@ -205,7 +206,7 @@ $validators = implode ( ", ", $validators ) ?>
 
 <?php break;
         default: ?>
-<?php if(!$column->isNullable () or strtolower( $column->getType () ) != 'boolean'):?>
+<?php if(!$column->isNullable () && strtolower( $column->getType () ) != 'boolean'):?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
 <?php endif ?>
             $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName (
