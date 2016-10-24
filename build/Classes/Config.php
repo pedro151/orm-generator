@@ -31,7 +31,7 @@ class Config
     /**
      * @var string
      */
-    public static $version = "1.4.9";
+    public static $version = "1.4.8";
 
     /**
      * String that separates the parent section name
@@ -145,11 +145,6 @@ EOF;
 
     public function checkHasNewVersion ()
     {
-        if ( ! ini_get ( 'file_get_contents' ) )
-        {
-            return;
-        }
-
         $opts = array (
             'http' => array (
                 'method' => 'GET' ,
@@ -158,15 +153,18 @@ EOF;
                 )
             )
         );
-        $context = stream_context_create($opts);
-        $tags = json_decode ( file_get_contents ( "https://api.github.com/repos/pedro151/orm-generator/tags" , false, $context) );
 
-
-        $lastVersion = preg_replace("/[^0-9.]/", "", $tags[ 0 ]->name);
-        if ( $lastVersion > static::$version )
+        try
         {
-            return "\033[0;31mThere is a new version $lastVersion available:\033[0m https://github.com/pedro151/orm-generator\n";
-        }
+            $context = stream_context_create ( $opts );
+            $tags = json_decode ( file_get_contents ( "https://api.github.com/repos/pedro151/orm-generator/tags" , false , $context ) );
+
+            $lastVersion = preg_replace ( "/[^0-9.]/" , "" , $tags[ 0 ]->name );
+            if ( $lastVersion > static::$version )
+            {
+                return "\033[0;31mThere is a new version $lastVersion available:\033[0m https://github.com/pedro151/orm-generator\n";
+            }
+        } catch ( \Exception $ex ){ }
     }
 
     public function getVersion ()
