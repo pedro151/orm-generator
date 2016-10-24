@@ -74,7 +74,7 @@ Configurations optionals
 | Command        | description       |
 |----------------|------------------|
 | --init         | Creates the necessary configuration file to start using the ORM Generator. |
-| --config-ini   | reference to another .ini file configuration (relative path). |
+| --name-ini   | reference to another .ini file configuration (relative path). |
 | --config-env   | ORM Generator configuration environment. |
 | --framework    | name framework used, which has the contents of the database configurations and framework template. |
 | --driver       | database driver name (Ex.: pgsql, mysql). |

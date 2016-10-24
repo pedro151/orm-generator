@@ -69,7 +69,7 @@ try {
         'status',
         'init',
         'config-env:',
-        'config-ini:',
+        'name-ini:',
         'database:',
         'schema:',
         'driver:',
