@@ -55,7 +55,7 @@ class Pgsql extends AbsractAdapter
         'timestamp without time zone' => 'datetime',
         'date'             => 'date',
         /* Boolean Type */
-        'boolean'          => 'int'
+        'boolean'          => 'boolean'
     );
 
     public function __construct ( AbstractAdapter $adapterConfig )

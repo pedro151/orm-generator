@@ -75,6 +75,7 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
         case 'date':
             break;
         case 'boolean':
+            $filters='Int';
             break;
         default:
             $filters = ucfirst ( $column->getType () );
@@ -105,6 +106,7 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
 
             break;
         case 'boolean':
+            $validators[] = "'Int'";
             break;
         default:
             $name         = ucfirst ( $column->getType () );
@@ -205,10 +207,11 @@ $validators = implode ( ", ", $validators ) ?>
 <?php $format = ( $column->equalType ( 'datetime' ) )?'Zend_Date::TIMESTAMP':'Zend_Date::ISO_8601' ?>
                 $this-><?= $column->getName () ?> = $<?= $column->getName () ?>->toString( <?=$format?> );
             }
-
 <?php break;
-        default: ?>
-<?php if(!$column->isNullable () && strtolower( $column->getType () ) != 'boolean'):?>
+        case 'boolean': ?>
+            $<?= $column->getName () ?> = ( int ) $<?= $column->getName () ?> ;
+<?php default: ?>
+<?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
 <?php endif ?>
             $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName (
