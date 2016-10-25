@@ -208,8 +208,10 @@ $validators = implode ( ", ", $validators ) ?>
                 $this-><?= $column->getName () ?> = $<?= $column->getName () ?>->toString( <?=$format?> );
             }
 <?php break;
-        case 'boolean': ?>
+        case 'boolean':
+if(!$column->isNullable ()):?>
             $<?= $column->getName () ?> = ( int ) $<?= $column->getName () ?> ;
+<?php endif ?>
 <?php default: ?>
 <?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
