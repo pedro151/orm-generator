@@ -52,9 +52,10 @@ class Pgsql extends AbsractAdapter
         'text'             => 'text',
         /* Date/Time Types */
         'datetime'         => 'datetime',
+        'timestamp without time zone' => 'datetime',
         'date'             => 'date',
         /* Boolean Type */
-        'boolean'          => 'boolean'
+        'boolean'          => 'int'
     );
 
     public function __construct ( AbstractAdapter $adapterConfig )

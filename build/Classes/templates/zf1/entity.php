@@ -194,15 +194,16 @@ $validators = implode ( ", ", $validators ) ?>
     ) ?>)
     {
 <?php switch ( strtolower( $column->getType () ) ):
-        case 'date': ?>
+        case 'date':
+        case 'datetime':?>
             if (! empty($<?= $column->getName () ?>))
             {
                 if (! $<?= $column->getName () ?> instanceof Zend_Date)
                 {
                     $<?= $column->getName () ?> = new Zend_Date($<?= $column->getName () ?>);
                 }
-
-                $this-><?= $column->getName () ?> = $<?= $column->getName () ?>->toString(Zend_Date::ISO_8601);
+<?php $format = ( $column->equalType ( 'datetime' ) )?'Zend_Date::TIMESTAMP':'Zend_Date::ISO_8601' ?>
+                $this-><?= $column->getName () ?> = $<?= $column->getName () ?>->toString( <?=$format?> );
             }
 
 <?php break;
@@ -232,7 +233,7 @@ $validators = implode ( ", ", $validators ) ?>
     /**
      * Gets column <?= $column->getName () . "\n" ?>
      *
-<?php if ( $column->equalType ( 'date' ) ): ?>
+<?php if ( $column->equalType ( 'date' ) or $column->equalType ( 'datetime' ) ): ?>
      * @param boolean $returnZendDate
      * @return Zend_Date|null|string Zend_Date representation of this datetime if enabled, or ISO 8601 string if not
 <?php else: ?>
@@ -241,20 +242,25 @@ $validators = implode ( ", ", $validators ) ?>
      */
     public function get<?= \Classes\Maker\AbstractMaker::getClassName (
         $column->getName ()
-    ) ?>(<?php if ( $column->equalType ( 'date' ) ): ?>$returnZendDate = false <?php endif; ?>)
+    ) ?>(<?php if ( $column->equalType ( 'date' ) or $column->equalType ( 'datetime' ) ): ?>$format = false <?php endif; ?>)
     {
-<?php if ( $column->equalType ( 'date' ) ): ?>
-        if ($returnZendDate)
+<?php switch ( strtolower( $column->getType () ) ):
+case 'date':
+case 'datetime':?>
+        if ($format)
         {
             if ($this->_data['<?= $column->getName () ?>'] === null)
             {
                 return null;
             }
 
-            return new Zend_Date($this-><?= $column->getName () ?>, Zend_Date::ISO_8601);
+<?php $format = ( $column->equalType ( 'datetime' ) )?'Zend_Date::TIMESTAMP':'Zend_Date::ISO_8601' ?>
+            $objDate = new Zend_Date($this-><?= $column->getName () ?>, <?=$format?> );
+            return $objDate->toString($format);
         }
-<?php endif; ?>
-        return $this-><?= $column->getName () ?>;
+<?php break ?>
+<?php endswitch ?>
+     return $this-><?= $column->getName () ?>;
     }
 
 <?php endforeach; ?>
