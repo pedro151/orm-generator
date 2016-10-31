@@ -75,7 +75,8 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
         case 'date':
             break;
         case 'boolean':
-            $filters='Int';
+            if( ! $column->isNullable () )
+                $filters='Int';
             break;
         default:
             $filters = ucfirst ( $column->getType () );
@@ -106,7 +107,8 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
 
             break;
         case 'boolean':
-            $validators[] = "'Int'";
+            if( ! $column->isNullable () )
+                $validators[] = "'Int'";
             break;
         default:
             $name         = ucfirst ( $column->getType () );
@@ -224,7 +226,7 @@ if(!$column->isNullable ()):?>
                 $errors =  $input->getMessages ();
                 foreach ( $errors['<?= $column->getName () ?>'] as $key => $value )
                 {
-                    throw new Exception ( $value );
+                    throw new Exception ( '<?= $column->getName () ?> - ' . $value );
                 }
             }
 
