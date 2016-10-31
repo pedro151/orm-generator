@@ -75,7 +75,6 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
         case 'date':
             break;
         case 'boolean':
-            if( ! $column->isNullable () )
                 $filters='Int';
             break;
         default:
@@ -107,7 +106,6 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
 
             break;
         case 'boolean':
-            if( ! $column->isNullable () )
                 $validators[] = "'Int'";
             break;
         default:
@@ -158,28 +156,6 @@ $validators = implode ( ", ", $validators ) ?>
     protected $_depend_<?= $depend[ 'variable' ] ?>;
 
 <?php endforeach; ?>
-
-    /**
-     * @param int $primarykey
-     *
-     * @return <?=$classNameModel."\n"?>
-     */
-    public function find ( $primarykey )
-    {
-       $this->populate(<?=$classNameModel?>::retrieve ( $primarykey )->toArray());
-       return $this;
-    }
-
-    /**
-     * @see Zend_Db_Table_Rowset_Abstract::fetchAll
-     *
-     * @return <?=$classNameModel?>[]
-     */
-    public function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
-    {
-       return <?=$classNameModel?>::retrieveAll ( $where , $order , $count , $offset );
-    }
-
 <?php foreach ( $objTables->getColumns () as $column ): ?>
     /**
      *

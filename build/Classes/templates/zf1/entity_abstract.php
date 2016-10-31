@@ -251,6 +251,27 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     }
 
     /**
+     * @param int $primarykey
+     *
+     * @return <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract
+     */
+    public function find ( $primarykey )
+    {
+       $this->_data = self::retrieve ( $primarykey )->toArray();
+       return $this;
+    }
+
+    /**
+     * @see Zend_Db_Table_Rowset_Abstract::fetchAll
+     *
+     * @return <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract[]
+     */
+    public function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
+    {
+       return self::retrieveAll ( $where , $order , $count , $offset );
+    }
+
+    /**
      * Retorna o objeto pela primary key
      *
      * @param int|array $primary_key
