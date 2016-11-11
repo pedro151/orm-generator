@@ -258,7 +258,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     public function find ( $primarykey )
     {
        $obj = self::retrieve ( $primarykey );
-       if(!empty($obj)){
+       if(is_object($obj)){
            $this->_data = self::retrieve ( $primarykey )->toArray();
        }
        return $this;
