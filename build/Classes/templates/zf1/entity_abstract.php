@@ -257,7 +257,10 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public function find ( $primarykey )
     {
-       $this->_data = self::retrieve ( $primarykey )->toArray();
+       $obj = self::retrieve ( $primarykey );
+       if(!empty($obj)){
+           $this->_data = self::retrieve ( $primarykey )->toArray();
+       }
        return $this;
     }
 
@@ -279,7 +282,8 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public static function retrieve ( $primary_key )
     {
-        return  self::getIntance()->getTable()->find($primary_key)->current();
+        if(self::getIntance()->getTable()->find($primary_key)->current());
+        return  ;
     }
 
     /**
