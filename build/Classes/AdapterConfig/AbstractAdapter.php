@@ -192,7 +192,7 @@ abstract class AbstractAdapter
         $array += array (
             'version'     => Config::$version ,
             'author'      => ucfirst ( get_current_user () ) ,
-            'last_modify' => date ( "d-m-Y H:i:s." )
+            'last_modify' => date ( "d-m-Y" )
         );
 
         $this->setFrameworkFiles ( $array );
