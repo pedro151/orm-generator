@@ -282,8 +282,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public static function retrieve ( $primary_key )
     {
-        if(self::getIntance()->getTable()->find($primary_key)->current());
-        return  ;
+        return self::getIntance()->getTable()->find($primary_key)->current();
     }
 
     /**
