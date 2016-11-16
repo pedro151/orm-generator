@@ -16,6 +16,7 @@ services:
             - "3306:3306"
         environment:
             MYSQL_DATABASE: dao_generator
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
   orm:
       container_name: orm
       image: pedro151/phalcon
@@ -23,6 +24,7 @@ services:
       volumes:
           - /c/Users:/c/Users
           - /Users/htdocs/orm-generator:/var/www
+      working_dir: /var/www
       ports:
           - "80:80"
           - "443:443"
