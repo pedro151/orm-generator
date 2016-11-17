@@ -87,13 +87,14 @@ abstract class AbstractAdapter
     public $reservedWord = array ();
 
     private static $dataTypesDefault = array (
-        'int'      => 'int' ,
-        'float'    => 'float' ,
-        'string'   => 'string' ,
-        'text'     => 'string' ,
-        'date'     => 'date' ,
-        'datetime' => 'datetime' ,
-        'boolean'  => 'boolean'
+        'int'       => 'int' ,
+        'float'     => 'float' ,
+        'string'    => 'string' ,
+        'text'      => 'string' ,
+        'date'      => 'date' ,
+        'datetime'  => 'datetime' ,
+        'timestamp' => 'timestamp' ,
+        'boolean'   => 'boolean'
     );
 
     protected $dataTypes = array ();

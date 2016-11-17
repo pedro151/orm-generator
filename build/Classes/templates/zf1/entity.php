@@ -174,6 +174,7 @@ $validators = implode ( ", ", $validators ) ?>
     ) ?> )
     {
 <?php switch ( strtolower( $column->getType () ) ):
+        case 'timestamp':
         case 'date':
         case 'datetime':?>
             if (! empty($<?= $column->getName () ?>))
@@ -185,7 +186,9 @@ $validators = implode ( ", ", $validators ) ?>
 <?php if( $column->equalType ( 'date' ) ): ?>
                 $<?= $column->getName () ?>->setOptions(array('format_type' => 'php'));
 <?php endif ?>
-<?php $format = ( $column->equalType ( 'datetime' ) )?'Zend_Date::ISO_8601':'\'Y-m-d\'' ?>
+<?php $format =  'Zend_Date::ISO_8601' ?>
+<?php if( $column->equalType ( 'timestamp' ) ){ $format =  'Zend_Date::TIMESTAMP'; } ?>
+<?php if( $column->equalType ( 'date' ) ) { $format =  '\'Y-m-d\''; } ?>
                 $<?= $column->getName () ?> = $<?= $column->getName () ?>->toString( <?=$format?> );
             }
 <?php if($column->isNullable ()):?>
@@ -222,7 +225,7 @@ if(!$column->isNullable ()):?>
     /**
      * Gets column <?= $column->getName () . "\n" ?>
      *
-<?php if ( $column->equalType ( 'date' ) or $column->equalType ( 'datetime' ) ): ?>
+<?php if ( $column->equalType ( 'date' ) or $column->equalType ( 'datetime' ) or  $column->equalType ( 'timestamp' ) ): ?>
      * @param boolean $returnZendDate
      * @return Zend_Date|null|string Zend_Date representation of this datetime if enabled, or ISO 8601 string if not
 <?php else: ?>
@@ -231,11 +234,12 @@ if(!$column->isNullable ()):?>
      */
     public function get<?= \Classes\Maker\AbstractMaker::getClassName (
         $column->getName ()
-    ) ?>(<?php if ( $column->equalType ( 'date' ) or $column->equalType ( 'datetime' ) ): ?>$format = false <?php endif; ?>)
+    ) ?>(<?php if ( $column->equalType ( 'date' ) or $column->equalType ( 'datetime' ) or  $column->equalType ( 'timestamp' ) ): ?>$format = false <?php endif; ?>)
     {
 <?php switch ( strtolower( $column->getType () ) ):
-case 'date':
-case 'datetime':?>
+        case 'timestamp':
+        case 'date':
+        case 'datetime':?>
         if ($format)
         {
             if ($this->_data['<?= $column->getName () ?>'] === null)
@@ -243,8 +247,11 @@ case 'datetime':?>
                 return null;
             }
 
-<?php $format = ( $column->equalType ( 'datetime' ) )?'Zend_Date::TIMESTAMP':'Zend_Date::ISO_8601' ?>
+<?php $format =  'Zend_Date::ISO_8601' ?>
+<?php if( $column->equalType ( 'timestamp' ) ){ $format =  'Zend_Date::TIMESTAMP'; } ?>
+<?php if( $column->equalType ( 'date' ) ) { $format =  '\'Y-m-d\''; } ?>
             $objDate = new Zend_Date($this-><?= $column->getName () ?>, <?=$format?> );
+
             return $objDate->toString($format);
         }
 <?php break ?>
