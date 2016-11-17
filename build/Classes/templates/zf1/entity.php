@@ -197,7 +197,6 @@ $validators = implode ( ", ", $validators ) ?>
                 $<?= $column->getName () ?>->setOptions(array('format_type' => 'php'));
 <?php endif ?>
 <?php $format =  'Zend_Date::ISO_8601' ?>
-<?php if( $column->equalType ( 'timestamp' ) ){ $format =  'Zend_Date::TIMESTAMP'; } ?>
 <?php if( $column->equalType ( 'date' ) ) { $format =  '\'Y-m-d\''; } ?>
                 $<?= $column->getName () ?> = $<?= $column->getName () ?>->toString( <?=$format?> );
             }
@@ -258,7 +257,6 @@ if(!$column->isNullable ()):?>
             }
 
 <?php $format =  'Zend_Date::ISO_8601' ?>
-<?php if( $column->equalType ( 'timestamp' ) ){ $format =  'Zend_Date::TIMESTAMP'; } ?>
 <?php if( $column->equalType ( 'date' ) ) { $format =  '\'Y-m-d\''; } ?>
             $objDate = new Zend_Date($this-><?= $column->getName () ?>, <?=$format?> );
 
