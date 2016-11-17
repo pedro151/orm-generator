@@ -74,6 +74,10 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             break;
         case 'date':
             break;
+        case 'timestamp':
+            break;
+        case 'datetime':
+            break;
         case 'boolean':
                 $filters='Int';
             break;
@@ -99,6 +103,12 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
     $validators[] = $column->isNullable () ? "'allowEmpty' => true" : "'NotEmpty'";
 
     switch ( strtolower ( $column->getType () ) ) {
+        case 'date':
+            break;
+        case 'timestamp':
+            break;
+        case 'datetime':
+            break;
         case 'string':
             if ( $column->getMaxLength () ) {
                 $validators[] = "array( 'StringLength', array( 'max' => " . $column->getMaxLength () . " ) )";
