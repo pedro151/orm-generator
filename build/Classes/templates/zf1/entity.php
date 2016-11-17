@@ -256,9 +256,7 @@ if(!$column->isNullable ()):?>
                 return null;
             }
 
-<?php $format =  'Zend_Date::ISO_8601' ?>
-<?php if( $column->equalType ( 'date' ) ) { $format =  '\'Y-m-d\''; } ?>
-            $objDate = new Zend_Date($this-><?= $column->getName () ?>, <?=$format?> );
+            $objDate = new Zend_Date($this-><?= $column->getName () ?>, $format );
 
             return $objDate->toString($format);
         }
