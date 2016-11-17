@@ -170,8 +170,8 @@ $validators = implode ( ", ", $validators ) ?>
 <?php endif; ?>
      * @return <?= $className . "\n" ?>
      */
-    public function set<?= \Classes\Maker\AbstractMaker::getClassName ( $column->getName () ) ?>($<?= $column->getName (
-    ) ?>)
+    public function set<?= \Classes\Maker\AbstractMaker::getClassName ( $column->getName () ) ?>( $<?= $column->getName (
+    ) ?> )
     {
 <?php switch ( strtolower( $column->getType () ) ):
         case 'date':
@@ -183,7 +183,7 @@ $validators = implode ( ", ", $validators ) ?>
                     $<?= $column->getName () ?> = new Zend_Date($<?= $column->getName () ?>);
                 }
 <?php $format = ( $column->equalType ( 'datetime' ) )?'Zend_Date::TIMESTAMP':'Zend_Date::ISO_8601' ?>
-                $this-><?= $column->getName () ?> = $<?= $column->getName () ?>->toString( <?=$format?> );
+                $<?= $column->getName () ?> = $<?= $column->getName () ?>->toString( <?=$format?> );
             }
 <?php break;
         case 'boolean':
@@ -193,8 +193,9 @@ if(!$column->isNullable ()):?>
 <?php default: ?>
 <?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
-<?php endif ?>
-            $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName (
+<?php endif; break ?>
+<?php endswitch ?>
+        $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName (
             ) ?>'=>$<?= $column->getName () ?> ));
 
             if(!$input->isValid ('<?= $column->getName () ?>'))
@@ -207,9 +208,6 @@ if(!$column->isNullable ()):?>
             }
 
             $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
-
-<?php break ?>
-<?php endswitch ?>
         return $this;
     }
 
