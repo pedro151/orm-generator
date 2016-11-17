@@ -280,9 +280,12 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      * @param int|array $primary_key
      * @return <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract
      */
-    public static function retrieve ( $primary_key )
+    public static function retrieve ( $primarykey )
     {
-        return self::getIntance()->getTable()->find($primary_key)->current();
+        $primarykey = !is_array($primarykey)?(array)$primarykey:$primarykey;
+        $dbTable = self::getIntance()->getTable();
+        $imput = call_user_func_array(array($dbTable , "find" ), $primarykey);
+        return  $imput->current();
     }
 
     /**

@@ -182,9 +182,17 @@ $validators = implode ( ", ", $validators ) ?>
                 {
                     $<?= $column->getName () ?> = new Zend_Date($<?= $column->getName () ?>);
                 }
-<?php $format = ( $column->equalType ( 'datetime' ) )?'Zend_Date::TIMESTAMP':'Zend_Date::ISO_8601' ?>
+<?php if( $column->equalType ( 'date' ) ): ?>
+                $<?= $column->getName () ?>->setOptions(array('format_type' => 'php'));
+<?php endif ?>
+<?php $format = ( $column->equalType ( 'datetime' ) )?'Zend_Date::ISO_8601':'\'Y-m-d\'' ?>
                 $<?= $column->getName () ?> = $<?= $column->getName () ?>->toString( <?=$format?> );
             }
+<?php if($column->isNullable ()):?>
+            else{
+                $<?= $column->getName () ?> = null;
+            }
+<?php endif ?>
 <?php break;
         case 'boolean':
 if(!$column->isNullable ()):?>
@@ -193,10 +201,8 @@ if(!$column->isNullable ()):?>
 <?php default: ?>
 <?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
-<?php endif; break ?>
-<?php endswitch ?>
-        $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName (
-            ) ?>'=>$<?= $column->getName () ?> ));
+<?php endif ?>
+            $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName () ?>'=>$<?= $column->getName () ?> ));
 
             if(!$input->isValid ('<?= $column->getName () ?>'))
             {
@@ -206,8 +212,10 @@ if(!$column->isNullable ()):?>
                     throw new Exception ( '<?= $column->getName () ?> - ' . $value );
                 }
             }
+<?php break ?>
+<?php endswitch ?>
 
-            $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
+        $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
         return $this;
     }
 

@@ -92,7 +92,7 @@ abstract class AbstractAdapter
         'string'   => 'string' ,
         'text'     => 'string' ,
         'date'     => 'date' ,
-        'datetime' => 'date' ,
+        'datetime' => 'datetime' ,
         'boolean'  => 'boolean'
     );
 
