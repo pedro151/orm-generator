@@ -14,6 +14,41 @@ abstract class AbstractAdapter
     private static $_instance = array ();
 
     /**
+     * @type FilesFixeds[]
+     */
+    private $instanceFixedFile = array ();
+
+    /**
+     * @param \Classes\MakerFile  $makerFile
+     * @param \Classes\Db\DbTable $dbTable
+     *
+     * @return array
+     */
+    abstract public function parseRelation ( \Classes\MakerFile $makerFile , \Classes\Db\DbTable $dbTable );
+
+    /**
+     * @type string nome do arquivo template
+     */
+    protected $fileTpl;
+
+    /**
+     * @type string
+     */
+    protected $pastName;
+
+    /**
+     * nome do arquivo template e nome das classes fixas
+     *
+     * @type string[][]
+     */
+    protected $fileFixedData = array ();
+
+    /**
+     * @var bool
+     */
+    protected $overwrite = false;
+
+    /**
      *
      */
     final private function __construct ()
@@ -26,7 +61,7 @@ abstract class AbstractAdapter
     public static function getInstance ()
     {
         $class = get_called_class ();
-        if ( !isset( self::$_instance[ $class ] ) )
+        if ( ! isset( self::$_instance[ $class ] ) )
         {
             self::$_instance[ $class ] = new $class();
         }
@@ -35,56 +70,53 @@ abstract class AbstractAdapter
     }
 
     /**
-     * @param \Classes\MakerFile $makerFile
-     * @param \Classes\Db\DbTable $dbTable
-     *
-     * @return array
-     */
-    abstract public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable );
-
-    /**
-     * @type string
-     */
-    protected $parentClass;
-
-    /**
-     * @type string nome do arquivo template
-     */
-    protected $fileTpl;
-
-    /**
-     * @type string nome do arquivo template
-     */
-    protected $parentFileTpl;
-
-    /**
-     * @type string
-     */
-    protected $pastName;
-
-    /**
-     * @var bool
-     */
-    protected $overwrite = false;
-
-    /**
      * verifica se existe diretorio nesta makeFile
      *
      * @return bool
      */
     public function hasDiretory ()
     {
-        return !empty( $this->pastName );
+        return ! empty( $this->pastName );
     }
 
     /**
-     * @return string
+     * @return \Classes\AdapterMakerFile\FilesFixeds
      */
-    public function getParentClass ()
+    public function getFilesFixeds ( $key )
     {
-        return $this->parentClass;
+        $key = strtolower($key);
+        if ( ! isset( $this->fileFixedData[ $key ] ) )
+        {
+            throw new \Exception( 'Não existe dados para popular o FilesFixeds ' . $key );
+        }
+
+        if ( !isset($this->instanceFixedFile[ $key ]) or ! $this->instanceFixedFile[ $key ] instanceof FilesFixeds )
+        {
+            $this->instanceFixedFile[ $key ] = FilesFixeds::getInstance ( $this->fileFixedData[ $key ] );
+        }
+
+        return $this->instanceFixedFile[ $key ];
     }
 
+    /**
+     * verifica se existe arquivo de exeção
+     *
+     * @return bool
+     */
+    public function hasFilesFixeds ( $key )
+    {
+        return $this->getFilesFixeds ( strtolower($key) )->hasData ();
+    }
+
+    /**
+     * retorna a lista de possiveis objetos
+     *
+     * @return array
+     */
+    public function getListFilesFixed ()
+    {
+        return \array_keys ( $this->fileFixedData );
+    }
 
     /**
      * @return string
@@ -92,14 +124,6 @@ abstract class AbstractAdapter
     public function getFileTpl ()
     {
         return $this->fileTpl;
-    }
-
-    /**
-     * @return string
-     */
-    public function getParentFileTpl ()
-    {
-        return $this->parentFileTpl;
     }
 
     /**
@@ -115,7 +139,7 @@ abstract class AbstractAdapter
      */
     public function isOverwrite ()
     {
-       return $this->overwrite;
+        return $this->overwrite;
     }
 
 }

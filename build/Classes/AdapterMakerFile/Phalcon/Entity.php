@@ -13,13 +13,15 @@ use Classes\Maker\AbstractMaker;
 class Entity extends AbstractAdapter
 {
 
-    /**
-     * @var void
-     */
-    public    $pastName      = "Entity";
+    public    $pastName      = 'Entity';
     protected $fileTpl       = "entity.php";
-    protected $parentClass   = "AbstractEntity";
-    protected $parentFileTpl = "entity_abstract.php";
+    protected $fileFixedData = array (
+        'parentclass' => array (
+            'name' => "AbstractEntity" ,
+            'tpl'  => "entity_abstract.php"
+        )
+    );
+
     protected $overwrite     = true;
 
     protected $validFunc = array ();

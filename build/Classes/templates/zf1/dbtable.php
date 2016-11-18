@@ -17,7 +17,7 @@
  * @version   <?=$this->config->version."\n"?>
  */
 
-class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends <?=$this->config->namespace?$this->config->namespace."_":""?>Model_<?=$objMakeFile->getParentClass() . "\n"?>
+class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends <?=$this->config->namespace?$this->config->namespace."_":""?>Model_<?=$objMakeFile->getFilesFixeds('parentClass')->getFileName() . "\n"?>
 {
     /**
      * Nome da tabela do banco de dados

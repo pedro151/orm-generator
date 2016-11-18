@@ -25,8 +25,7 @@
  */
 
 abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->config->namespace
-                                                                        . "_" : "" ?>Model_<?= $objMakeFile->getParentClass (
-) . "\n" ?>
+                                                                        . "_" : "" ?>Model_<?= $objMakeFile->getFilesFixeds('parentClass')->getFileName() . "\n" ?>
 {
 
 <?php foreach ( $objTables->getColumns () as $column ): ?>
@@ -221,7 +220,7 @@ if(!$column->isNullable ()):?>
                 $errors =  $input->getMessages ();
                 foreach ( $errors['<?= $column->getName () ?>'] as $key => $value )
                 {
-                    throw new Exception ( '<?= $column->getName () ?> - ' . $value );
+                    throw new <?= $this->config->namespace ? $this->config->namespace . "_" : "" ?>Model_EntityException ( '<?= $column->getName () ?> - ' . $value );
                 }
             }
 <?php break ?>
