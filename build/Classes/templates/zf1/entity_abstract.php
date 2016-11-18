@@ -251,14 +251,41 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     }
 
     /**
+     * @param int $primarykey
+     *
+     * @return <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract
+     */
+    public function find ( $primarykey )
+    {
+       $obj = self::retrieve ( $primarykey );
+       if(is_object($obj)){
+           $this->_data = self::retrieve ( $primarykey )->toArray();
+       }
+       return $this;
+    }
+
+    /**
+     * @see Zend_Db_Table_Rowset_Abstract::fetchAll
+     *
+     * @return <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract[]
+     */
+    public function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
+    {
+       return self::retrieveAll ( $where , $order , $count , $offset );
+    }
+
+    /**
      * Retorna o objeto pela primary key
      *
      * @param int|array $primary_key
      * @return <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract
      */
-    public static function retrieve ( $primary_key )
+    public static function retrieve ( $primarykey )
     {
-        return  self::getIntance()->getTable()->find($primary_key)->current();
+        $primarykey = !is_array($primarykey)?(array)$primarykey:$primarykey;
+        $dbTable = self::getIntance()->getTable();
+        $imput = call_user_func_array(array($dbTable , "find" ), $primarykey);
+        return  $imput->current();
     }
 
     /**

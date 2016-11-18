@@ -52,6 +52,7 @@ class Pgsql extends AbsractAdapter
         'text'             => 'text',
         /* Date/Time Types */
         'datetime'         => 'datetime',
+        'timestamp without time zone' => 'timestamp',
         'date'             => 'date',
         /* Boolean Type */
         'boolean'          => 'boolean'

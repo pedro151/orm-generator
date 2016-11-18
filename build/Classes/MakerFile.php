@@ -3,9 +3,11 @@
 namespace Classes;
 
 use Classes\AdapterMakerFile\AbstractAdapter;
+use Classes\AdapterMakerFile\FilesFixeds;
 use Classes\Maker\AbstractMaker;
 
 require_once 'Classes/AdapterMakerFile/AbstractAdapter.php';
+require_once 'Classes/AdapterMakerFile/FilesFixeds.php';
 require_once 'Classes/Maker/AbstractMaker.php';
 require_once 'Classes/CleanTrash.php';
 
@@ -174,6 +176,23 @@ class MakerFile extends AbstractMaker
     }
 
     /**
+     * @param $objMakeFile
+     */
+    private function generateFilesFixed ( FilesFixeds $objFilesFixeds )
+    {
+        if ( $objFilesFixeds->hasData() )
+        {
+            $file = $this->baseLocation
+                             . DIRECTORY_SEPARATOR
+                             . $objFilesFixeds->getFileName()
+                             . '.php';
+
+            $tpl = $this->getParsedTplContents ( $objFilesFixeds->getTpl() );
+            self::makeSourcer ( $file , $tpl , true );
+        }
+    }
+
+    /**
      * Executa o Make, criando arquivos e Diretorios
      */
     public function run ()
@@ -194,17 +213,14 @@ class MakerFile extends AbstractMaker
                     CleanTrash::getInstance ()->run ( $path , $this->driver, $schema );
                 }
                 self::makeDir ( $path );
-                if ( $objMakeFile->getParentFileTpl () != '' ) {
-                    $fileAbstract = $this->baseLocation
-                                    . DIRECTORY_SEPARATOR
-                                    . $objMakeFile->getParentClass ()
-                                    . '.php';
 
-                    $tplAbstract = $this->getParsedTplContents ( $objMakeFile->getParentFileTpl () );
-                    self::makeSourcer ( $fileAbstract, $tplAbstract, true );
-                    unset( $fileAbstract, $tplAbstract );
+                #Cria as Classes de Exceção e Abstratas
+                foreach ( $objMakeFile->getListFilesFixed () as $nameObject )
+                {
+                    $this->generateFilesFixed($objMakeFile->getFilesFixeds($nameObject));
                 }
 
+                #Cria as Classes do Banco
                 foreach ( $this->driver->getTables ( $schema ) as $key => $objTables ) {
                     $file = $path . DIRECTORY_SEPARATOR . self::getClassName ( $objTables->getName () ) . '.php';
 

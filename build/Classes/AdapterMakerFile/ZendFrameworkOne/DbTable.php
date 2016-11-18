@@ -13,13 +13,15 @@ use Classes\Maker\AbstractMaker;
 class DbTable extends AbstractAdapter
 {
 
-    /**
-     * @var string
-     */
-    protected $pastName      = 'DbTable';
-    protected $parentClass   = "TableAbstract";
-    protected $parentFileTpl = "dbtable_abstract.php";
+    public    $pastName      = 'DbTable';
     protected $fileTpl       = "dbtable.php";
+    protected $fileFixedData = array (
+        'parentclass' => array (
+            'name' => "TableAbstract" ,
+            'tpl'  => "dbtable_abstract.php"
+        )
+    );
+
     protected $overwrite     = true;
 
     /**

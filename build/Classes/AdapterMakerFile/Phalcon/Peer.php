@@ -10,13 +10,15 @@ use Classes\AdapterMakerFile\AbstractAdapter;
  */
 class Peer extends AbstractAdapter
 {
-    /**
-     * @var void
-     */
+
     public    $pastName      = 'Peer';
     protected $fileTpl       = "peer.php";
-    protected $parentClass   = "AbstractPeer";
-    protected $parentFileTpl = "peer_abstract.php";
+    protected $fileFixedData = array (
+        'parentclass' => array (
+            'name' => "AbstractPeer" ,
+            'tpl'  => "peer_abstract.php"
+        )
+    );
 
     public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {

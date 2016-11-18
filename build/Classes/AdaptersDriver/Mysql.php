@@ -139,7 +139,7 @@ class Mysql extends AbsractAdapter
     {
         $sqlTables = !empty($this->tablesName)?"AND k.table_name IN ( $this->tablesName )":'';
 
-        return $this->getPDO ()
+        $objQuery = $this->getPDO ()
                     ->query (
                         "SELECT distinct
      i.constraint_type,
@@ -158,8 +158,8 @@ ON i.CONSTRAINT_NAME = k.CONSTRAINT_NAME and k.TABLE_SCHEMA <> 'mysql'
 WHERE
 i.TABLE_SCHEMA IN ('{$this->database}') AND i.CONSTRAINT_TYPE IN ('FOREIGN KEY', 'PRIMARY KEY' ) $sqlTables
 order by k.table_schema, k.table_name;"
-                    )
-                    ->fetchAll ( \PDO::FETCH_ASSOC );
+                    );
+        return $objQuery?$objQuery->fetchAll ( \PDO::FETCH_ASSOC ):array();
     }
 
     /**

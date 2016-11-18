@@ -25,8 +25,7 @@
  */
 
 abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->config->namespace
-                                                                        . "_" : "" ?>Model_<?= $objMakeFile->getParentClass (
-) . "\n" ?>
+                                                                        . "_" : "" ?>Model_<?= $objMakeFile->getFilesFixeds('parentClass')->getFileName() . "\n" ?>
 {
 
 <?php foreach ( $objTables->getColumns () as $column ): ?>
@@ -74,7 +73,12 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             break;
         case 'date':
             break;
+        case 'timestamp':
+            break;
+        case 'datetime':
+            break;
         case 'boolean':
+                $filters='Int';
             break;
         default:
             $filters = ucfirst ( $column->getType () );
@@ -98,6 +102,12 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
     $validators[] = $column->isNullable () ? "'allowEmpty' => true" : "'NotEmpty'";
 
     switch ( strtolower ( $column->getType () ) ) {
+        case 'date':
+            break;
+        case 'timestamp':
+            break;
+        case 'datetime':
+            break;
         case 'string':
             if ( $column->getMaxLength () ) {
                 $validators[] = "array( 'StringLength', array( 'max' => " . $column->getMaxLength () . " ) )";
@@ -105,6 +115,7 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
 
             break;
         case 'boolean':
+                $validators[] = "'Int'";
             break;
         default:
             $name         = ucfirst ( $column->getType () );
@@ -154,28 +165,6 @@ $validators = implode ( ", ", $validators ) ?>
     protected $_depend_<?= $depend[ 'variable' ] ?>;
 
 <?php endforeach; ?>
-
-    /**
-     * @param int $primarykey
-     *
-     * @return <?=$classNameModel."\n"?>
-     */
-    public function find ( $primarykey )
-    {
-       $this->populate(<?=$classNameModel?>::retrieve ( $primarykey )->toArray());
-       return $this;
-    }
-
-    /**
-     * @see Zend_Db_Table_Rowset_Abstract::fetchAll
-     *
-     * @return <?=$classNameModel?>[]
-     */
-    public function fetchAll ( $where = null , $order = null , $count = null , $offset = null )
-    {
-       return <?=$classNameModel?>::retrieveAll ( $where , $order , $count , $offset );
-    }
-
 <?php foreach ( $objTables->getColumns () as $column ): ?>
     /**
      *
@@ -190,49 +179,61 @@ $validators = implode ( ", ", $validators ) ?>
 <?php endif; ?>
      * @return <?= $className . "\n" ?>
      */
-    public function set<?= \Classes\Maker\AbstractMaker::getClassName ( $column->getName () ) ?>($<?= $column->getName (
-    ) ?>)
+    public function set<?= \Classes\Maker\AbstractMaker::getClassName ( $column->getName () ) ?>( $<?= $column->getName (
+    ) ?> )
     {
 <?php switch ( strtolower( $column->getType () ) ):
-        case 'date': ?>
+        case 'timestamp':
+        case 'date':
+        case 'datetime':?>
             if (! empty($<?= $column->getName () ?>))
             {
                 if (! $<?= $column->getName () ?> instanceof Zend_Date)
                 {
                     $<?= $column->getName () ?> = new Zend_Date($<?= $column->getName () ?>);
                 }
-
-                $this-><?= $column->getName () ?> = $<?= $column->getName () ?>->toString(Zend_Date::ISO_8601);
+<?php if( $column->equalType ( 'date' ) ): ?>
+                $<?= $column->getName () ?>->setOptions(array('format_type' => 'php'));
+<?php endif ?>
+<?php $format =  'Zend_Date::ISO_8601' ?>
+<?php if( $column->equalType ( 'date' ) ) { $format =  '\'Y-m-d\''; } ?>
+                $<?= $column->getName () ?> = $<?= $column->getName () ?>->toString( <?=$format?> );
             }
-
+<?php if($column->isNullable ()):?>
+            else{
+                $<?= $column->getName () ?> = null;
+            }
+<?php endif ?>
 <?php break;
-        default: ?>
-<?php if(!$column->isNullable () && strtolower( $column->getType () ) != 'boolean'):?>
+        case 'boolean':
+if(!$column->isNullable ()):?>
+            $<?= $column->getName () ?> = ( int ) $<?= $column->getName () ?> ;
+<?php endif ?>
+<?php default: ?>
+<?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
 <?php endif ?>
-            $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName (
-            ) ?>'=>$<?= $column->getName () ?> ));
+            $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName () ?>'=>$<?= $column->getName () ?> ));
 
             if(!$input->isValid ('<?= $column->getName () ?>'))
             {
                 $errors =  $input->getMessages ();
                 foreach ( $errors['<?= $column->getName () ?>'] as $key => $value )
                 {
-                    throw new Exception ( $value );
+                    throw new <?= $this->config->namespace ? $this->config->namespace . "_" : "" ?>Model_EntityException ( '<?= $column->getName () ?> - ' . $value );
                 }
             }
-
-            $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
-
 <?php break ?>
 <?php endswitch ?>
+
+        $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
         return $this;
     }
 
     /**
      * Gets column <?= $column->getName () . "\n" ?>
      *
-<?php if ( $column->equalType ( 'date' ) ): ?>
+<?php if ( $column->equalType ( 'date' ) or $column->equalType ( 'datetime' ) or  $column->equalType ( 'timestamp' ) ): ?>
      * @param boolean $returnZendDate
      * @return Zend_Date|null|string Zend_Date representation of this datetime if enabled, or ISO 8601 string if not
 <?php else: ?>
@@ -241,20 +242,26 @@ $validators = implode ( ", ", $validators ) ?>
      */
     public function get<?= \Classes\Maker\AbstractMaker::getClassName (
         $column->getName ()
-    ) ?>(<?php if ( $column->equalType ( 'date' ) ): ?>$returnZendDate = false <?php endif; ?>)
+    ) ?>(<?php if ( $column->equalType ( 'date' ) or $column->equalType ( 'datetime' ) or  $column->equalType ( 'timestamp' ) ): ?>$format = false <?php endif; ?>)
     {
-<?php if ( $column->equalType ( 'date' ) ): ?>
-        if ($returnZendDate)
+<?php switch ( strtolower( $column->getType () ) ):
+        case 'timestamp':
+        case 'date':
+        case 'datetime':?>
+        if ($format)
         {
             if ($this->_data['<?= $column->getName () ?>'] === null)
             {
                 return null;
             }
 
-            return new Zend_Date($this-><?= $column->getName () ?>, Zend_Date::ISO_8601);
+            $objDate = new Zend_Date($this-><?= $column->getName () ?>, $format );
+
+            return $objDate->toString($format);
         }
-<?php endif; ?>
-        return $this-><?= $column->getName () ?>;
+<?php break ?>
+<?php endswitch ?>
+     return $this-><?= $column->getName () ?>;
     }
 
 <?php endforeach; ?>

@@ -13,6 +13,12 @@ class Model extends AbstractAdapter
      * @var void
      */
     protected $fileTpl       = "model.php";
+    protected $fileFixedData = array (
+        'exception' => array (
+            'tpl'  => "model_exception.php" ,
+            'name' => "Exception"
+        )
+    );
 
     public function parseRelation ( \Classes\MakerFile $makerFile, \Classes\Db\DbTable $dbTable )
     {

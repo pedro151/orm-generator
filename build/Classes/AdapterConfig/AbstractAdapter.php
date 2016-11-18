@@ -87,13 +87,14 @@ abstract class AbstractAdapter
     public $reservedWord = array ();
 
     private static $dataTypesDefault = array (
-        'int'      => 'int' ,
-        'float'    => 'float' ,
-        'string'   => 'string' ,
-        'text'     => 'string' ,
-        'date'     => 'date' ,
-        'datetime' => 'date' ,
-        'boolean'  => 'boolean'
+        'int'       => 'int' ,
+        'float'     => 'float' ,
+        'string'    => 'string' ,
+        'text'      => 'string' ,
+        'date'      => 'date' ,
+        'datetime'  => 'datetime' ,
+        'timestamp' => 'timestamp' ,
+        'boolean'   => 'boolean'
     );
 
     protected $dataTypes = array ();
@@ -192,7 +193,7 @@ abstract class AbstractAdapter
         $array += array (
             'version'     => Config::$version ,
             'author'      => ucfirst ( get_current_user () ) ,
-            'last_modify' => date ( "d-m-Y H:i:s." )
+            'last_modify' => date ( "d-m-Y" )
         );
 
         $this->setFrameworkFiles ( $array );
