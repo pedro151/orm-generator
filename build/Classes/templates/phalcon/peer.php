@@ -17,7 +17,7 @@
 
 namespace  <?=$objTables->getNamespace()?>\Peer;
 
-class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends \<?=$this->config->namespace?$this->config->namespace."\\":""?>Models\<?=$objMakeFile->getParentClass() . "\n"?>
+class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends \<?=$this->config->namespace?$this->config->namespace."\\":""?>Models\<?=$objMakeFile->getFilesFixeds('parentClass')->getFileName() . "\n"?>
 {
     /**
     * Name of the object for static instance

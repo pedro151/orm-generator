@@ -127,8 +127,7 @@ CREATE TABLE bugs_products (
     public function testForeingkey ()
     {
         $dbTable = $this->getDataBaseDrive ()->getTable ( 'bugs'  );
-        $this->assertTrue ( count ( $dbTable->getColumns () )
-                            >= count ( $dbTable->getForeingkeys () ) );
+        $this->assertTrue ( count ( $dbTable->getColumns () ) >= count ( $dbTable->getForeingkeys () ) );
         $this->assertTrue ( 0 < count ( $dbTable->getForeingkeys () ) );
         $this->assertTrue ( $dbTable->getColumn ( 'reported_by' )->isForeingkey () );
         $this->assertFalse ( $dbTable->getColumn ( 'bug_description' )->isForeingkey () );
