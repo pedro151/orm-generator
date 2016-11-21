@@ -40,7 +40,7 @@ class FilesFixeds
 
     public function hasData ()
     {
-        return $this->hasTpl() && $this->hasFileName();
+        return $this->hasTpl () && $this->hasFileName ();
     }
 
     /**
@@ -48,7 +48,7 @@ class FilesFixeds
      */
     public function hasTpl ()
     {
-        return !empty($this->tpl);
+        return ! empty( $this->tpl );
     }
 
     /**
@@ -56,7 +56,7 @@ class FilesFixeds
      */
     public function hasFileName ()
     {
-        return !empty($this->fileName);
+        return ! empty( $this->fileName );
     }
 
     /**
