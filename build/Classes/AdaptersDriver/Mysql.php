@@ -157,7 +157,7 @@ inner join information_schema.key_column_usage as k
 ON i.CONSTRAINT_NAME = k.CONSTRAINT_NAME and k.TABLE_SCHEMA <> 'mysql'
 WHERE
 i.TABLE_SCHEMA IN ('{$this->database}') AND i.CONSTRAINT_TYPE IN ('FOREIGN KEY', 'PRIMARY KEY' ) $sqlTables
-order by k.table_schema, k.table_name;"
+order by k.table_name;"
                     );
         return $objQuery?$objQuery->fetchAll ( \PDO::FETCH_ASSOC ):array();
     }

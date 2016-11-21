@@ -107,8 +107,8 @@ class DbTableTest extends \PHPUnit_Framework_TestCase
                             \Classes\AdapterMakerFile\ZendFrameworkOne\DbTable );
         $this->assertTrue ( $instance->getPastName () == "DbTable" );
         $this->assertTrue ( $instance->getFileTpl () == "dbtable.php" );
-        $this->assertTrue ( $instance->getParentClass () == "TableAbstract" );
-        $this->assertTrue ( $instance->getParentFileTpl () == "dbtable_abstract.php" );
+        $this->assertTrue ( $instance->getFilesFixeds('parentClass')->getFileName() == "TableAbstract" );
+        $this->assertTrue ( $instance->getFilesFixeds('parentClass')->getTpl() == "dbtable_abstract.php" );
     }
 
     public function testColumns ()
