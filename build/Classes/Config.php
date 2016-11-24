@@ -157,7 +157,7 @@ EOF;
         try
         {
             $context = stream_context_create ( $opts );
-            $tags = json_decode ( file_get_contents ( "https://api.github.com/repos/pedro151/orm-generator/tags" , false , $context ) );
+            $tags = json_decode ( @file_get_contents ( "https://api.github.com/repos/pedro151/orm-generator/tags" , false , $context ) );
 
             $lastVersion = preg_replace ( "/[^0-9.]/" , "" , $tags[ 0 ]->name );
             if ( $lastVersion > static::$version )
