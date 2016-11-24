@@ -119,7 +119,7 @@ class Config
         return <<<EOF
 parameters:
 $list
- example: php generate.php --framework=zf1 --database=foo --table=foobar --status
+ example: php generate.php --framework=zf1 --database=foo --tables=foobar --status
 
 $version
 EOF;
