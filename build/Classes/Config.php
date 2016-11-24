@@ -171,7 +171,7 @@ EOF;
     {
         $version = static::$version;
 
-        return "ORM Generator By: Pedro Alarcao Version: $version\n".$this->checkHasNewVersion();
+        return "ORM Generator \nVersion: $version\n".$this->checkHasNewVersion()."created by: Pedro Alarcao <https://github.com/pedro151/orm-generator>\n";
     }
 
     /**
