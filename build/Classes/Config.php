@@ -11,6 +11,7 @@ use Classes\AdaptersDriver\Mssql;
 use Classes\AdaptersDriver\Mysql;
 use Classes\AdaptersDriver\Pgsql;
 use Classes\AdaptersDriver\Sqlsrv;
+use Classes\Update\Version;
 
 require_once 'AdapterConfig/None.php';
 require_once 'AdapterConfig/Phalcon.php';
@@ -20,6 +21,7 @@ require_once 'AdaptersDriver/Mssql.php';
 require_once 'AdaptersDriver/Mysql.php';
 require_once 'AdaptersDriver/Pgsql.php';
 require_once 'AdaptersDriver/Sqlsrv.php';
+require_once 'Update/Version.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -143,35 +145,11 @@ EOF;
         return $return;
     }
 
-    public function checkHasNewVersion ()
-    {
-        $opts = array (
-            'http' => array (
-                'method' => 'GET' ,
-                'header' => array (
-                    'User-Agent: PHP'
-                )
-            )
-        );
-
-        try
-        {
-            $context = stream_context_create ( $opts );
-            $tags = json_decode ( @file_get_contents ( "https://api.github.com/repos/pedro151/orm-generator/tags" , false , $context ) );
-
-            $lastVersion = preg_replace ( "/[^0-9.]/" , "" , $tags[ 0 ]->name );
-            if ( $lastVersion > static::$version )
-            {
-                return "\033[0;31mThere is a new version $lastVersion available:\033[0m https://github.com/pedro151/orm-generator\n";
-            }
-        } catch ( \Exception $ex ){ }
-    }
-
     public function getVersion ()
     {
-        $version = static::$version;
+        $version = new Version();
 
-        return "ORM Generator \nVersion: $version\ncreated by: Pedro Alarcao <https://github.com/pedro151/orm-generator>\n".$this->checkHasNewVersion();
+        return "ORM Generator \nVersion: {$version->getVersion()}\ncreated by: Pedro Alarcao <https://github.com/pedro151/orm-generator>\n{$version->checkHasNewVersion()}";
     }
 
     /**
