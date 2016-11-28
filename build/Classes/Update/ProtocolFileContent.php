@@ -38,16 +38,25 @@ class ProtocolFileContent
         return self::$objProtocol;
     }
 
+    /**
+     * @return bool
+     */
     public function hasProtocol ()
     {
         return ! empty( $this->protocol );
     }
 
+    /**
+     * @return string
+     */
     public function getProtocol ()
     {
         return $this->protocol;
     }
 
+    /**
+     *
+     */
     private function parseContentProtocol ()
     {
         if ( $this->hasEnabled ( 'curl' ) )

@@ -12,11 +12,17 @@ class Version
 
     private static $lastVersion;
 
+    /**
+     * @return string
+     */
     public function getVersion ()
     {
         return static::$_currentVersion;
     }
 
+    /**
+     * @return bool
+     */
     public function HasNewVersion ()
     {
         $this->lastVersion = GitHub::getInstance ()->getLastVersion ();
@@ -24,6 +30,9 @@ class Version
         return $this->lastVersion > static::$_currentVersion;
     }
 
+    /**
+     * @return string
+     */
     public function checkHasNewVersion ()
     {
         if ( $this->HasNewVersion () )

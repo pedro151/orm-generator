@@ -25,6 +25,9 @@ class GitHub extends AbstractContent
         return json_decode ( $this->getContent ( self::$tagsGithub ) );
     }
 
+    /**
+     *
+     */
     protected function init ()
     {
         if ( is_array ( $this->getInfo () ) )
@@ -36,17 +39,28 @@ class GitHub extends AbstractContent
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function getLastVersion ()
     {
         return current ( array_keys ( self::$listVersion ) );
     }
 
+    /**
+     * @return mixed
+     */
     public function getLastPhar ()
     {
         reset(self::$listVersion );
         return current ( self::$listVersion );
     }
 
+    /**
+     * @param $version
+     *
+     * @return mixed
+     */
     public function getPharByVersion ( $version )
     {
         return self::$listVersion[ $version ];
