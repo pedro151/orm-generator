@@ -43,6 +43,7 @@ class GitHub extends AbstractContent
 
     public function getLastPhar ()
     {
+        reset(self::$listVersion );
         return current ( self::$listVersion );
     }
 
