@@ -10,12 +10,12 @@ namespace Classes\Update\Content;
 
 require_once 'AbstractContent.php';
 
-
 class GitHub extends AbstractContent
 {
     private static $tagsGithub  = "https://api.github.com/repos/pedro151/orm-generator/tags";
     private static $listVersion = array ();
-    private        $phar        = "https://github.com/pedro151/orm-generator/blob/%s/bin/orm-generator.phar?raw=true";
+    private        $phar        = "https://raw.githubusercontent.com/pedro151/orm-generator/%s/bin/orm-generator.phar";
+    //private        $phar        = "https://github.com/pedro151/orm-generator/blob/%s/bin/orm-generator.phar?raw=true";
 
     /**
      * @return mixed
@@ -52,7 +52,8 @@ class GitHub extends AbstractContent
      */
     public function getLastPhar ()
     {
-        reset(self::$listVersion );
+        reset ( self::$listVersion );
+
         return current ( self::$listVersion );
     }
 

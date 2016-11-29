@@ -5,6 +5,7 @@ namespace Classes;
 use Classes\AdapterMakerFile\AbstractAdapter;
 use Classes\AdapterMakerFile\FilesFixeds;
 use Classes\Maker\AbstractMaker;
+use Classes\Update\ProgressBar;
 
 require_once 'Classes/AdapterMakerFile/AbstractAdapter.php';
 require_once 'Classes/AdapterMakerFile/FilesFixeds.php';
@@ -59,27 +60,31 @@ class MakerFile extends AbstractMaker
     public function parseReservedWord ( AdapterConfig\AbstractAdapter $config )
     {
         $palavrasReservadas = $config->reservedWord;
-        if ( !$palavrasReservadas ) {
+        if ( ! $palavrasReservadas )
+        {
             return;
         }
 
-        $schema      = $config->getSchemas ();
-        $db          = $config->getDatabase ();
-        $hasSchema   = array_intersect ( $schema, array_flip ( $palavrasReservadas ) );
-        $hasDatabase = in_array ( $db, $palavrasReservadas );
-        if ( !( $hasSchema or $hasDatabase ) ) {
+        $schema = $config->getSchemas ();
+        $db = $config->getDatabase ();
+        $hasSchema = array_intersect ( $schema , array_flip ( $palavrasReservadas ) );
+        $hasDatabase = in_array ( $db , $palavrasReservadas );
+        if ( ! ( $hasSchema or $hasDatabase ) )
+        {
             return;
         }
 
         echo "- database has reserved words\n";
-        foreach ( $palavrasReservadas as $index => $config ) {
+        foreach ( $palavrasReservadas as $index => $config )
+        {
             $attribs = array (
-                "%index%"  => $index,
+                "%index%"  => $index ,
                 "%config%" => $config
             );
-            echo strtr ( $this->msgReservedWord, $attribs );
+            echo strtr ( $this->msgReservedWord , $attribs );
             $line = trim ( fgets ( STDIN ) );
-            if ( !empty( $line ) ) {
+            if ( ! empty( $line ) )
+            {
                 $this->getConfig ()->reservedWord[ $index ] = $line;
             }
         }
@@ -92,12 +97,13 @@ class MakerFile extends AbstractMaker
      */
     private function filterLocation ( $arrFoldersName )
     {
-        foreach ( $arrFoldersName as $index => $folderName ) {
+        foreach ( $arrFoldersName as $index => $folderName )
+        {
             $arrFoldersName[ $index ] = $this->getConfig ()
                                              ->replaceReservedWord ( $folderName );
         }
 
-        return implode ( DIRECTORY_SEPARATOR, array_filter ( $arrFoldersName ) );
+        return implode ( DIRECTORY_SEPARATOR , array_filter ( $arrFoldersName ) );
     }
 
     /**
@@ -107,7 +113,7 @@ class MakerFile extends AbstractMaker
     {
 
         $arrBase = array (
-            $basePath,
+            $basePath ,
             $this->config->path
         );
 
@@ -115,23 +121,27 @@ class MakerFile extends AbstractMaker
 
         # pasta com nome do driver do banco
         $driverBase = '';
-        if ( (bool) @$this->config->{"folder-database"} ) {
-            $classDriver = explode ( '\\', get_class ( $this->driver ) );
-            $driverBase  = end ( $classDriver );
+        if ( (bool) @$this->config->{"folder-database"} )
+        {
+            $classDriver = explode ( '\\' , get_class ( $this->driver ) );
+            $driverBase = end ( $classDriver );
         }
         $folderName = '';
-        if ( (bool) @$this->config->{"folder-name"} ) {
+        if ( (bool) @$this->config->{"folder-name"} )
+        {
             $folderName = $this->getClassName ( trim ( $this->config->{"folder-name"} ) );
         }
 
-        if ( $this->config->hasSchemas () ) {
+        if ( $this->config->hasSchemas () )
+        {
 
             $schemas = $this->config->getSchemas ();
-            foreach ( $schemas as $schema ) {
+            foreach ( $schemas as $schema )
+            {
                 $arrUrl = array (
-                    $this->baseLocation,
-                    $driverBase,
-                    $folderName,
+                    $this->baseLocation ,
+                    $driverBase ,
+                    $folderName ,
                     $this->getClassName ( $schema )
                 );
 
@@ -139,12 +149,12 @@ class MakerFile extends AbstractMaker
                 unset( $arrUrl );
             }
 
-        }
-        else {
-            $url            = array (
-                $this->baseLocation,
-                $driverBase,
-                $folderName,
+        } else
+        {
+            $url = array (
+                $this->baseLocation ,
+                $driverBase ,
+                $folderName ,
                 $this->getClassName (
                     $this->getConfig ()
                          ->getDatabase ()
@@ -172,7 +182,7 @@ class MakerFile extends AbstractMaker
 
     private function getRunTime ()
     {
-        return round ( ( microtime ( true ) - $this->startTime ), 3 );
+        return round ( ( microtime ( true ) - $this->startTime ) , 3 );
     }
 
     /**
@@ -180,14 +190,14 @@ class MakerFile extends AbstractMaker
      */
     private function generateFilesFixed ( FilesFixeds $objFilesFixeds )
     {
-        if ( $objFilesFixeds->hasData() )
+        if ( $objFilesFixeds->hasData () )
         {
             $file = $this->baseLocation
-                             . DIRECTORY_SEPARATOR
-                             . $objFilesFixeds->getFileName()
-                             . '.php';
+                    . DIRECTORY_SEPARATOR
+                    . $objFilesFixeds->getFileName ()
+                    . '.php';
 
-            $tpl = $this->getParsedTplContents ( $objFilesFixeds->getTpl() );
+            $tpl = $this->getParsedTplContents ( $objFilesFixeds->getTpl () );
             self::makeSourcer ( $file , $tpl , true );
         }
     }
@@ -197,78 +207,79 @@ class MakerFile extends AbstractMaker
      */
     public function run ()
     {
-        $cur             = 0;
+        $cur = 0;
         $numFilesCreated = 0;
         $numFilesIgnored = 0;
 
         $this->startTime ();
-        $this->waitOfDatabase($cur);
+        $this->waitOfDatabase ( $cur );
 
-        $this->max       = $this->driver->getTotalTables () * $this->countDiretory ();
+        $this->max = $this->driver->getTotalTables () * $this->countDiretory ();
+        $progressBar = ProgressBar::getInstance ()->setMaxByte ( $this->max );
 
-        foreach ( $this->location as $schema => $location ) {
-            foreach ( $this->factoryMakerFile () as $objMakeFile ) {
+        foreach ( $this->location as $schema => $location )
+        {
+            foreach ( $this->factoryMakerFile () as $objMakeFile )
+            {
                 $path = $location . DIRECTORY_SEPARATOR . $objMakeFile->getPastName ();
-                if($this->config->isCleanTrash()){
-                    CleanTrash::getInstance ()->run ( $path , $this->driver, $schema );
+                if ( $this->config->isCleanTrash () )
+                {
+                    CleanTrash::getInstance ()->run ( $path , $this->driver , $schema );
                 }
                 self::makeDir ( $path );
 
                 #Cria as Classes de Exceção e Abstratas
                 foreach ( $objMakeFile->getListFilesFixed () as $nameObject )
                 {
-                    $this->generateFilesFixed($objMakeFile->getFilesFixeds($nameObject));
+                    $this->generateFilesFixed ( $objMakeFile->getFilesFixeds ( $nameObject ) );
                 }
 
                 #Cria as Classes do Banco
-                foreach ( $this->driver->getTables ( $schema ) as $key => $objTables ) {
-                    $file = $path . DIRECTORY_SEPARATOR . self::getClassName ( $objTables->getName () ) . '.php';
+                foreach ( $this->driver->getTables ( $schema ) as $key => $objTables )
+                {
+                    $file = $path . DIRECTORY_SEPARATOR
+                            . self::getClassName ( $objTables->getName () ) . '.php';
 
                     $tpl = $this->getParsedTplContents (
-                        $objMakeFile->getFileTpl (),
-                        $objMakeFile->parseRelation ( $this, $objTables ),
-                        $objTables,
+                        $objMakeFile->getFileTpl () ,
+                        $objMakeFile->parseRelation ( $this , $objTables ) ,
+                        $objTables ,
                         $objMakeFile
 
                     );
-                    if ( self::makeSourcer ( $file, $tpl, $objMakeFile->isOverwrite () ) ) {
-                        ++$numFilesCreated;
-                    }
-                    else {
-                        ++$numFilesIgnored;
+                    if ( self::makeSourcer ( $file , $tpl , $objMakeFile->isOverwrite () ) )
+                    {
+                        ++ $numFilesCreated;
+                    } else
+                    {
+                        ++ $numFilesIgnored;
                     }
 
-                    $this->countCreatedFiles ( $cur );
+                    ++$cur;
+                    $progressBar->setProgress ( $cur )->render();
                 }
             }
         }
 
-        $this->reportProcess ( $numFilesCreated, $numFilesIgnored );
-        echo "\n\033[1;32mSuccessfully process finished!\n\033[0m";
+        $this->reportProcess ( $numFilesCreated , $numFilesIgnored );
+        $progressBar->finish();
     }
 
     private function waitOfDatabase ( &$cur )
     {
         printf ( "\033[1;33mWait, the database is being analyzed..\033[0m\n" );
         $this->driver->runDatabase ();
-        printf ( "\r Creating: \033[1;32m%6.2f%%\033[0m", $cur );
     }
 
-    private function countCreatedFiles ( &$cur )
+    private function reportProcess ( $numFilesCreated = 0 , $numFilesIgnored = 0 )
     {
-        ++$cur;
-        $total = ( $cur / $this->max ) * 100;
-        printf ( "\r Creating: \033[1;32m%6.2f%%\033[0m", $total );
-    }
-
-    private function reportProcess ( $numFilesCreated = 0, $numFilesIgnored = 0 )
-    {
-        if ( $this->config->isStatusEnabled () ) {
-            $databases  = count ( $this->location );
-            $countDir   = $this->countDiretory ();
+        if ( $this->config->isStatusEnabled () )
+        {
+            $databases = count ( $this->location );
+            $countDir = $this->countDiretory ();
             $totalTable = $this->driver->getTotalTables ();
             $totalFiles = $numFilesIgnored + $numFilesCreated;
-            $totalFilesDeleted = CleanTrash::getInstance ()->getNumFilesDeleted();
+            $totalFilesDeleted = CleanTrash::getInstance ()->getNumFilesDeleted ();
             echo "\n------";
             printf ( "\n\r-Files generated/updated: \033[1;33m%s\033[0m" , $numFilesCreated );
             printf ( "\n\r-Files not upgradeable: \033[1;33m%s\033[0m" , $numFilesIgnored );
@@ -298,11 +309,14 @@ class MakerFile extends AbstractMaker
      */
     public function countDiretory ()
     {
-        if ( null === $this->countDir ) {
+        if ( null === $this->countDir )
+        {
             $this->countDir = 1;
-            foreach ( $this->factoryMakerFile () as $abstractAdapter ) {
-                if ( $abstractAdapter->hasDiretory () ) {
-                    ++$this->countDir;
+            foreach ( $this->factoryMakerFile () as $abstractAdapter )
+            {
+                if ( $abstractAdapter->hasDiretory () )
+                {
+                    ++ $this->countDir;
                 }
             }
         }
@@ -318,18 +332,19 @@ class MakerFile extends AbstractMaker
      *
      * @return String
      */
-    protected function getParsedTplContents ( $tplFile, $vars = array (), \Classes\Db\DbTable $objTables = null,
-                                              $objMakeFile = null )
-    {
+    protected function getParsedTplContents (
+        $tplFile , $vars = array () , \Classes\Db\DbTable $objTables = null ,
+        $objMakeFile = null
+    ){
 
         $arrUrl = array (
-            __DIR__,
-            'templates',
-            $this->config->framework,
+            __DIR__ ,
+            'templates' ,
+            $this->config->framework ,
             $tplFile
         );
 
-        $filePath = implode ( DIRECTORY_SEPARATOR, filter_var_array ( $arrUrl ) );
+        $filePath = implode ( DIRECTORY_SEPARATOR , filter_var_array ( $arrUrl ) );
 
         extract ( $vars );
         ob_start ();

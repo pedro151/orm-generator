@@ -59,15 +59,15 @@ class ProtocolFileContent
      */
     private function parseContentProtocol ()
     {
-        if ( $this->hasEnabled ( 'curl' ) )
-        {
-            $this->protocol = 'curl';
-        } elseif ( $this->hasEnabled ( 'file_content' ) )
+        if ( $this->hasEnabled ( 'file_content' ) )
         {
             $this->protocol = 'file_content';
         } elseif ( $this->hasEnabled ( 'steam_content' ) )
         {
             $this->protocol = 'steam_content';
+        } elseif ( $this->hasEnabled ( 'curl' ) )
+        {
+            $this->protocol = 'curl';
         }
     }
 

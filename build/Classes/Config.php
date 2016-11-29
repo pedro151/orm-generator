@@ -22,6 +22,7 @@ require_once 'AdaptersDriver/Mysql.php';
 require_once 'AdaptersDriver/Pgsql.php';
 require_once 'AdaptersDriver/Sqlsrv.php';
 require_once 'Update/Version.php';
+require_once 'Update.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -86,6 +87,8 @@ class Config
         'version'     => 'shows the version of orm-generator.' ,
         'help'        => "help command explaining all the options and manner of use." ,
         'path'        => "specify where to create the files (default is current directory)." ,
+        'update'      => ".",
+        'download'    => ""
     );
 
     public function __construct ( $argv , $basePath , $numArgs )
@@ -103,6 +106,10 @@ class Config
         if ( array_key_exists ( 'status' , $argv ) )
         {
             $argv[ 'status' ] = true;
+        }
+        if ( array_key_exists ( 'update' , $argv ) )
+        {
+            die ( $this->update () );
         }
 
         $this->argv = $this->parseConfig ( $basePath , $argv );
@@ -145,11 +152,16 @@ EOF;
         return $return;
     }
 
+    public function update (  )
+    {
+        new Update();
+    }
+
     public function getVersion ()
     {
         $version = new Version();
 
-        return "ORM Generator \nVersion: {$version->getVersion()}\ncreated by: Pedro Alarcao <https://github.com/pedro151/orm-generator>\n{$version->checkHasNewVersion()}";
+        return "ORM Generator \nVersion: {$version->getVersion()}\ncreated by: Pedro Alarcao <https://github.com/pedro151/orm-generator>\n{$version->messageHasNewVersion()}";
     }
 
     /**

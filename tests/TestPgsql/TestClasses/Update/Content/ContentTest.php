@@ -2,6 +2,7 @@
 
 namespace TestPgsql\TestClasses\Update\Content;
 
+use Classes\Update;
 use Classes\Update\Content\GitHub;
 
 class ContentTest extends \PHPUnit_Framework_TestCase
@@ -22,7 +23,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
 
     public function testGetInfoGitHub ()
     {
-        var_dump ( GitHub::getInstance ()->getLastPhar () );
+        new Update();
         exit();
     }
 }

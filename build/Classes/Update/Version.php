@@ -33,7 +33,7 @@ class Version
     /**
      * @return string
      */
-    public function checkHasNewVersion ()
+    public function messageHasNewVersion ()
     {
         if ( $this->HasNewVersion () )
         {
