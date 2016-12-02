@@ -96,8 +96,14 @@ abstract class AbstractContent
         curl_setopt ( $conn , CURLOPT_RETURNTRANSFER , true );
         curl_setopt ( $conn , CURLOPT_BINARYTRANSFER , true );
         curl_setopt ( $conn , CURLOPT_USERAGENT , self::$opts[ 'http' ][ 'method' ] );
+        if ( $progress )
+        {
+            curl_setopt ( $conn , CURLOPT_NOPROGRESS , false );
+            curl_setopt ( $conn , CURLOPT_PROGRESSFUNCTION , array (
+                $this , 'progressCallback'
+            ) );
+        }
         $url_get_contents_data = ( curl_exec ( $conn ) );
-
         curl_close ( $conn );
 
         return $url_get_contents_data;
@@ -140,7 +146,24 @@ abstract class AbstractContent
             ) );
         }
 
-        return file_get_contents ( $url , false , $context );
+        $handle = fopen ( $url , "r" , null , $context );
+
+        return stream_get_contents ( $handle );
+    }
+
+    public function putContent ( $url , $content )
+    {
+        switch ( $this->objProtocol->getProtocol () )
+        {
+            case 'curl':
+                $this->putFopen ( $url , $content );
+                break;
+            case 'steam_content':
+            case 'file_content':
+                $this->putFileContent ( $url , $content );
+                break;
+        }
+
     }
 
     public function putFileContent ( $url , $content )
@@ -150,6 +173,13 @@ abstract class AbstractContent
         {
             ProgressBar::getInstance ()->finish ();
         }
+    }
+
+    public function putFopen ( $url , $content )
+    {
+        $fp = fopen ( $url , "a" );
+        fwrite ( $fp , $content );
+        fclose ( $fp );
     }
 
     /**
@@ -191,6 +221,17 @@ abstract class AbstractContent
                 $objProgress->finish ();
                 break;
         }
+
+    }
+
+    function progressCallback ( $download_size , $downloaded_size , $upload_size , $uploaded_size )
+    {
+        ProgressBar::getInstance ()
+                   ->clear ()
+                   ->setMaxByte ( $download_size )
+                   ->setProgress ( $downloaded_size )
+                   ->render ()
+                   ->finish ();
 
     }
 

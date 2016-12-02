@@ -152,9 +152,11 @@ EOF;
         return $return;
     }
 
-    public function update (  )
+    public function update ()
     {
-        new Update();
+        $update = new Update();
+        $update->update ()
+            ->modifyTempName ();
     }
 
     public function getVersion ()

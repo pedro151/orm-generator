@@ -79,17 +79,17 @@ class ProtocolFileContent
         switch ( $type )
         {
             case 'curl':
-                return function_exists ( 'curl_exec' );
+                return function_exists ( 'fopen' ) && function_exists ( 'curl_exec' );
                 break;
             case 'file_content':
-                return function_exists ( 'file_get_contents' );
+                return function_exists ( 'file_get_contents' ) && function_exists ( 'stream_get_contents' );
                 break;
             case 'steam_content':
-                return function_exists ( 'fopen' )
-                       && function_exists ( 'stream_get_contents' );
+                return function_exists ( 'fopen' ) && function_exists ( 'stream_get_contents' );
                 break;
         }
 
+        throw new \Exception("\033[0;31mError: enable in php.ini 'file_get_contents' and  'stream_get_contents' or  'fopen' and 'curl'. \033[0m\n");
     }
 
 }

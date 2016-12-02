@@ -5,11 +5,14 @@ namespace Classes\Update;
 class ProgressBar
 {
 
+    private static $finished = 0;
     private static $progressBar;
 
     private $max = 0;
 
     private $progress = 0;
+
+    private $progresslength = 0;
 
     private function __construct (){ }
 
@@ -36,29 +39,51 @@ class ProgressBar
     public function setProgress ( $progress )
     {
         $this->progress = $progress;
+        $this->calcule ();
 
         return $this;
     }
 
+    public function getProgress ()
+    {
+        return $this->progresslength;
+    }
+
+    public function calcule ()
+    {
+        if ( $this->progress > 0 )
+        {
+            $this->progresslength = round( $this->progress * 100 / $this->max );
+            //$this->progresslength = (int) ( ( $this->progress / $this->max ) * 100 );
+        }
+    }
+
     public function finish ()
     {
-        echo "\n\033[1;32mDone!\033[0m\n";
-        exit( 0 );
+        if ( $this->getProgress () >= 99 && !self::$finished)
+        {
+            echo "\n\033[1;32mDone!\033[0m\n";
+            self::$finished = 1;
+        }
+
     }
 
     public function render ()
     {
-        if ( $this->progress > 0 )
+        if ( $this->progress > 0 && !self::$finished)
         {
             if ( ! isset( $this->max ) )
             {
                 printf ( "\rUnknown filesize.. %2d kb done.." , $this->progress / 1024 );
             } else
             {
-                $length = (int) ( ( $this->progress / $this->max ) * 100 );
-                printf ( "\r[%-100s] %d%%" , str_repeat ( "=" , $length ) . ">" , $length);
+                $length = $this->getProgress ();
+                printf ( "\r[%-100s] %d%%" , str_repeat ( "=" , $length )
+                                             . ">" , $length );
             }
         }
+
+        return $this;
     }
 
     public function clear ()

@@ -8,14 +8,14 @@ require_once 'ProtocolFileContent.php';
 
 class Version
 {
-    private static $_currentVersion = "1.4.0";
+    private static $_currentVersion = "1.5.0";
 
     private static $lastVersion;
 
     /**
      * @return string
      */
-    public function getVersion ()
+    public static function getVersion ()
     {
         return static::$_currentVersion;
     }
@@ -23,11 +23,11 @@ class Version
     /**
      * @return bool
      */
-    public function HasNewVersion ()
+    public static function HasNewVersion ()
     {
-        $this->lastVersion = GitHub::getInstance ()->getLastVersion ();
+        self::$lastVersion = GitHub::getInstance ()->getLastVersion ();
 
-        return $this->lastVersion > static::$_currentVersion;
+        return self::$lastVersion > static::$_currentVersion;
     }
 
     /**
@@ -35,10 +35,20 @@ class Version
      */
     public function messageHasNewVersion ()
     {
-        if ( $this->HasNewVersion () )
+        if ( self::HasNewVersion () )
         {
-            return "\033[0;31mThere is a new version {$this->lastVersion} available\033[0m \n";
+            return "\033[0;31mThere is a new version ".self::$lastVersion." available\033[0m \n";
         }
+    }
+
+    /**
+     * @param $version
+     *
+     * @return bool
+     */
+    public static function equalVersion ( $version )
+    {
+        return $version === self::getVersion ();
     }
 
 }
