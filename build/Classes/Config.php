@@ -111,6 +111,10 @@ class Config
         {
             die ( $this->update () );
         }
+        if ( array_key_exists ( 'download' , $argv ) )
+        {
+            die ( $this->download ( $argv[ 'download' ] ) );
+        }
 
         $this->argv = $this->parseConfig ( $basePath , $argv );
     }
@@ -156,7 +160,14 @@ EOF;
     {
         $update = new Update();
         $update->update ()
-            ->modifyTempName ();
+               ->modifyTempName ();
+    }
+
+    public function download ( $version )
+    {
+        $update = new Update();
+        $update->downloadVersion ( $version )
+               ->modifyTempName ();
     }
 
     public function getVersion ()

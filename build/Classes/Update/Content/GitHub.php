@@ -67,4 +67,9 @@ class GitHub extends AbstractContent
         return self::$listVersion[ $version ];
     }
 
+    public function hasPharByVersion ( $version )
+    {
+        return isset( self::$listVersion[ $version ] );
+    }
+
 }

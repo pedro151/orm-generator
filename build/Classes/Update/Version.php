@@ -37,7 +37,8 @@ class Version
     {
         if ( self::HasNewVersion () )
         {
-            return "\033[0;31mThere is a new version ".self::$lastVersion." available\033[0m \n";
+            return "\033[0;31mThere is a new version " . self::$lastVersion
+                   . " available\033[0m \n";
         }
     }
 
@@ -49,6 +50,11 @@ class Version
     public static function equalVersion ( $version )
     {
         return $version === self::getVersion ();
+    }
+
+    public static function existVersion ( $version )
+    {
+        return GitHub::getInstance ()->hasPharByVersion ( $version );
     }
 
 }
