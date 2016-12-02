@@ -76,7 +76,9 @@ try {
         'tables:',
         'framework:',
         'path:',
-        'clean-trash:'
+        'clean-trash:',
+        'update',
+        'download:'
     );
 
     $arg = getopt ( null, $arrValid );
