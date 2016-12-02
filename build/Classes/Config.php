@@ -11,6 +11,7 @@ use Classes\AdaptersDriver\Mssql;
 use Classes\AdaptersDriver\Mysql;
 use Classes\AdaptersDriver\Pgsql;
 use Classes\AdaptersDriver\Sqlsrv;
+use Classes\Update\Version;
 
 require_once 'AdapterConfig/None.php';
 require_once 'AdapterConfig/Phalcon.php';
@@ -20,6 +21,8 @@ require_once 'AdaptersDriver/Mssql.php';
 require_once 'AdaptersDriver/Mysql.php';
 require_once 'AdaptersDriver/Pgsql.php';
 require_once 'AdaptersDriver/Sqlsrv.php';
+require_once 'Update/Version.php';
+require_once 'Update.php';
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -84,6 +87,8 @@ class Config
         'version'     => 'shows the version of orm-generator.' ,
         'help'        => "help command explaining all the options and manner of use." ,
         'path'        => "specify where to create the files (default is current directory)." ,
+        'update'      => ".",
+        'download'    => ""
     );
 
     public function __construct ( $argv , $basePath , $numArgs )
@@ -102,6 +107,14 @@ class Config
         {
             $argv[ 'status' ] = true;
         }
+        if ( array_key_exists ( 'update' , $argv ) )
+        {
+            die ( $this->update () );
+        }
+        if ( array_key_exists ( 'download' , $argv ) )
+        {
+            die ( $this->download ( $argv[ 'download' ] ) );
+        }
 
         $this->argv = $this->parseConfig ( $basePath , $argv );
     }
@@ -119,7 +132,7 @@ class Config
         return <<<EOF
 parameters:
 $list
- example: php generate.php --framework=zf1 --database=foo --table=foobar --status
+ example: php generate.php --framework=zf1 --database=foo --tables=foobar --status
 
 $version
 EOF;
@@ -143,35 +156,25 @@ EOF;
         return $return;
     }
 
-    public function checkHasNewVersion ()
+    public function update ()
     {
-        $opts = array (
-            'http' => array (
-                'method' => 'GET' ,
-                'header' => array (
-                    'User-Agent: PHP'
-                )
-            )
-        );
+        $update = new Update();
+        $update->update ()
+               ->modifyTempName ();
+    }
 
-        try
-        {
-            $context = stream_context_create ( $opts );
-            $tags = json_decode ( file_get_contents ( "https://api.github.com/repos/pedro151/orm-generator/tags" , false , $context ) );
-
-            $lastVersion = preg_replace ( "/[^0-9.]/" , "" , $tags[ 0 ]->name );
-            if ( $lastVersion > static::$version )
-            {
-                return "\033[0;31mThere is a new version $lastVersion available:\033[0m https://github.com/pedro151/orm-generator\n";
-            }
-        } catch ( \Exception $ex ){ }
+    public function download ( $version )
+    {
+        $update = new Update();
+        $update->downloadVersion ( $version )
+               ->modifyTempName ();
     }
 
     public function getVersion ()
     {
-        $version = static::$version;
+        $version = new Version();
 
-        return "ORM Generator By: Pedro Alarcao Version: $version\n".$this->checkHasNewVersion();
+        return "ORM Generator \nVersion: {$version->getVersion()}\ncreated by: Pedro Alarcao <https://github.com/pedro151/orm-generator>\n{$version->messageHasNewVersion()}";
     }
 
     /**

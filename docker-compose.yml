@@ -17,6 +17,14 @@ services:
         environment:
             MYSQL_DATABASE: dao_generator
             MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  orm-mssql:
+        container_name: orm-mssql
+        image: microsoft/mssql-server-linux
+        ports:
+            - "1433:1433"
+        environment:
+            SA_PASSWORD: 123
+            ACCEPT_EULA: Y
   orm:
       container_name: orm
       image: pedro151/phalcon
@@ -34,6 +42,8 @@ services:
       depends_on:
           - orm-postgres
           - orm-mysql
+          - orm-mssql
       links:
           - orm-postgres
           - orm-mysql
+          - orm-mssql

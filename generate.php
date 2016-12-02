@@ -78,7 +78,9 @@ try
         'tables:',
         'framework:' ,
         'path:',
-        'clean-trash:'
+        'clean-trash:',
+        'update',
+        'download:'
     );
 
     $_path = __DIR__;
