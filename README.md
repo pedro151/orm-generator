@@ -86,6 +86,8 @@ Configurations optionals
 | --version      | shows the version of ORM Generator. |
 | --help         | help command explaining all the options and manner of use. |
 | --path         | specify where to create the files (default is current directory). |
+| --update       | Upgrade to latest version. |
+| --download     | download the reported version (ex. --download=1.5.0). |
 
 
 ##### example:
