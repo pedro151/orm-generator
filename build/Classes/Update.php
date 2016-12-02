@@ -18,7 +18,7 @@ require_once 'Update/ProgressBar.php';
 class Update
 {
 
-    private static $fileName = "orm-generator";
+    private static $fileName  = "orm-generator";
     private static $separador = "-";
     private static $extencion = ".phar";
     private        $versionUpdate;
@@ -56,7 +56,7 @@ class Update
             }
         } else
         {
-            printf ( "esta versão é a atual\n" );
+            throw new \Exception ( "\033[0;31mError: Esta versão é a atual\033[0m\n" );
         }
 
         return $this;
@@ -64,11 +64,10 @@ class Update
 
     public function downloadVersion ( $version )
     {
-        if ( Version::existVersion ( $version )
-             && ! Version::equalVersion ( $this->versionUpdate )
-        )
+        if ( Version::existVersion ( $version ) && ! Version::equalVersion ( $version ) )
         {
             $content = $this->objGitHub->getContent ( $this->objGitHub->getPharByVersion ( $version ) , true );
+
             if ( $content )
             {
                 $this->objGitHub->putContent ( $this->tempFileName , $content );
