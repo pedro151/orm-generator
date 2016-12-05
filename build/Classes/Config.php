@@ -87,8 +87,8 @@ class Config
         'version'     => 'shows the version of orm-generator.' ,
         'help'        => "help command explaining all the options and manner of use." ,
         'path'        => "specify where to create the files (default is current directory)." ,
-        'update'      => ".",
-        'download'    => ""
+        'update'      => "Upgrade to latest version.",
+        'download'    => "download the reported version (ex. --download=1.5.0). "
     );
 
     public function __construct ( $argv , $basePath , $numArgs )
