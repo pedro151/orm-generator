@@ -53,7 +53,6 @@ namespace = ''
 ;=============================================================
 ;[none : main]
 ;
-;.ini file the framework configuration
-;framework-ini = ""
-;the path to the directory of the framework library
-;framework-path-library = ""
+;framework configuration
+;framework = "none"
+
