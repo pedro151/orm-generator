@@ -17,7 +17,7 @@
  * @version   <?=$this->config->version."\n"?>
  */
 
-class <?=$objTables->getNamespace()?>_Peer_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends <?=$objTables->getNamespace()?$objTables->getNamespace()."_":''?>Model_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () ) . "\n"?>
+class <?=$objTables->getNamespace()?>_Peer_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?> extends <?=$objTables->getNamespace()?$objTables->getNamespace()."_":''?>DbTable_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () ) . "\n"?>
 {
     /* @TODO Codifique aqui */
 }
