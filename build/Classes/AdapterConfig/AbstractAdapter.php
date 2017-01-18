@@ -65,6 +65,8 @@ abstract class AbstractAdapter
         'status'          => false ,
         // flags para criar todas as tabelas ou nao
         'tables'          => array () ,
+        // lista de Classes opcionais pre-definidas para serem criadas
+        'optional-classes'=> array (),
         //Lista de tabelas a serem ignoradas
         'ignoreTable'     => array () ,
     );
@@ -431,6 +433,26 @@ abstract class AbstractAdapter
     public function getListTablesName(){
         $str = implode("','", $this->getTablesName() );
         return "'$str'";
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasOptionalClasses (){
+        return ! empty( $this->arrConfig[ 'optional-classes' ] );
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getOptionalClasses ()
+    {
+        if ( is_string ( $this->arrConfig[ 'optional-classes' ] ) )
+        {
+            return array ( $this->arrConfig[ 'optional-classes' ] );
+        }
+
+        return $this->arrConfig[ 'optional-classes' ];
     }
 
     /**

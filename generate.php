@@ -76,6 +76,7 @@ try
         'schema:' ,
         'driver:' ,
         'tables:',
+        'optional-classes:',
         'framework:' ,
         'path:',
         'clean-trash:',
