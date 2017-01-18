@@ -80,7 +80,9 @@ class DbTable extends AbstractAdapter
                 );
                 $class = implode ( ZendFrameworkOne::SEPARETOR , array_filter ( $arrClass ) );
 
-                $dependents[] = $class;
+                if(!in_array($class,$dependents)){
+                   $dependents[] = $class;
+                }
             }
         }
 

@@ -1,31 +1,50 @@
 {
-    "name": "pedro151/orm-generator",
-    "description": "orm-generator maps the entire database and then creates the DAO (Data Access Object) and ORM (Object-relational mapping) of the entire database to facilitate the development. uses various types of databases like Postgres and Mysql and various types of ORM framework.",
-    "keywords": ["orm", "datamapper", "database", "model", "mapper", "entity", "dao", "generator", "orm-generator", "mysql", "postgres", "phalcon", "zend"],
-    "license": "MIT",
-    "version": "v1.5.1",
-    "authors": [
-        {
-            "name": "pedro151",
-            "email": "phacl@hotmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-      "autoload" : {
-        "psr-4" : {
-          "Classes\\" : "build/Classes"
-        }
-      },
-      "autoload-dev" : {
-        "psr-4" : {
-          "TestMysql\\" : "TestMysql",
-          "TestPgsql\\" : "TestPgsql"
-        }
-      },
-    "require" : {
-        "php" : ">=5.3.0"
-      },
-      "require-dev" : {
-        "phpunit/phpunit": "~4.5"
+  "name" : "pedro151/orm-generator",
+  "description" : "orm-generator maps the entire database and then creates the DAO (Data Access Object) and ORM (Object-relational mapping) of the entire database to facilitate the development. uses various types of databases like Postgres and Mysql and various types of ORM framework.",
+  "keywords" : [
+    "orm",
+    "datamapper",
+    "database",
+    "model",
+    "mapper",
+    "entity",
+    "dao",
+    "generator",
+    "orm-generator",
+    "mysql",
+    "postgres",
+    "phalcon",
+    "zend"
+  ],
+  "license" : "MIT",
+  "version" : "v1.5.2",
+  "authors" : [
+    {
+      "name" : "pedro151",
+      "email" : "phacl@hotmail.com"
     }
+  ],
+  "minimum-stability" : "dev",
+  "autoload" : {
+    "psr-4" : {
+      "Classes\\" : "build/Classes"
+    }
+  },
+  "autoload-dev" : {
+    "psr-4" : {
+      "TestMysql\\" : "TestMysql",
+      "TestPgsql\\" : "TestPgsql"
+    }
+  },
+  "require" : {
+    "php" : ">=5.3.0"
+  },
+  "require-dev" : {
+    "phpunit/phpunit" : "~4.5"
+  },
+  "config" : {
+    "preferred-install" : "dist",
+    "disable-tls" : true,
+    "secure-http" : false
+  }
 }

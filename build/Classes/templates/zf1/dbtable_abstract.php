@@ -88,6 +88,16 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     }
 
     /**
+     * @param array $config
+     * @return Model_TableAbstract
+     */
+    public static function getIntance($config = array())
+    {
+        $name =  get_called_class();
+        return new $name( $config );
+    }
+
+    /**
      * Retorna o numero de linhas na tabela com o parametro opcional WHERE
      *
      * @param $where mixed Where é um parametro opcional da query

@@ -74,21 +74,22 @@ class Config
     );
 
     private $parameterList = array (
-        'init'        => 'Creates the necessary configuration file to start using the orm-generator.' ,
-        'name-ini'  => 'reference to another .ini file configuration (relative path).' ,
-        'config-env'  => 'orm-generator configuration environment.' ,
-        'framework'   => 'name framework used, which has the contents of the database configurations and framework template.' ,
-        'driver'      => 'database driver name (Ex.: pgsql).' ,
-        'database'    => 'database name.' ,
-        'schema'      => 'database schema name (one or more than one).' ,
-        'tables'      => 'table name (parameter can be used more then once).' ,
-        'clean-trash' => 'delete all files that do not belong to your Database due' ,
-        'status'      => 'show status of implementation carried out after completing the process.' ,
-        'version'     => 'shows the version of orm-generator.' ,
-        'help'        => "help command explaining all the options and manner of use." ,
-        'path'        => "specify where to create the files (default is current directory)." ,
-        'update'      => "Upgrade to latest version.",
-        'download'    => "download the reported version (ex. --download=1.5.0). "
+        'init'             => 'Creates the necessary configuration file to start using the orm-generator.' ,
+        'name-ini'         => 'reference to another .ini file configuration (relative path).' ,
+        'config-env'       => 'orm-generator configuration environment.' ,
+        'framework'        => 'name framework used, which has the contents of the database configurations and framework template.' ,
+        'driver'           => 'database driver name (Ex.: pgsql).' ,
+        'database'         => 'database name.' ,
+        'schema'           => 'database schema name (one or more than one).' ,
+        'tables'           => 'table name (parameter can be used more then once).' ,
+        'optional-classes' => 'List of optional Predefined classes to be created (Consult in github the list of each framework).' ,
+        'clean-trash'      => 'delete all files that do not belong to your Database due' ,
+        'status'           => 'show status of implementation carried out after completing the process.' ,
+        'version'          => 'shows the version of orm-generator.' ,
+        'help'             => "help command explaining all the options and manner of use." ,
+        'path'             => "specify where to create the files (default is current directory)." ,
+        'update'           => "Upgrade to latest version." ,
+        'download'         => "download the reported version (ex. --download=1.5.0). "
     );
 
     public function __construct ( $argv , $basePath , $numArgs )

@@ -5,11 +5,13 @@ namespace Classes\AdapterConfig;
 use Classes\AdapterMakerFile\ZendFrameworkOne\DbTable;
 use Classes\AdapterMakerFile\ZendFrameworkOne\Entity;
 use Classes\AdapterMakerFile\ZendFrameworkOne\Model;
+use Classes\AdapterMakerFile\ZendFrameworkOne\Peer;
 
 require_once "Classes/AdapterConfig/AbstractAdapter.php";
 require_once "Classes/AdapterMakerFile/ZendFrameworkOne/DbTable.php";
 require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Entity.php";
 require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Model.php";
+require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Peer.php";
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -85,11 +87,25 @@ class ZendFrameworkOne extends AbstractAdapter
      */
     public function getMakeFileInstances ()
     {
-        return array (
+
+        $instances = array ();
+        if ( $this->hasOptionalClasses () )
+        {
+            foreach ( $this->getOptionalClasses () as $optionalClass )
+            {
+                $Name = ucfirst ( $optionalClass );
+                $className = "Classes\\AdapterMakerFile\\ZendFrameworkOne\\{$Name}";
+                if(method_exists($className,'getInstance')){
+                    $instances[] = $className::getInstance ();
+                }
+            }
+        }
+
+        return array_merge ( array (
             DbTable::getInstance () ,
             Entity::getInstance () ,
             Model::getInstance ()
-        );
+        ) , $instances );
     }
 
 }
