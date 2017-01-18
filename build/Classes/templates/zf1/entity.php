@@ -213,7 +213,7 @@ if(!$column->isNullable ()):?>
 <?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
 <?php endif ?>
-            $input = new Zend_Filter_Input($this->_filters, $this->_validators, array('<?= $column->getName () ?>'=>$<?= $column->getName () ?> ));
+            $input = new Zend_Filter_Input($this->getFilters(), $this->getValidator(), array('<?= $column->getName () ?>'=>$<?= $column->getName () ?> ));
 
             if(!$input->isValid ('<?= $column->getName () ?>'))
             {
