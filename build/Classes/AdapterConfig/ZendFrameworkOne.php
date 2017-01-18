@@ -95,7 +95,9 @@ class ZendFrameworkOne extends AbstractAdapter
             {
                 $Name = ucfirst ( $optionalClass );
                 $className = "Classes\\AdapterMakerFile\\ZendFrameworkOne\\{$Name}";
-                $instances[] = $className::getInstance ();
+                if(method_exists($className,'getInstance')){
+                    $instances[] = $className::getInstance ();
+                }
             }
         }
 
