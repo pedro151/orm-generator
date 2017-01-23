@@ -217,7 +217,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      * Array com values dos set deste model.
      *
      * @param array $data
-     * @return ApplicationModel_Sma_ModelAbstract
+     * @return <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract
      */
     public function populate ( array $data )
     {
