@@ -207,7 +207,7 @@ $validators = implode ( ", ", $validators ) ?>
 <?php break;
         case 'boolean':
 if(!$column->isNullable ()):?>
-            $<?= $column->getName () ?> = ( int ) $<?= $column->getName () ?> ;
+            $<?= $column->getName () ?> = intval( $<?= $column->getName () ?> );
 <?php endif ?>
 <?php default: ?>
 <?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
