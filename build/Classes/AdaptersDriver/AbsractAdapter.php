@@ -273,12 +273,12 @@ abstract class AbsractAdapter
      */
     public function createTable ( $nameTable , $schema = 0 )
     {
-        if ( ! isset( $this->objDbTables[ $schema ] ) )
+        if ( ! isset( $this->objDbTables[ strtoupper($schema) ] ) )
         {
-            $this->objDbTables[ $schema ] = new DbTables();
+            $this->objDbTables[ strtoupper($schema) ] = new DbTables();
         }
 
-        $this->objDbTables[ $schema ][ trim ( $nameTable ) ] = DbTable::getInstance ()
+        $this->objDbTables[ strtoupper($schema) ][ trim ( $nameTable ) ] = DbTable::getInstance ()
                                                                       ->populate (
                                                                           array (
                                                                               'table'    => $nameTable ,
@@ -297,12 +297,12 @@ abstract class AbsractAdapter
      */
     public function getTables ( $schema = 0 )
     {
-        if ( ! isset( $this->objDbTables[ $schema ] ) )
+        if ( ! isset( $this->objDbTables[ strtoupper($schema) ] ) )
         {
             return array ();
         }
 
-        return $this->objDbTables[ $schema ];
+        return $this->objDbTables[ strtoupper($schema) ];
     }
 
     public function getAllTables ()
@@ -324,7 +324,7 @@ abstract class AbsractAdapter
      */
     public function getTable ( $nameTable , $schema = 0 )
     {
-        return $this->objDbTables[ $schema ][ trim ( $nameTable ) ];
+        return $this->objDbTables[ strtoupper($schema) ][ trim ( $nameTable ) ];
     }
 
     /**
@@ -335,7 +335,7 @@ abstract class AbsractAdapter
      */
     public function hasTable ( $nameTable , $schema = 0 )
     {
-        return isset( $this->objDbTables[ $schema ][ trim ( $nameTable ) ] );
+        return isset( $this->objDbTables[ strtoupper($schema) ][ trim ( $nameTable ) ] );
     }
 
     /**
