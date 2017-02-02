@@ -195,9 +195,9 @@ class Mssql extends AbsractAdapter
     {
         $return = $this->getPDO ()
                        ->query (
-                           "SELECT is_identity FROM sys.columns WHERE object_id = object_id('{$this->database}.{$table}')  AND name = '{$column}';"
+                           "SELECT is_identity FROM sys.columns WHERE object_id = object_id('{$schema}.{$table}')  AND name = '{$column}';"
                        )
-                       ->fetch ( \PDO::FETCH_ASSOC );
+                       ->fetchColumn();
 
         if ( ! $return )
         {
