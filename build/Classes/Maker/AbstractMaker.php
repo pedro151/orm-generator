@@ -53,7 +53,7 @@ abstract class AbstractMaker
         $temp = '';
         foreach ( explode ( self::SEPARETOR, $str ) as $part )
         {
-            $temp .= ucfirst ( $part );
+            $temp .= ucfirst ( strtolower( $part ) );
         }
 
         return $temp;
