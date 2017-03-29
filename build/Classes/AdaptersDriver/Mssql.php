@@ -207,6 +207,15 @@ class Mssql extends AbsractAdapter
         return "{$table}_{$column}_seq";
     }
 
+    /**
+     * @return array
+     */
+    public function getListConstrant ()
+    {
+        return array();
+    }
+
+    /*
     public function getListConstrant ()
     {
         $sqlTables = ! empty( $this->tablesName )
@@ -215,7 +224,8 @@ class Mssql extends AbsractAdapter
 
         return $this->getPDO ()
                     ->query (
-                        "SELECT distinct
+                        "
+SELECT DISTINCT
                 tc.constraint_type,
                 tc.constraint_name,
                 tc.table_schema,
@@ -224,19 +234,19 @@ class Mssql extends AbsractAdapter
 		        ccu.table_schema AS foreign_schema,
                 ccu.table_name AS foreign_table,
                 ccu.column_name as foreign_column
-                  FROM
-                {$this->database}.information_schema.table_constraints AS tc
-                    JOIN {$this->database}.information_schema.key_column_usage AS kcu
+            FROM
+                {$this->database}.INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
+            INNER JOIN {$this->database}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
                       ON tc.constraint_name = kcu.constraint_name
                        AND tc.table_schema IN ('$strSchema')
                        AND tc.constraint_type IN ('FOREIGN KEY','PRIMARY KEY')
                        $sqlTables
-                    JOIN {$this->database}.information_schema.constraint_column_usage AS ccu
+            INNER JOIN {$this->database}.information_schema.constraint_column_usage AS ccu
                       ON tc.constraint_name  = ccu.constraint_name
-                        AND tc.constraint_schema = ccu.constraint_schema
-                    ORDER by tc.table_schema"
+                      ORDER by tc.table_schema;"
                     )
                     ->fetchAll ( \PDO::FETCH_ASSOC );
     }
+    */
 
 }
