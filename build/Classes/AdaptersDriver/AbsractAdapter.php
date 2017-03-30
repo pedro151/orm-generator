@@ -196,7 +196,8 @@ abstract class AbsractAdapter
                                     'name'       => $table [ 'column_name' ] ,
                                     'type'       => $this->convertTypeToSimple ( $table[ 'data_type' ] ) ,
                                     'nullable'   => (is_string($table[ 'is_nullable' ]) && strtolower($table[ 'is_nullable' ]) != 'no' ) ,
-                                    'max_length' => $table[ 'max_length' ]
+                                    'max_length' => $table[ 'max_length' ],
+                                    'column_default' => $table ['column_default']
                                 )
                             );
 

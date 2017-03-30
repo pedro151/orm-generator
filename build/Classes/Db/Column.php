@@ -13,6 +13,10 @@ use Classes\AdapterConfig\AbstractAdapter;
 class Column
 {
 
+    const TypeNone = 0;
+    const TypePHP = 1;
+    const TypeDefault = 2;
+
     /**
      * Colunas dos bancos
      *
@@ -63,6 +67,11 @@ class Column
     private $max_length;
 
     /**
+     * @var string
+     */
+    private $column_default;
+
+    /**
      * @var \Classes\Db\Constrant[]
      */
     private $dependences;
@@ -92,10 +101,11 @@ class Column
      */
     public function populate ( $array )
     {
-        $this->name       = $array[ 'name' ];
-        $this->type       = $array[ 'type' ];
-        $this->nullable   = $array[ 'nullable' ];
-        $this->max_length = $array[ 'max_length' ];
+        $this->name           = $array[ 'name' ];
+        $this->type           = $array[ 'type' ];
+        $this->nullable       = $array[ 'nullable' ];
+        $this->max_length     = $array[ 'max_length' ];
+        $this->column_default = $array[ 'column_default' ];
 
         return $this;
     }
@@ -125,15 +135,35 @@ class Column
     }
 
     /**
+     * @return boolean
+     */
+    public function hasColumnDefault ()
+    {
+        return !empty( $this->column_default );
+    }
+
+    /**
      * @return string
      */
-    public function getType ( $inPHP = true )
+    public function getColumnDefault ()
     {
-        if ( !$inPHP ) {
-            return $this->type;
-        }
+        return $this->column_default ;
+    }
 
-        return AbstractAdapter::convertTypeToPHP ( $this->type );
+    /**
+     * @return string
+     */
+    public function getType ( $type = self::TypeDefault )
+    {
+        switch ( $type )
+        {
+            case self::TypePHP:
+                return AbstractAdapter::convertTypeToPHP ( $this->type );
+            case self::TypeDefault:
+                return AbstractAdapter::convertTypeToDefault ( $this->type );
+            case self::TypeNone:
+                return $this->type;
+        }
     }
 
     /**

@@ -32,7 +32,7 @@ abstract class <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getNa
 <?php if($column->hasSequence()):?>
     * @Identity
 <?php endif ?>
-    * @Column(type="<?=$column->getTypeByConfig( $this->config )?>", nullable=<?=$column->isNullable () ? "true" : "false"?><?php
+    * @Column(type="<?=$column->getTypeByConfig( $this->config )?>", nullable=<?=($column->isNullable () or $column->hasColumnDefault()) ? "true" : "false"?><?php
 if ( $column->getMaxLength () ): ?>
 , length=<?=$column->getMaxLength ()?>
 <?php endif ?>, column="<?=$column->getName()?>" )
@@ -103,17 +103,22 @@ if ( $column->getMaxLength () ): ?>
 
 <?php endif ?>
 <?php foreach ($objTables->getColumns() as $column): ?>
+    /**
+    * @return  <?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () ) . "\n" ?>
+    */
     public function set<?=$this->getClassName ( $column->getName () )?>( $<?=$column->getName()?> )
     {
         $this-><?=$column->getName()?> = $<?=$column->getName()?>;
+
+        return $this;
     }
 
     /**
-    * @return <?=$column->getType ()."\n" ?>
+    * @return <?=$column->getType ( \Classes\Db\Column::TypePHP )."\n" ?>
     **/
     public function get<?=$this->getClassName ( $column->getName () )?>()
     {
-        return (<?=$column->getType () ?>) $this-><?=$column->getName()?>;
+        return (<?=$column->getType ( \Classes\Db\Column::TypePHP )?>) $this-><?=$column->getName()?>;
     }
 <?php endforeach;?>
 }

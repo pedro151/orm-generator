@@ -151,6 +151,7 @@ class Mssql extends AbsractAdapter
 	c.table_name,
 	c.column_name ,
 	c.data_type,
+	c.column_default,
 	is_nullable,
 	character_maximum_length AS max_length
 		FROM

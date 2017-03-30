@@ -99,6 +99,17 @@ abstract class AbstractAdapter
         'boolean'   => 'boolean'
     );
 
+    private static $dataTypesPhp = array (
+        'int'       => 'int' ,
+        'float'     => 'float' ,
+        'string'    => 'string' ,
+        'text'      => 'string' ,
+        'date'      => 'string' ,
+        'datetime'  => 'string' ,
+        'timestamp' => 'string' ,
+        'boolean'   => 'boolean'
+    );
+
     protected $dataTypes = array ();
 
     const SEPARETOR = "";
@@ -490,6 +501,16 @@ abstract class AbstractAdapter
      * @return string
      */
     public static function convertTypeToPHP ( $type )
+    {
+        return self::$dataTypesPhp[ $type ];
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return string
+     */
+    public static function convertTypeToDefault ( $type )
     {
         return self::$dataTypesDefault[ $type ];
     }
