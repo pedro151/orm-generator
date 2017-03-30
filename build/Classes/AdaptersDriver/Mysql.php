@@ -122,6 +122,7 @@ class Mysql extends AbsractAdapter
                 0 AS table_schema,
                 table_name,
                 column_name ,
+                column_default,
                 data_type,
                 is_nullable,
                 character_maximum_length AS max_length
