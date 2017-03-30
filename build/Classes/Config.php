@@ -117,6 +117,7 @@ class Config
             die ( $this->download ( $argv[ 'download' ] ) );
         }
 
+        self::$version = Version::getVersion();
         $this->argv = $this->parseConfig ( $basePath , $argv );
     }
 
@@ -127,7 +128,7 @@ class Config
      */
     public function getUsage ()
     {
-        $version = $this->getVersion ();
+        $version = self::$version;
         $list = $this->renderParam ();
 
         return <<<EOF
@@ -173,9 +174,8 @@ EOF;
 
     public function getVersion ()
     {
-        $version = new Version();
-
-        return "ORM Generator \nVersion: {$version->getVersion()}\ncreated by: Pedro Alarcao <https://github.com/pedro151/orm-generator>\n{$version->messageHasNewVersion()}";
+        $version = self::$version;
+        return "ORM Generator \nVersion: {$version}\ncreated by: Pedro Alarcao <https://github.com/pedro151/orm-generator>\n{$version->messageHasNewVersion()}";
     }
 
     /**
