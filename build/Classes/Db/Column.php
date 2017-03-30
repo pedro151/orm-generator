@@ -13,6 +13,10 @@ use Classes\AdapterConfig\AbstractAdapter;
 class Column
 {
 
+    const TypeNone = 0;
+    const TypePHP = 1;
+    const TypeDefault = 2;
+
     /**
      * Colunas dos bancos
      *
@@ -149,13 +153,17 @@ class Column
     /**
      * @return string
      */
-    public function getType ( $inPHP = true )
+    public function getType ( $type = self::TypeDefault )
     {
-        if ( !$inPHP ) {
-            return $this->type;
+        switch ( $type )
+        {
+            case self::TypePHP:
+                return AbstractAdapter::convertTypeToPHP ( $this->type );
+            case self::TypeDefault:
+                return AbstractAdapter::convertTypeToDefault ( $this->type );
+            case self::TypeNone:
+                return $this->type;
         }
-
-        return AbstractAdapter::convertTypeToPHP ( $this->type );
     }
 
     /**
