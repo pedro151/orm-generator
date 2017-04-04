@@ -226,7 +226,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
         {
             $key = preg_replace_callback ( '/_(.)/', create_function (
                     '$matches', 'return ucfirst($matches[1]);'
-                ), $key );
+                ), strtolower( $key ) );
             $method = 'set' . ucfirst ( $key );
 
             if ( in_array ( $method, $methods ) )
