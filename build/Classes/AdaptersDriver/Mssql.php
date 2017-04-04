@@ -208,15 +208,6 @@ class Mssql extends AbsractAdapter
         return "{$table}_{$column}_seq";
     }
 
-    /**
-     * @return array
-     */
-    public function getListConstrant ()
-    {
-        return array();
-    }
-
-    /*
     public function getListConstrant ()
     {
         $sqlTables = ! empty( $this->tablesName )
@@ -240,7 +231,7 @@ SELECT DISTINCT
             INNER JOIN {$this->database}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
                       ON tc.constraint_name = kcu.constraint_name
                        AND tc.table_schema IN ('$strSchema')
-                       AND tc.constraint_type IN ('FOREIGN KEY','PRIMARY KEY')
+                       AND tc.constraint_type IN ('PRIMARY KEY')
                        $sqlTables
             INNER JOIN {$this->database}.information_schema.constraint_column_usage AS ccu
                       ON tc.constraint_name  = ccu.constraint_name
@@ -248,6 +239,6 @@ SELECT DISTINCT
                     )
                     ->fetchAll ( \PDO::FETCH_ASSOC );
     }
-    */
+
 
 }
