@@ -90,14 +90,16 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      * @return string
      * @access protected
      */
-    protected function columnNameFilter($columnName)
+    protected function columnNameFilter ( $columnName )
     {
-    	 $columnName = preg_replace_callback('/_(.)/',
-                                         function ($matches) {
-                                           return ucfirst($matches[1]);},
-                                          $columnName);
+        $columnName = preg_replace_callback ( '/_(.)/' ,
+            function ( $matches )
+            {
+                return ucfirst ( $matches[ 1 ] );
+            } ,
+            strtolower ( $columnName ) );
 
-          return ucfirst($columnName);
+        return ucfirst ( $columnName );
     }
 
 
