@@ -50,6 +50,8 @@ class ZendFrameworkOne extends AbstractAdapter
             //Port do banco
             'port'     => isset( $this->config[ 'params' ][ 'port' ] )
                 ? $this->config[ 'params' ][ 'port' ] : '' ,
+            'charset'   => isset( $this->config[ 'params' ][ 'charset' ] )
+                ? $this->config[ 'params' ][ 'charset' ] : 'UTF8' ,
             //usuario do banco
             'username' => $this->config[ 'params' ][ 'username' ] ,
             //senha do banco

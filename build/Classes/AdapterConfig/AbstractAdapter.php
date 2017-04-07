@@ -26,6 +26,8 @@ abstract class AbstractAdapter
         'host'            => 'localhost' ,
         //Port do banco
         'port'            => '' ,
+        //Encoding
+        'charset'         => 'UTF8',
         //usuario do banco
         'username'        => null ,
         //senha do banco
@@ -484,7 +486,8 @@ abstract class AbstractAdapter
             'last_modify' ,
             'path' ,
             'folder-database' ,
-            'folder-name'
+            'folder-name',
+            'charset'
         );
 
         if ( in_array ( $str , $arr ) )

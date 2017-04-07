@@ -28,12 +28,12 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
                                                                         . "_" : "" ?>Model_<?= $objMakeFile->getFilesFixeds('parentClass')->getFileName() . "\n" ?>
 {
 
-<?php foreach ( $objTables->getColumns () as $column ): ?>
-    /**
-     * Database constraint in the column <?= $column->getName () . "\n" ?>
-     *
-     */
-    const <?= strtoupper ( $column->getName () ) ?> = '<?= $objTables->getName () ?>.<?= $column->getName () ?>';
+/**
+* Database constraint in the columns
+*
+*/
+<?php foreach ( $objTables->getColumns () as $key => $column ): ?>
+    const <?= strtoupper ( $column->getName () ) ?> = <?=$key?>;
 <?php endforeach; ?>
 
     /**
@@ -51,7 +51,7 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
      */
     protected $_columnsList = array(
 <?php foreach ( $objTables->getColumns () as $column ): ?>
-        self::<?= strtoupper ( $column->getName () ) ?> => '<?= strtolower (
+    '<?= $objTables->getName () ?>.<?= $column->getName () ?>' => '<?= strtolower (
             \Classes\Maker\AbstractMaker::getClassName ( $column->getName () )
     ) ?>',
 <?php endforeach; ?>
@@ -85,7 +85,7 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             break;
     }
     ?>
-    '<?= $column->getName () ?>' => array (
+    self::<?= strtoupper($column->getName ()) ?> => array (
             <?= ( !empty( $filters ) ) ? "\"{$filters}\"\n" : null; ?>
         ),
 <?php endforeach; ?>
@@ -123,7 +123,7 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             break;
     }
 $validators = implode ( ", ", $validators ) ?>
-    '<?= $column->getName () ?>' => array (
+    self::<?= strtoupper($column->getName ()) ?> => array (
             <?= ( !empty( $validators ) ) ? "{$validators}\n" : null ?>
         ),
 <?php endforeach; ?>
@@ -213,12 +213,12 @@ if(!$column->isNullable ()):?>
 <?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
 <?php endif ?>
-            $input = new Zend_Filter_Input($this->getFilters(), $this->getValidator(), array('<?= $column->getName () ?>'=>$<?= $column->getName () ?> ));
+            $this->_input->setData(array(self::<?= strtoupper($column->getName ()) ?>=>$<?= $column->getName () ?> ));
 
-            if(!$input->isValid ('<?= $column->getName () ?>'))
+            if(!$this->_input->isValid (self::<?= strtoupper($column->getName ()) ?>))
             {
                 $errors =  $input->getMessages ();
-                foreach ( $errors['<?= $column->getName () ?>'] as $key => $value )
+                foreach ( $errors[self::<?= strtoupper($column->getName ()) ?>] as $key => $value )
                 {
                     throw new <?= $this->config->namespace ? $this->config->namespace . "_" : "" ?>Model_EntityException ( '<?= $column->getName () ?> - ' . $value );
                 }
@@ -226,7 +226,7 @@ if(!$column->isNullable ()):?>
 <?php break ?>
 <?php endswitch ?>
 
-        $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
+        $this-><?= $column->getName () ?>  = $input->getEscaped(self::<?= strtoupper($column->getName ()) ?>) ;
         return $this;
     }
 

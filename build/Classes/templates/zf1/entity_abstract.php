@@ -43,10 +43,17 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     protected $_validators=array();
 
     /**
+    * @var Zend_Filter_Input
+    */
+    protected $_input;
+
+    /**
      * Inicializa funcionalidades comuns em classes de modelo
      */
     public function init()
     {
+        $this->_input = new Zend_Filter_Input($this->getFilters(), $this->getValidator() );
+        $this->setDefaultEscapeFilter ( new Zend_Filter_HtmlEntities( ENT_COMPAT, "<?=$this->config->charset?>" ) );
     }
 
      /**
