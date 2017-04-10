@@ -74,6 +74,13 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
         return $this->_input->getMessages();
     }
 
+    protected function __process()
+    {
+        $this->_input->setData($this->_data);
+        $this->_input->process();
+        $this->_data = $this->_input->getEscaped();
+    }
+
     /**
      * @return array
      */
@@ -330,7 +337,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public function insert()
     {
-        $this->_input->process();
+        $this->__process();
         return $this->_doInsert();
     }
 
@@ -341,7 +348,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public function update ()
     {
-        $this->_input->process();
+        $this->__process();
         $this->_cleanData = $this->_data;
         return $this->_doUpdate ();
     }
