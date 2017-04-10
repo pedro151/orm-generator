@@ -52,8 +52,34 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public function init()
     {
-        $this->_input = new Zend_Filter_Input($this->getFilters(), $this->getValidator() );
-        $this->setDefaultEscapeFilter ( new Zend_Filter_HtmlEntities( ENT_COMPAT, "<?=$this->config->charset?>" ) );
+        $this->_input = new Zend_Filter_Input($this->getFilters(), $this->getValidator() , null , array() );
+        $this->_input->setDefaultEscapeFilter ( new Zend_Filter_HtmlEntities( ENT_COMPAT, "<?=$this->config->charset?>" ) );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid ()
+    {
+        $this->_input->setData($this->_data);
+
+        return $this->_input->isValid();
+    }
+
+    /**
+     * @return array
+     */
+    public function getMessages ()
+    {
+        return $this->_input->getMessages();
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors ()
+    {
+        return $this->_input->getErrors();
     }
 
      /**
@@ -304,6 +330,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public function insert()
     {
+        $this->_input->process();
         return $this->_doInsert();
     }
 
@@ -314,6 +341,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public function update ()
     {
+        $this->_input->process();
         $this->_cleanData = $this->_data;
         return $this->_doUpdate ();
     }

@@ -28,12 +28,12 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
                                                                         . "_" : "" ?>Model_<?= $objMakeFile->getFilesFixeds('parentClass')->getFileName() . "\n" ?>
 {
 
-/**
-* Database constraint in the columns
-*
-*/
-<?php foreach ( $objTables->getColumns () as $key => $column ): ?>
-    const <?= strtoupper ( $column->getName () ) ?> = <?=$key?>;
+    /**
+    * Database constraint in the columns
+    *
+    */
+<?php $i=0; foreach ( $objTables->getColumns () as $column ): ?>
+    const <?= strtoupper ( $column->getName () ) ?> = <?=$i++?>;
 <?php endforeach; ?>
 
     /**
@@ -213,20 +213,20 @@ if(!$column->isNullable ()):?>
 <?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
             $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
 <?php endif ?>
-            $this->_input->setData(array(self::<?= strtoupper($column->getName ()) ?>=>$<?= $column->getName () ?> ));
+            $this->_input->setData( array( self::<?= strtoupper($column->getName ()) ?>=>$<?= $column->getName () ?> ) );
 
-            if(!$this->_input->isValid (self::<?= strtoupper($column->getName ()) ?>))
+            if(!$this->_input->isValid ( self::<?= strtoupper( $column->getName () ) ?> ) )
             {
-                $errors =  $input->getMessages ();
-                foreach ( $errors[self::<?= strtoupper($column->getName ()) ?>] as $key => $value )
+                $errors =  $this->_input->getMessages ();
+                foreach ( $errors[ self::<?= strtoupper($column->getName ()) ?> ] as $key => $value )
                 {
-                    throw new <?= $this->config->namespace ? $this->config->namespace . "_" : "" ?>Model_EntityException ( '<?= $column->getName () ?> - ' . $value );
+                    throw new <?= $this->config->namespace ? $this->config->namespace . "_" : "" ?>Model_EntityException ( "Error in " . get_called_class() . "::set<?= \Classes\Maker\AbstractMaker::getClassName ( $column->getName () ) ?>() value {$value} not expeted " );
                 }
             }
 <?php break ?>
 <?php endswitch ?>
 
-        $this-><?= $column->getName () ?>  = $input->getEscaped(self::<?= strtoupper($column->getName ()) ?>) ;
+        $this-><?= $column->getName () ?>  = $this->_input->getEscaped(self::<?= strtoupper($column->getName ()) ?>) ;
         return $this;
     }
 

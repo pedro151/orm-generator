@@ -358,6 +358,14 @@ abstract class AbstractAdapter
     }
 
     /**
+     * @return string
+     */
+    public function getCharset ()
+    {
+        return $this->arrConfig[ 'charset' ];
+    }
+
+    /**
      * @return boolean
      */
     public function isCleanTrash(){
