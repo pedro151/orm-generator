@@ -204,18 +204,20 @@ $validators = implode ( ", ", $validators ) ?>
                 $<?= $column->getName () ?> = null;
             }
 <?php endif ?>
+        $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
 <?php break;
         case 'boolean':
 if(!$column->isNullable ()):?>
-       $<?= $column->getName () ?> = intval( $<?= $column->getName () ?> );
+        $this-><?= $column->getName () ?>  =  intval( $<?= $column->getName () ?> );
 <?php endif ?>
 <?php default: ?>
 <?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
-       $<?= $column->getName () ?> = (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
+        $this-><?= $column->getName () ?>  =  (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
+<?php else: ?>
+        $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
 <?php endif ?>
 <?php break ?>
 <?php endswitch ?>
-        $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
 
         return $this;
     }
