@@ -182,7 +182,7 @@ $validators = implode ( ", ", $validators ) ?>
     public function set<?= \Classes\Maker\AbstractMaker::getClassName ( $column->getName () ) ?>( $<?= $column->getName (
     ) ?> )
     {
-<?php switch ( strtolower( $column->getType () ) ):
+<?php switch ( strtolower( $column->getType ( \Classes\Db\Column::TypeDefault )  ) ):
         case 'timestamp':
         case 'date':
         case 'datetime':?>
@@ -236,7 +236,7 @@ if(!$column->isNullable ()):?>
         $column->getName ()
     ) ?>(<?php if ( $column->equalType ( 'date' ) or $column->equalType ( 'datetime' ) or  $column->equalType ( 'timestamp' ) ): ?>$format = false <?php endif; ?>)
     {
-<?php switch ( strtolower( $column->getType () ) ):
+<?php switch ( strtolower( $column->getType ( \Classes\Db\Column::TypeDefault ) ) ):
         case 'timestamp':
         case 'date':
         case 'datetime':?>

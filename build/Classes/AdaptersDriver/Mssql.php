@@ -35,27 +35,45 @@ class Mssql extends AbsractAdapter
 
     }
 
+
     /**
-     * @inheritDoc
+     * converts Mssql data types to Simple data types
+     *
+     * @param string $str
+     *
+     * @return string
      */
     protected function convertTypeToSimple ( $str )
     {
-        if ( preg_match ( '/(tinyint|bit)/' , $str ) )
-        {
+        $res = '';
+        if ( preg_match ( '/(tinyint\(1\)|bit)/', $str ) ) {
             $res = 'boolean';
-        } elseif ( preg_match ( '/(date|time|text|binary|char|xml|uniqueidentifier)/' , $str ) )
-        {
+        }
+        elseif ( preg_match ( '/(timestamp|blob|char|enum)/', $str ) ) {
             $res = 'string';
-        } elseif ( preg_match ( '/(decimal|numeric|real|float|money)/' , $str ) )
-        {
+        }
+        elseif ( preg_match ( '/(text)/', $str ) ) {
+            $res = 'text';
+        }
+        elseif ( preg_match ( '/(decimal|numeric|float|double)/', $str ) ) {
             $res = 'float';
-        } elseif ( preg_match ( '#^(?:tiny|small|medium|long|big|var)?(\w+)(?:\(\d+\))?(?:\s\w+)*$#' , $str , $matches ) )
-        {
+        }
+        elseif ( preg_match ( '#^(?:tiny|small|medium|long|big|var)?(\w+)(?:\(\d+\))?(?:\s\w+)*$#', $str, $matches ) ) {
             $res = $matches[ 1 ];
+        }
+        elseif ( preg_match ( '/(date)/', $str ) ) {
+            $res = 'date';
+        }
+        elseif ( preg_match ( '/(datetime)/', $str ) ) {
+            $res = 'datetime';
+        }
+        else {
+            print "Can't convert column type to Simple - Unrecognized type: $str";
         }
 
         return $res;
     }
+
 
     protected function getHost(){
         $host = $this->host;
