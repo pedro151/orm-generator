@@ -195,7 +195,7 @@ $validators = implode ( ", ", $validators ) ?>
 <?php if( $column->equalType ( 'date' ) ): ?>
                 $<?= $column->getName () ?>->setOptions(array('format_type' => 'php'));
 <?php endif ?>
-<?php $format =  'Zend_Date::ISO_8601' ?>
+<?php $format =  '\'Y-MM-dd\'' ?>
 <?php if( $column->equalType ( 'date' ) ) { $format =  '\'Y-m-d\''; } ?>
                 $<?= $column->getName () ?> = $<?= $column->getName () ?>->toString( <?=$format?> );
             }
