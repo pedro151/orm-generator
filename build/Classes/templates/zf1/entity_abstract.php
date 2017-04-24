@@ -271,13 +271,36 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
                 ), strtolower( $key ) );
             $method = 'set' . ucfirst ( $key );
 
-            if ( in_array ( $method, $methods ) )
+            if ( in_array ( $method, $methods ) && !in_array($key, (array) $this->_primary) )
             {
                 $this->$method ( $value );
             }
         }
 
         return $this;
+    }
+
+     /**
+     * @return array
+     */
+    public function toArray ()
+    {
+        $render = array ();
+        $methods = get_class_methods ( $this );
+        foreach ( $this->_data as $key => $value )
+        {
+            $key2 = preg_replace_callback ( '/_(.)/' , create_function (
+                '$matches' , 'return ucfirst($matches[1]);'
+            ) , strtolower ( $key ) );
+            $method = 'get' . ucfirst ( $key2 );
+
+            if ( in_array ( $method , $methods ) )
+            {
+                $render[ $key ] = $this->$method ();
+            }
+        }
+
+        return $render;
     }
 
 
