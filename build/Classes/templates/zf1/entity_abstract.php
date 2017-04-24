@@ -283,7 +283,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      /**
      * @return array
      */
-    public function toArray ()
+    public function toArrayGets ()
     {
         $render = array ();
         $methods = get_class_methods ( $this );
