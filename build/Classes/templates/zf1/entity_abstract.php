@@ -451,4 +451,36 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
         return $this->_filters;
     }
 
+    /**
+     * @param $columnName
+     *
+     * @return array|mixed
+     */
+    public static function Validator( $columnName )
+    {
+        $obj = self::getIntance();
+        if(isset($obj->_validators[$columnName]))
+        {
+            return $obj->_validators[$columnName];
+        }
+
+        return array();
+    }
+
+    /**
+     * @param $columnName
+     *
+     * @return array|mixed
+     */
+    public static function Filters( $columnName )
+    {
+        $obj = self::getIntance();
+        if(isset($obj->_filters[$columnName]))
+        {
+            return $obj->_filters[$columnName];
+        }
+
+        return array();
+    }
+
 }
