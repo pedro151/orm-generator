@@ -17,6 +17,7 @@
 
 abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityAbstract
 {
+    protected $_mapperClass;
 
     /**
      * Cria os Filtros para inserir  dados nos sets
@@ -38,6 +39,26 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     * @var Zend_Filter_Input
     */
     protected $_input;
+
+    public function __construct(array $options = null)
+    {
+        $this->init();
+        if (is_array($options)) {
+            $this->populate($options);
+        }
+    }
+
+    public function setMapper($mapper) {
+		$this->_mapper = $mapper;
+		return $this;
+	}
+
+    public function getMapper() {
+		if (null === $this->_mapper) {
+			$this->setMapper(new $this->_mapperClass ());
+		}
+		return $this->_mapper;
+    }
 
     /**
      * Inicializa funcionalidades comuns em classes de modelo
@@ -96,7 +117,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     public function __set($name, $value)
     {
         $method = 'set' . self::CamelCase ( $name );
-        if (! method_exists($this, $method) ) {
+        if (('mapper' == $name) || !method_exists($this, $method)) {
             throw new <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityException("Metodo \"{$method}\" não existe na classe.");
         }
 
@@ -114,7 +135,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     public function __get($name)
     {
         $method = 'get' . self::CamelCase ( $name );
-        if (! method_exists($this, $method) ) {
+        if (('mapper' == $name) || !method_exists($this, $method)) {
 			throw new <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityException("Metodo \"{$method}\" não existe na classe.");
         }
 

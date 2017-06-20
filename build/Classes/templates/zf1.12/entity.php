@@ -39,6 +39,17 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
     private $<?= $column->getName ()?>;
 <?php endforeach; ?>
 
+
+    /**
+     * Nome da tabela Mapper do model
+     *
+     * @var string
+     * @access protected
+     */
+    protected $_mapperClass = '<?= $objTables->getNamespace () ?>_Mapper_<?= \Classes\Maker\AbstractMaker::getClassName (
+    $objTables->getName ()
+) ?>';
+
     /**
      * @see <?= $this->config->namespace ?>Model_EntityAbstract::$_filters
      */
