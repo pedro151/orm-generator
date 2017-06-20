@@ -37,14 +37,6 @@ class <?=$objTables->getNamespace()?>_DbTable_<?=\Classes\Maker\AbstractMaker::g
     protected $_schema = '<?=$objTables->getSchema()?>';
 <?php endif ?>
 
-    /**
-     * Nome do objeto quando retornado so um valor das consultas
-     *
-     * @var string
-     * @access protected
-     */
-    protected $_rowClass = '<?=$objTables->getNamespace()?>_<?=\Classes\Maker\AbstractMaker::getClassName ( $objTables->getName () )?>';
-
 <?php if( $objTables->hasPrimaryKey() ):?>
 	/**
      * Nome da Primary Key

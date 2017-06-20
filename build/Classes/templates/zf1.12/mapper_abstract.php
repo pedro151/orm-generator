@@ -28,7 +28,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
 
     /**
      * @var Zend_Db_Table_Abstract
-    /**
+     */
     private $_table;
 
     /**
