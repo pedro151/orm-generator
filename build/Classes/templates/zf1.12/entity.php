@@ -35,11 +35,6 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
     const <?= strtoupper ( $column->getName () ) ?> = '<?=$column->getName ()?>';
 <?php endforeach; ?>
 
-<?php foreach ( $objTables->getColumns () as $column ): ?>
-    private $<?= $column->getName ()?>;
-<?php endforeach; ?>
-
-
     /**
      * Nome da tabela Mapper do model
      *
@@ -183,17 +178,17 @@ $validators = implode ( ", ", $validators ) ?>
                 $<?= $column->getName () ?> = null;
             }
 <?php endif ?>
-        $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
+        $this->_data['<?= $column->getName () ?>'] = $<?= $column->getName () ?> ;
 <?php break;
         case 'boolean':
 if(!$column->isNullable ()):?>
-        $this-><?= $column->getName () ?>  =  intval( $<?= $column->getName () ?> );
+        $this->_data['<?= $column->getName () ?>'] =  intval( $<?= $column->getName () ?> );
 <?php endif;  break;?>
 <?php default: ?>
 <?php if(!$column->isNullable ()):?>
-        $this-><?= $column->getName () ?>  =  (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
+        $this->_data['<?= $column->getName () ?>']  =  (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
 <?php else: ?>
-        $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
+        $this->_data['<?= $column->getName () ?>']  = $<?= $column->getName () ?> ;
 <?php endif ?>
 <?php break ?>
 <?php endswitch ?>
@@ -221,18 +216,18 @@ if(!$column->isNullable ()):?>
         case 'datetime':?>
         if ($format)
         {
-            if ($this-><?= $column->getName () ?> === null)
+            if (!isset($this->_data['<?= $column->getName () ?>']) or $this->_data['<?= $column->getName () ?>'] === null)
             {
                 return null;
             }
 
-            $objDate = new Zend_Date($this-><?= $column->getName () ?>, $format );
+            $objDate = new Zend_Date($this->_data['<?= $column->getName () ?>'], $format );
 
             return $objDate->toString($format);
         }
 <?php break ?>
 <?php endswitch ?>
-        return $this-><?= $column->getName () ?>;
+        return isset($this->_data['<?= $column->getName () ?>'])?$this->_data['<?= $column->getName () ?>']:null;
     }
 
 <?php endforeach; ?>

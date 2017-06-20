@@ -19,6 +19,8 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
 {
     protected $_mapperClass;
 
+    protected $_data = array();
+
     /**
      * Cria os Filtros para inserir  dados nos sets
      *
@@ -77,6 +79,11 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
         $this->_input->setData($this->_data);
 
         return $this->_input->isValid();
+    }
+
+    public function toArray ()
+    {
+        return $this->_data;
     }
 
     /**
