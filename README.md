@@ -104,5 +104,5 @@ Framework Class Generator ORM
 
 | Frameworks         |  Config Name   | Version | Generate Classes | Classes Overwrite |
 |--------------------|----------------|:---------:|------------------|------------------|
-|Zend Framework | zf1 | 1.12 |  DbTable, Entity, Model  | DbTable, Entity |
+|Zend Framework | zf1.12 | 1.12 |  DbTable, Entity, Model  | DbTable, Entity |
 |Phalcon | phalcon | 3.0 | Entity, Model, Peer  | Entity |
