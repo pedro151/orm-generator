@@ -231,7 +231,7 @@ if(!$column->isNullable ()):?>
         case 'datetime':?>
         if ($format)
         {
-            if ($this->_data['<?= $column->getName () ?>'] === null)
+            if ($this-><?= $column->getName () ?> === null)
             {
                 return null;
             }

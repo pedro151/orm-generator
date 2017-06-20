@@ -15,12 +15,6 @@ class DbTable extends AbstractAdapter
 
     public    $pastName      = 'DbTable';
     protected $fileTpl       = "dbtable.php";
-    protected $fileFixedData = array (
-        'parentclass' => array (
-            'name' => "TableAbstract" ,
-            'tpl'  => "dbtable_abstract.php"
-        )
-    );
 
     protected $overwrite     = true;
 

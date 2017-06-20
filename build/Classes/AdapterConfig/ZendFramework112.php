@@ -5,13 +5,13 @@ namespace Classes\AdapterConfig;
 use Classes\AdapterMakerFile\ZendFramework112\DbTable;
 use Classes\AdapterMakerFile\ZendFramework112\Entity;
 use Classes\AdapterMakerFile\ZendFramework112\Model;
-use Classes\AdapterMakerFile\ZendFramework112\Peer;
+use Classes\AdapterMakerFile\ZendFramework112\Mapper;
 
 require_once "Classes/AdapterConfig/AbstractAdapter.php";
 require_once "Classes/AdapterMakerFile/ZendFramework112/DbTable.php";
 require_once "Classes/AdapterMakerFile/ZendFramework112/Entity.php";
 require_once "Classes/AdapterMakerFile/ZendFramework112/Model.php";
-require_once "Classes/AdapterMakerFile/ZendFramework112/Peer.php";
+require_once "Classes/AdapterMakerFile/ZendFramework112/Mapper.php";
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
@@ -106,7 +106,8 @@ class ZendFramework112 extends AbstractAdapter
         return array_merge ( array (
             DbTable::getInstance () ,
             Entity::getInstance () ,
-            Model::getInstance ()
+            Model::getInstance () ,
+            Mapper::getInstance()
         ) , $instances );
     }
 

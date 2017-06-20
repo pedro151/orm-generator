@@ -4,9 +4,10 @@ namespace Classes\AdapterConfig;
 
 use Classes\Config;
 use Classes\Maker\AbstractMaker;
+use Classes\Update\Version;
 
 require_once "Classes/Maker/AbstractMaker.php";
-require_once "Classes/Config.php";
+require_once "Classes/Update/Version.php";
 require_once 'Exception.php';
 
 /**
@@ -206,7 +207,7 @@ abstract class AbstractAdapter
     {
         $this->dataTypes = $this->dataTypes + self::$dataTypesDefault;
         $array += array (
-            'version'     => Config::$version ,
+            'version'     => Version::getVersion() ,
             'author'      => ucfirst ( get_current_user () ) ,
             'last_modify' => date ( "d-m-Y" )
         );
