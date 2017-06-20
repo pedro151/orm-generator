@@ -111,20 +111,6 @@ $validators = implode ( ", ", $validators ) ?>
 <?php endforeach; ?>
     );
 
-<?php if ( $objTables->hasPrimaryKey () ): ?>
-    /**
-    * Nome da Primary Key
-    *
-    * @var string
-    * @access protected
-    */
-   protected $_primary = array(
-<?php foreach ( $objTables->getPrimarykeys () as $pks ) : ?>
-        '<?= $pks->getName () ?>',
-<?php endforeach ?>
-    );
-<?php endif ?>
-
 <?php foreach ( $parents as $parent ): ?>
     /**
      * Parent relation <?= \Classes\Maker\AbstractMaker::getClassName ( $parent[ 'table' ] ) . "\n" ?>
