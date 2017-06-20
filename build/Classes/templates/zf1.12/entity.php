@@ -27,7 +27,6 @@
 abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->config->namespace
                                                                         . "_" : "" ?>Model_<?= $objMakeFile->getFilesFixeds('parentClass')->getFileName() . "\n" ?>
 {
-
     /**
     * Database constraint in the columns
     *
@@ -36,15 +35,9 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
     const <?= strtoupper ( $column->getName () ) ?> = '<?=$column->getName ()?>';
 <?php endforeach; ?>
 
-    /**
-     * Nome da tabela DbTable do model
-     *
-     * @var string
-     * @access protected
-     */
-    protected $_tableClass = '<?= $objTables->getNamespace () ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName (
-    $objTables->getName ()
-) ?>';
+<?php foreach ( $objTables->getColumns () as $column ): ?>
+    private $<?= $column->getName ()?>;
+<?php endforeach; ?>
 
     /**
      * @see <?= $this->config->namespace ?>Model_EntityAbstract::$_filters
@@ -74,7 +67,7 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             break;
     }
     ?>
-    self::<?= strtoupper($column->getName ()) ?> => array (
+        self::<?= strtoupper($column->getName ()) ?> => array (
             <?= ( !empty( $filters ) ) ? "\"{$filters}\"\n" : null; ?>
         ),
 <?php endforeach; ?>
@@ -112,7 +105,7 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             break;
     }
 $validators = implode ( ", ", $validators ) ?>
-    self::<?= strtoupper($column->getName ()) ?> => array (
+        self::<?= strtoupper($column->getName ()) ?> => array (
             <?= ( !empty( $validators ) ) ? "{$validators}\n" : null ?>
         ),
 <?php endforeach; ?>
@@ -198,9 +191,9 @@ $validators = implode ( ", ", $validators ) ?>
         case 'boolean':
 if(!$column->isNullable ()):?>
         $this-><?= $column->getName () ?>  =  intval( $<?= $column->getName () ?> );
-<?php endif ?>
+<?php endif;  break;?>
 <?php default: ?>
-<?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
+<?php if(!$column->isNullable ()):?>
         $this-><?= $column->getName () ?>  =  (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
 <?php else: ?>
         $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
