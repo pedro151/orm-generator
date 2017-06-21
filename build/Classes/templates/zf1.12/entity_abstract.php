@@ -123,17 +123,19 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     }
 
     /**
-    *   @return boolean
-    */
-    public function hasModification(){
-       return in_array( true, $this->_modifiedFields);
+     * @return boolean
+     */
+    public function hasModification ()
+    {
+        return in_array ( true , $this->_modifiedFields );
     }
 
     /**
-    *   @return array
-    */
-    public function getModifiedFields(){
-       return $this->_modifiedFields;
+     * @return array
+     */
+    public function getModifiedFields ()
+    {
+        return $this->_modifiedFields;
     }
 
     /**
