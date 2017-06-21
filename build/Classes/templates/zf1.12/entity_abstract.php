@@ -19,7 +19,11 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
 {
     protected $_mapperClass;
 
+    private $_mapper;
+
     protected $_data = array();
+
+    protected $_modifiedFields = array();
 
     /**
      * Cria os Filtros para inserir  dados nos sets
@@ -45,16 +49,19 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     public function __construct(array $options = null)
     {
         $this->init();
-        if (is_array($options)) {
-            $this->populate($options);
+        if (isset($options['data']) && is_array($options['data'])) {
+            $this->_data = $options['data'];
         }
     }
 
-    public function setMapper($mapper) {
+    public function setMapper(Model_MapperAbstract $mapper) {
 		$this->_mapper = $mapper;
 		return $this;
 	}
 
+	/**
+     * @return \Model_MapperAbstract
+     */
     public function getMapper() {
 		if (null === $this->_mapper) {
 			$this->setMapper(new $this->_mapperClass ());
@@ -67,6 +74,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public function init()
     {
+        $this->_modifiedFields = array_fill_keys($this->getMapper()->getTable()->info('cols'), false);
         $this->_input = new Zend_Filter_Input($this->getFilters(), $this->getValidator() , null , array() );
         $this->_input->setDefaultEscapeFilter ( new Zend_Filter_StripTags( ENT_COMPAT, "<?=$this->config->charset?>" ) );
     }
@@ -109,8 +117,23 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
         return $this->_input->getErrors();
     }
 
-    private static function CamelCase ( $name ) {
-        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $name));
+    private static function CamelCase ( $str )
+    {
+        return preg_replace_callback ( '/_([a-z])/' , function ( $m ){ return strtoupper ( $m[ 1 ] ); } , ucfirst ( strtolower ( $str ) ) );
+    }
+
+    /**
+    *   @return boolean
+    */
+    public function hasModification(){
+       return in_array( true, $this->_modifiedFields);
+    }
+
+    /**
+    *   @return array
+    */
+    public function getModifiedFields(){
+       return $this->_modifiedFields;
     }
 
     /**
@@ -128,7 +151,18 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
             throw new <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityException("Metodo \"{$method}\" não existe na classe.");
         }
 
-        $this->$method($value);
+        if (array_key_exists ($name, $this->_modifiedFields))
+		{
+			if (!isset($this->_data[$name]) or !($this->_data[$name] === $value) )
+			{
+				$this->_modifiedFields[$name] = true;
+			}
+            $this->_data[$name] = $value;
+        }
+        else
+        {
+            $this->$method($value);
+        }
     }
 
     /**
@@ -146,7 +180,11 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
 			throw new <?=$this->config->namespace?$this->config->namespace."_":""?>Model_EntityException("Metodo \"{$method}\" não existe na classe.");
         }
 
-        return $this->$method();
+        if (array_key_exists ($name, $this->_modifiedFields)) {
+            return isset( $this->_data[ $name ] ) ? $this->_data[ $name ] : null;
+        }
+        else
+            return $this->$method();
     }
 
     /**

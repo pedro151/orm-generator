@@ -178,17 +178,17 @@ $validators = implode ( ", ", $validators ) ?>
                 $<?= $column->getName () ?> = null;
             }
 <?php endif ?>
-        $this->_data['<?= $column->getName () ?>'] = $<?= $column->getName () ?> ;
+        $this-><?= strtoupper ( $column->getName () ) ?> = $<?= $column->getName () ?> ;
 <?php break;
         case 'boolean':
 if(!$column->isNullable ()):?>
-        $this->_data['<?= $column->getName () ?>'] =  intval( $<?= $column->getName () ?> );
+        $this-><?= strtoupper ( $column->getName () ) ?> =  intval( $<?= $column->getName () ?> );
 <?php endif;  break;?>
 <?php default: ?>
 <?php if(!$column->isNullable ()):?>
-        $this->_data['<?= $column->getName () ?>']  =  (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
+        $this-><?= strtoupper ( $column->getName () ) ?>  =  (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
 <?php else: ?>
-        $this->_data['<?= $column->getName () ?>']  = $<?= $column->getName () ?> ;
+        $this-><?= strtoupper ( $column->getName () ) ?>  = $<?= $column->getName () ?> ;
 <?php endif ?>
 <?php break ?>
 <?php endswitch ?>
@@ -216,60 +216,18 @@ if(!$column->isNullable ()):?>
         case 'datetime':?>
         if ($format)
         {
-            if (!isset($this->_data['<?= $column->getName () ?>']) or $this->_data['<?= $column->getName () ?>'] === null)
+            if ($this-><?= strtoupper ( $column->getName () ) ?> === null)
             {
                 return null;
             }
 
-            $objDate = new Zend_Date($this->_data['<?= $column->getName () ?>'], $format );
+            $objDate = new Zend_Date($this-><?= strtoupper ( $column->getName () ) ?>, $format );
 
             return $objDate->toString($format);
         }
 <?php break ?>
 <?php endswitch ?>
-        return isset($this->_data['<?= $column->getName () ?>'])?$this->_data['<?= $column->getName () ?>']:null;
+        return $this-><?= strtoupper ( $column->getName () ) ?>;
     }
-
 <?php endforeach; ?>
-<?php foreach ( $parents as $parent ): ?>
-    /**
-     * Gets parent <?= $parent[ 'table' ] . "\n" ?>
-     *
-     * @return <?= $parent[ 'class' ] . "\n" ?>
-     */
-    public function get<?= $parent[ 'function' ] ?>()
-    {
-        if ($this->_parent_<?= $parent[ 'variable' ] ?> === null)
-        {
-            $this->_parent_<?= $parent[ 'variable' ] ?> = $this->findParentRow('<?= $objTables->getNamespace (
-    ) ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName (
-        $parent[ 'table' ]
-    ) ?>', '<?= \Classes\Maker\AbstractMaker::getClassName ( $parent[ 'variable' ] ) ?>');
-        }
-
-        return $this->_parent_<?= $parent[ 'variable' ] ?>;
-    }
-
-<?php endforeach; ?>
-
-
-<?php foreach ( $depends as $depend ): ?>
-    /**
-     * Gets dependent <?= $depend[ 'table' ] . "\n" ?>
-     *
-     * @return <?= $depend[ 'class' ] . "\n" ?>
-     */
-    public function get<?= $depend[ 'function' ] ?>()
-    {
-        if ($this->_depend_<?= $depend[ 'variable' ] ?> === null)
-        {
-            $this->_depend_<?= $depend[ 'variable' ] ?> = $this->findDependentRowset('<?= $objTables->getNamespace (
-    ) ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName ( $depend[ 'table' ] ) ?>');
-        }
-
-        return $this->_depend_<?= $depend[ 'variable' ] ?>;
-    }
-
-<?php endforeach; ?>
-
 }
