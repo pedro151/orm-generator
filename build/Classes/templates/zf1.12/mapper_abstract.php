@@ -45,4 +45,10 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
 
         return $this->_table;
     }
+
+    public function insert ( Model_EntityAbstract $entity )
+    {
+        $data = array_intersect_key ( $entity->toArray() , $entity->getModifiedFields() );
+        return $this->getTable ()->insert ( $data );
+    }
 }
