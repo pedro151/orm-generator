@@ -173,8 +173,8 @@ class Mssql extends AbsractAdapter
 	is_nullable,
 	character_maximum_length AS max_length
 		FROM
-		{$this->database}.information_schema.tables AS st
-		INNER JOIN  {$this->database}.information_schema.columns AS c
+		{$this->database}.INFORMATION_SCHEMA.TABLES AS st
+		INNER JOIN  {$this->database}.INFORMATION_SCHEMA.COLUMNS AS c
 		ON st.table_name=c.table_name and st.table_type = 'BASE TABLE'
 		 $sqlTables and  c.table_schema IN ('$strSchema')
 		order by c.table_name asc"
@@ -199,7 +199,7 @@ class Mssql extends AbsractAdapter
             $this->totalTables = $this->getPDO ()
                                       ->query (
                                           "SELECT COUNT(table_name)  AS total
-             FROM {$this->database}.information_schema.tables
+             FROM {$this->database}.INFORMATION_SCHEMA.TABLES
              WHERE
               table_type = 'BASE TABLE'
               AND table_schema IN ( '" . $strSchema . "' ) $sqlTables"
@@ -251,7 +251,7 @@ SELECT DISTINCT
                        AND tc.table_schema IN ('$strSchema')
                        AND tc.constraint_type IN ('PRIMARY KEY')
                        $sqlTables
-            INNER JOIN {$this->database}.information_schema.constraint_column_usage AS ccu
+            INNER JOIN {$this->database}.INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS ccu
                       ON tc.constraint_name  = ccu.constraint_name
                       ORDER by tc.table_schema;"
                     )
