@@ -55,11 +55,11 @@ class Mssql extends AbsractAdapter
         elseif ( preg_match ( '/(text)/', $str ) ) {
             $res = 'text';
         }
-        elseif ( preg_match ( '/(decimal|numeric|float|double)/', $str ) ) {
+        elseif ( preg_match ( '/(decimal|numeric|float|double|money|smallmoney)/', $str ) ) {
             $res = 'float';
         }
         elseif ( preg_match ( '#^(?:tiny|small|medium|long|big|var)?(\w+)(?:\(\d+\))?(?:\s\w+)*$#', $str, $matches ) ) {
-            $res = $matches[ 1 ];
+            $res =  $matches[ 1 ];
         }
         elseif ( preg_match ( '/(date)/', $str ) ) {
             $res = 'date';
