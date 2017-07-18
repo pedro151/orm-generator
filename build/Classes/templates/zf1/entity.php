@@ -68,9 +68,6 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
         case 'string':
             $filters = 'StripTags", "StringTrim';
             break;
-        case 'float':
-            $filters = 'Digits';
-            break;
         case 'date':
             break;
         case 'timestamp':
