@@ -69,11 +69,8 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             $filters = 'StripTags", "StringTrim';
             break;
         case 'float':
-            break;
         case 'date':
-            break;
         case 'timestamp':
-            break;
         case 'datetime':
             break;
         case 'boolean':
@@ -102,9 +99,8 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
 
     switch ( strtolower ( $column->getType () ) ) {
         case 'date':
-            break;
+        case 'float':
         case 'timestamp':
-            break;
         case 'datetime':
             break;
         case 'string':
@@ -208,6 +204,7 @@ $validators = implode ( ", ", $validators ) ?>
         case 'boolean':
 if(!$column->isNullable ()):?>
         $this-><?= $column->getName () ?>  =  intval( $<?= $column->getName () ?> );
+    <?php break ?>
 <?php endif ?>
 <?php default: ?>
 <?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
