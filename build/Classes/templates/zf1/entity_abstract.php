@@ -43,10 +43,50 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
     protected $_validators=array();
 
     /**
+    * @var Zend_Filter_Input
+    */
+    protected $_input;
+
+    /**
      * Inicializa funcionalidades comuns em classes de modelo
      */
     public function init()
     {
+        $this->_input = new Zend_Filter_Input($this->getFilters(), $this->getValidator() , null , array() );
+        $this->_input->setDefaultEscapeFilter ( new Zend_Filter_StripTags( ENT_COMPAT, "<?=$this->config->charset?>" ) );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid ()
+    {
+        $this->_input->setData($this->_data);
+
+        return $this->_input->isValid();
+    }
+
+    /**
+     * @return array
+     */
+    public function getMessages ()
+    {
+        return $this->_input->getMessages();
+    }
+
+    protected function __process()
+    {
+        $this->_input->setData($this->_data);
+        $this->_input->process();
+        $this->_data = $this->_input->getEscaped();
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors ()
+    {
+        return $this->_input->getErrors();
     }
 
      /**
@@ -90,14 +130,16 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      * @return string
      * @access protected
      */
-    protected function columnNameFilter($columnName)
+    protected function columnNameFilter ( $columnName )
     {
-    	 $columnName = preg_replace_callback('/_(.)/',
-                                         function ($matches) {
-                                           return ucfirst($matches[1]);},
-                                          $columnName);
+        $columnName = preg_replace_callback ( '/_(.)/' ,
+            function ( $matches )
+            {
+                return ucfirst ( $matches[ 1 ] );
+            } ,
+            strtolower ( $columnName ) );
 
-          return ucfirst($columnName);
+        return ucfirst ( $columnName );
     }
 
 
@@ -226,16 +268,39 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
         {
             $key = preg_replace_callback ( '/_(.)/', create_function (
                     '$matches', 'return ucfirst($matches[1]);'
-                ), $key );
+                ), strtolower( $key ) );
             $method = 'set' . ucfirst ( $key );
 
-            if ( in_array ( $method, $methods ) )
+            if ( in_array ( $method, $methods ) && !in_array($key, (array) $this->_primary) )
             {
                 $this->$method ( $value );
             }
         }
 
         return $this;
+    }
+
+     /**
+     * @return array
+     */
+    public function toArrayGets ()
+    {
+        $render = array ();
+        $methods = get_class_methods ( $this );
+        foreach ( $this->_data as $key => $value )
+        {
+            $key2 = preg_replace_callback ( '/_(.)/' , create_function (
+                '$matches' , 'return ucfirst($matches[1]);'
+            ) , strtolower ( $key ) );
+            $method = 'get' . ucfirst ( $key2 );
+
+            if ( in_array ( $method , $methods ) )
+            {
+                $render[ $key ] = $this->$method ();
+            }
+        }
+
+        return $render;
     }
 
 
@@ -295,6 +360,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public function insert()
     {
+        $this->__process();
         return $this->_doInsert();
     }
 
@@ -305,6 +371,7 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
      */
     public function update ()
     {
+        $this->__process();
         $this->_cleanData = $this->_data;
         return $this->_doUpdate ();
     }
@@ -382,6 +449,38 @@ abstract class <?=$this->config->namespace?$this->config->namespace."_":""?>Mode
             return $this->_filters[$columnName];
         }
         return $this->_filters;
+    }
+
+    /**
+     * @param $columnName
+     *
+     * @return array|mixed
+     */
+    public static function Validator( $columnName )
+    {
+        $obj = self::getIntance();
+        if(isset($obj->_validators[$columnName]))
+        {
+            return $obj->_validators[$columnName];
+        }
+
+        return array();
+    }
+
+    /**
+     * @param $columnName
+     *
+     * @return array|mixed
+     */
+    public static function Filters( $columnName )
+    {
+        $obj = self::getIntance();
+        if(isset($obj->_filters[$columnName]))
+        {
+            return $obj->_filters[$columnName];
+        }
+
+        return array();
     }
 
 }

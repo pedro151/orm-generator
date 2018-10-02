@@ -27,7 +27,6 @@
 abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->config->namespace
                                                                         . "_" : "" ?>Model_<?= $objMakeFile->getFilesFixeds('parentClass')->getFileName() . "\n" ?>
 {
-
     /**
     * Database constraint in the columns
     *
@@ -37,25 +36,14 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
 <?php endforeach; ?>
 
     /**
-     * Nome da tabela DbTable do model
+     * Nome da tabela Mapper do model
      *
      * @var string
      * @access protected
      */
-    protected $_tableClass = '<?= $objTables->getNamespace () ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName (
+    protected $_mapperClass = '<?= $objTables->getNamespace () ?>_Mapper_<?= \Classes\Maker\AbstractMaker::getClassName (
     $objTables->getName ()
 ) ?>';
-
-    /**
-     * @see <?= $this->config->namespace ?>Model_EntityAbstract::$_columnsList
-     */
-    protected $_columnsList = array(
-<?php foreach ( $objTables->getColumns () as $column ): ?>
-    '<?= $objTables->getName () ?>.<?= $column->getName () ?>' => '<?= strtolower (
-            \Classes\Maker\AbstractMaker::getClassName ( $column->getName () )
-    ) ?>',
-<?php endforeach; ?>
-    );
 
     /**
      * @see <?= $this->config->namespace ?>Model_EntityAbstract::$_filters
@@ -69,8 +57,11 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             $filters = 'StripTags", "StringTrim';
             break;
         case 'float':
+            break;
         case 'date':
+            break;
         case 'timestamp':
+            break;
         case 'datetime':
             break;
         case 'boolean':
@@ -81,7 +72,7 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             break;
     }
     ?>
-    self::<?= strtoupper($column->getName ()) ?> => array (
+        self::<?= strtoupper($column->getName ()) ?> => array (
             <?= ( !empty( $filters ) ) ? "\"{$filters}\"\n" : null; ?>
         ),
 <?php endforeach; ?>
@@ -99,8 +90,9 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
 
     switch ( strtolower ( $column->getType () ) ) {
         case 'date':
-        case 'float':
+            break;
         case 'timestamp':
+            break;
         case 'datetime':
             break;
         case 'string':
@@ -118,25 +110,11 @@ abstract class <?= $className ?> extends <?= $this->config->namespace ? $this->c
             break;
     }
 $validators = implode ( ", ", $validators ) ?>
-    self::<?= strtoupper($column->getName ()) ?> => array (
+        self::<?= strtoupper($column->getName ()) ?> => array (
             <?= ( !empty( $validators ) ) ? "{$validators}\n" : null ?>
         ),
 <?php endforeach; ?>
     );
-
-<?php if ( $objTables->hasPrimaryKey () ): ?>
-    /**
-    * Nome da Primary Key
-    *
-    * @var string
-    * @access protected
-    */
-   protected $_primary = array(
-<?php foreach ( $objTables->getPrimarykeys () as $pks ) : ?>
-        '<?= $pks->getName () ?>',
-<?php endforeach ?>
-    );
-<?php endif ?>
 
 <?php foreach ( $parents as $parent ): ?>
     /**
@@ -199,18 +177,17 @@ $validators = implode ( ", ", $validators ) ?>
                 $<?= $column->getName () ?> = null;
             }
 <?php endif ?>
-        $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
+        $this-><?= strtoupper ( $column->getName () ) ?> = $<?= $column->getName () ?> ;
 <?php break;
         case 'boolean':
 if(!$column->isNullable ()):?>
-        $this-><?= $column->getName () ?>  =  intval( $<?= $column->getName () ?> );
-    <?php break ?>
-<?php endif ?>
+        $this-><?= strtoupper ( $column->getName () ) ?> =  intval( $<?= $column->getName () ?> );
+<?php endif;  break;?>
 <?php default: ?>
-<?php if(!$column->isNullable () && ($column->getType () != 'boolean')):?>
-        $this-><?= $column->getName () ?>  =  (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
+<?php if(!$column->isNullable ()):?>
+        $this-><?= strtoupper ( $column->getName () ) ?>  =  (<?= ucfirst ( $column->getType () ) ?>) $<?= $column->getName () ?> ;
 <?php else: ?>
-        $this-><?= $column->getName () ?>  = $<?= $column->getName () ?> ;
+        $this-><?= strtoupper ( $column->getName () ) ?>  = $<?= $column->getName () ?> ;
 <?php endif ?>
 <?php break ?>
 <?php endswitch ?>
@@ -238,60 +215,18 @@ if(!$column->isNullable ()):?>
         case 'datetime':?>
         if ($format)
         {
-            if ($this->_data['<?= $column->getName () ?>'] === null)
+            if ($this-><?= strtoupper ( $column->getName () ) ?> === null)
             {
                 return null;
             }
 
-            $objDate = new Zend_Date($this-><?= $column->getName () ?>, $format );
+            $objDate = new Zend_Date($this-><?= strtoupper ( $column->getName () ) ?>, $format );
 
             return $objDate->toString($format);
         }
 <?php break ?>
 <?php endswitch ?>
-        return $this-><?= $column->getName () ?>;
+        return $this-><?= strtoupper ( $column->getName () ) ?>;
     }
-
 <?php endforeach; ?>
-<?php foreach ( $parents as $parent ): ?>
-    /**
-     * Gets parent <?= $parent[ 'table' ] . "\n" ?>
-     *
-     * @return <?= $parent[ 'class' ] . "\n" ?>
-     */
-    public function get<?= $parent[ 'function' ] ?>()
-    {
-        if ($this->_parent_<?= $parent[ 'variable' ] ?> === null)
-        {
-            $this->_parent_<?= $parent[ 'variable' ] ?> = $this->findParentRow('<?= $objTables->getNamespace (
-    ) ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName (
-        $parent[ 'table' ]
-    ) ?>', '<?= \Classes\Maker\AbstractMaker::getClassName ( $parent[ 'variable' ] ) ?>');
-        }
-
-        return $this->_parent_<?= $parent[ 'variable' ] ?>;
-    }
-
-<?php endforeach; ?>
-
-
-<?php foreach ( $depends as $depend ): ?>
-    /**
-     * Gets dependent <?= $depend[ 'table' ] . "\n" ?>
-     *
-     * @return <?= $depend[ 'class' ] . "\n" ?>
-     */
-    public function get<?= $depend[ 'function' ] ?>()
-    {
-        if ($this->_depend_<?= $depend[ 'variable' ] ?> === null)
-        {
-            $this->_depend_<?= $depend[ 'variable' ] ?> = $this->findDependentRowset('<?= $objTables->getNamespace (
-    ) ?>_DbTable_<?= \Classes\Maker\AbstractMaker::getClassName ( $depend[ 'table' ] ) ?>');
-        }
-
-        return $this->_depend_<?= $depend[ 'variable' ] ?>;
-    }
-
-<?php endforeach; ?>
-
 }

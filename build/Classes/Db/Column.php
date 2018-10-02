@@ -153,7 +153,7 @@ class Column
     /**
      * @return string
      */
-    public function getType ( $type = self::TypeDefault )
+    public function getType ( $type = self::TypePHP )
     {
         switch ( $type )
         {
@@ -168,11 +168,11 @@ class Column
 
     /**
      * @param      $type
-     * @param bool $inPHP
+     * @param string $inPHP
      *
      * @return bool
      */
-    public function equalType ( $type, $inPHP = true )
+    public function equalType ( $type, $inPHP = self::TypeDefault )
     {
         return $this->getType ( $inPHP ) === $type;
     }

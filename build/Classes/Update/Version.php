@@ -8,7 +8,7 @@ require_once 'ProtocolFileContent.php';
 
 class Version
 {
-    private static $_currentVersion = "1.6.2";
+    private static $_currentVersion = "1.6.3";
 
     private static $lastVersion;
 

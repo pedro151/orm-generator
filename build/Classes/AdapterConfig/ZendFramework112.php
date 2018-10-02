@@ -2,22 +2,22 @@
 
 namespace Classes\AdapterConfig;
 
-use Classes\AdapterMakerFile\ZendFrameworkOne\DbTable;
-use Classes\AdapterMakerFile\ZendFrameworkOne\Entity;
-use Classes\AdapterMakerFile\ZendFrameworkOne\Model;
-use Classes\AdapterMakerFile\ZendFrameworkOne\Peer;
+use Classes\AdapterMakerFile\ZendFramework112\DbTable;
+use Classes\AdapterMakerFile\ZendFramework112\Entity;
+use Classes\AdapterMakerFile\ZendFramework112\Model;
+use Classes\AdapterMakerFile\ZendFramework112\Mapper;
 
 require_once "Classes/AdapterConfig/AbstractAdapter.php";
-require_once "Classes/AdapterMakerFile/ZendFrameworkOne/DbTable.php";
-require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Entity.php";
-require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Model.php";
-require_once "Classes/AdapterMakerFile/ZendFrameworkOne/Peer.php";
+require_once "Classes/AdapterMakerFile/ZendFramework112/DbTable.php";
+require_once "Classes/AdapterMakerFile/ZendFramework112/Entity.php";
+require_once "Classes/AdapterMakerFile/ZendFramework112/Model.php";
+require_once "Classes/AdapterMakerFile/ZendFramework112/Mapper.php";
 
 /**
  * @author Pedro Alarcao <phacl151@gmail.com>
  * @link   https://github.com/pedro151/orm-generator
  */
-class ZendFrameworkOne extends AbstractAdapter
+class ZendFramework112 extends AbstractAdapter
 {
 
     private $config;
@@ -96,7 +96,7 @@ class ZendFrameworkOne extends AbstractAdapter
             foreach ( $this->getOptionalClasses () as $optionalClass )
             {
                 $Name = ucfirst ( $optionalClass );
-                $className = "Classes\\AdapterMakerFile\\ZendFrameworkOne\\{$Name}";
+                $className = "Classes\\AdapterMakerFile\\ZendFramework112\\{$Name}";
                 if(method_exists($className,'getInstance')){
                     $instances[] = $className::getInstance ();
                 }
@@ -106,7 +106,8 @@ class ZendFrameworkOne extends AbstractAdapter
         return array_merge ( array (
             DbTable::getInstance () ,
             Entity::getInstance () ,
-            Model::getInstance ()
+            Model::getInstance () ,
+            Mapper::getInstance()
         ) , $instances );
     }
 

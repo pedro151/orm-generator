@@ -35,27 +35,45 @@ class Mssql extends AbsractAdapter
 
     }
 
+
     /**
-     * @inheritDoc
+     * converts Mssql data types to Simple data types
+     *
+     * @param string $str
+     *
+     * @return string
      */
     protected function convertTypeToSimple ( $str )
     {
-        if ( preg_match ( '/(tinyint|bit)/' , $str ) )
-        {
+        $res = '';
+        if ( preg_match ( '/(tinyint\(1\)|bit)/', $str ) ) {
             $res = 'boolean';
-        } elseif ( preg_match ( '/(date|time|text|binary|char|xml|uniqueidentifier)/' , $str ) )
-        {
+        }
+        elseif ( preg_match ( '/(timestamp|blob|char|enum)/', $str ) ) {
             $res = 'string';
-        } elseif ( preg_match ( '/(decimal|numeric|real|float|money)/' , $str ) )
-        {
+        }
+        elseif ( preg_match ( '/(text)/', $str ) ) {
+            $res = 'text';
+        }
+        elseif ( preg_match ( '/(decimal|numeric|float|double|money|smallmoney)/', $str ) ) {
             $res = 'float';
-        } elseif ( preg_match ( '#^(?:tiny|small|medium|long|big|var)?(\w+)(?:\(\d+\))?(?:\s\w+)*$#' , $str , $matches ) )
-        {
-            $res = $matches[ 1 ];
+        }
+        elseif ( preg_match ( '#^(?:tiny|small|medium|long|big|var)?(\w+)(?:\(\d+\))?(?:\s\w+)*$#', $str, $matches ) ) {
+            $res =  $matches[ 1 ];
+        }
+        elseif ( preg_match ( '/(date)/', $str ) ) {
+            $res = 'date';
+        }
+        elseif ( preg_match ( '/(datetime)/', $str ) ) {
+            $res = 'datetime';
+        }
+        else {
+            print "Can't convert column type to Simple - Unrecognized type: $str";
         }
 
         return $res;
     }
+
 
     protected function getHost(){
         $host = $this->host;
@@ -155,8 +173,8 @@ class Mssql extends AbsractAdapter
 	is_nullable,
 	character_maximum_length AS max_length
 		FROM
-		{$this->database}.information_schema.tables AS st
-		INNER JOIN  {$this->database}.information_schema.columns AS c
+		{$this->database}.INFORMATION_SCHEMA.TABLES AS st
+		INNER JOIN  {$this->database}.INFORMATION_SCHEMA.COLUMNS AS c
 		ON st.table_name=c.table_name and st.table_type = 'BASE TABLE'
 		 $sqlTables and  c.table_schema IN ('$strSchema')
 		order by c.table_name asc"
@@ -181,7 +199,7 @@ class Mssql extends AbsractAdapter
             $this->totalTables = $this->getPDO ()
                                       ->query (
                                           "SELECT COUNT(table_name)  AS total
-             FROM {$this->database}.information_schema.tables
+             FROM {$this->database}.INFORMATION_SCHEMA.TABLES
              WHERE
               table_type = 'BASE TABLE'
               AND table_schema IN ( '" . $strSchema . "' ) $sqlTables"
@@ -208,15 +226,6 @@ class Mssql extends AbsractAdapter
         return "{$table}_{$column}_seq";
     }
 
-    /**
-     * @return array
-     */
-    public function getListConstrant ()
-    {
-        return array();
-    }
-
-    /*
     public function getListConstrant ()
     {
         $sqlTables = ! empty( $this->tablesName )
@@ -240,14 +249,14 @@ SELECT DISTINCT
             INNER JOIN {$this->database}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
                       ON tc.constraint_name = kcu.constraint_name
                        AND tc.table_schema IN ('$strSchema')
-                       AND tc.constraint_type IN ('FOREIGN KEY','PRIMARY KEY')
+                       AND tc.constraint_type IN ('PRIMARY KEY')
                        $sqlTables
-            INNER JOIN {$this->database}.information_schema.constraint_column_usage AS ccu
+            INNER JOIN {$this->database}.INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS ccu
                       ON tc.constraint_name  = ccu.constraint_name
                       ORDER by tc.table_schema;"
                     )
                     ->fetchAll ( \PDO::FETCH_ASSOC );
     }
-    */
+
 
 }

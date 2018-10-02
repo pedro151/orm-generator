@@ -350,6 +350,7 @@ class MakerFile extends AbstractMaker
         ob_start ();
         require $filePath;
         $data = ob_get_contents ();
+        $data = mb_convert_encoding($data, $this->getConfig()->getCharset(), 'auto');
         ob_end_clean ();
 
         return $data;

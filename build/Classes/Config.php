@@ -4,6 +4,7 @@ namespace Classes;
 
 use Classes\AdapterConfig\None;
 use Classes\AdapterConfig\Phalcon;
+use Classes\AdapterConfig\ZendFramework112;
 use Classes\AdapterConfig\ZendFrameworkOne;
 use Classes\AdapterMakerFile\AbstractAdapter;
 use Classes\AdaptersDriver\Dblib;
@@ -16,6 +17,7 @@ use Classes\Update\Version;
 require_once 'AdapterConfig/None.php';
 require_once 'AdapterConfig/Phalcon.php';
 require_once 'AdapterConfig/ZendFrameworkOne.php';
+require_once 'AdapterConfig/ZendFramework112.php';
 require_once 'AdaptersDriver/Dblib.php';
 require_once 'AdaptersDriver/Mssql.php';
 require_once 'AdaptersDriver/Mysql.php';
@@ -30,11 +32,6 @@ require_once 'Update.php';
  */
 class Config
 {
-
-    /**
-     * @var string
-     */
-    public static $version = "1.5.0";
 
     /**
      * String that separates the parent section name
@@ -70,6 +67,7 @@ class Config
     private $frameworkList = array (
         'none' ,
         'zf1' ,
+        'zf1.12',
         'phalcon'
     );
 
@@ -117,7 +115,6 @@ class Config
             die ( $this->download ( $argv[ 'download' ] ) );
         }
 
-        self::$version = Version::getVersion();
         $this->argv = $this->parseConfig ( $basePath , $argv );
     }
 
@@ -128,13 +125,13 @@ class Config
      */
     public function getUsage ()
     {
-        $version = self::$version;
+        $version = Version::getVersion();
         $list = $this->renderParam ();
 
         return <<<EOF
 parameters:
 $list
- example: php generate.php --framework=zf1 --database=foo --tables=foobar --status
+ example: php generate.php --framework=zf1.12 --database=foo --tables=foobar --status
 
 $version
 EOF;
@@ -174,7 +171,7 @@ EOF;
 
     public function getVersion ()
     {
-        $version = self::$version;
+        $version = Version::getVersion();
         return "ORM Generator \nVersion: {$version}\ncreated by: Pedro Alarcao <https://github.com/pedro151/orm-generator>\n{$version->messageHasNewVersion()}";
     }
 
@@ -294,6 +291,8 @@ EOF;
     {
         switch ( strtolower ( $this->argv[ 'framework' ] ) )
         {
+            case 'zf1.12':
+                return new ZendFramework112( $this->argv );
             case 'zf1':
                 return new ZendFrameworkOne( $this->argv );
             case 'phalcon':

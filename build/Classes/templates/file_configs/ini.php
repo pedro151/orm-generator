@@ -19,6 +19,8 @@ environment = <?= $environment ?><?= "\n" ?>
 driver = '<?= $driver ?>'<?= "\n" ?>
 ; database host
 host = <?= $host ?><?= "\n" ?>
+; encoding
+charset = UTF8
 ; database name
 database = "<?= isset( $database ) ? $database : '' ?>"<?= "\n" ?>
 ; database schema name (one or more than one)

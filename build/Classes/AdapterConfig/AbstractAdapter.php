@@ -4,9 +4,10 @@ namespace Classes\AdapterConfig;
 
 use Classes\Config;
 use Classes\Maker\AbstractMaker;
+use Classes\Update\Version;
 
 require_once "Classes/Maker/AbstractMaker.php";
-require_once "Classes/Config.php";
+require_once "Classes/Update/Version.php";
 require_once 'Exception.php';
 
 /**
@@ -26,6 +27,8 @@ abstract class AbstractAdapter
         'host'            => 'localhost' ,
         //Port do banco
         'port'            => '' ,
+        //Encoding
+        'charset'         => 'UTF8',
         //usuario do banco
         'username'        => null ,
         //senha do banco
@@ -204,7 +207,7 @@ abstract class AbstractAdapter
     {
         $this->dataTypes = $this->dataTypes + self::$dataTypesDefault;
         $array += array (
-            'version'     => Config::$version ,
+            'version'     => Version::getVersion() ,
             'author'      => ucfirst ( get_current_user () ) ,
             'last_modify' => date ( "d-m-Y" )
         );
@@ -356,6 +359,14 @@ abstract class AbstractAdapter
     }
 
     /**
+     * @return string
+     */
+    public function getCharset ()
+    {
+        return $this->arrConfig[ 'charset' ];
+    }
+
+    /**
      * @return boolean
      */
     public function isCleanTrash(){
@@ -484,7 +495,8 @@ abstract class AbstractAdapter
             'last_modify' ,
             'path' ,
             'folder-database' ,
-            'folder-name'
+            'folder-name',
+            'charset'
         );
 
         if ( in_array ( $str , $arr ) )
